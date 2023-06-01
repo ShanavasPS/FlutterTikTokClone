@@ -45,7 +45,7 @@ class CustomPageTransitionsBuilder extends PageTransitionsBuilder {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +59,8 @@ class HomePage extends StatelessWidget {
               children: [
                 TabBar(
                   tabs: [
-                    Tab(text: 'Tab 1'),
-                    Tab(text: 'Tab 2'),
+                    Tab(text: 'Following'),
+                    Tab(text: 'For You'),
                   ],
                 ),
                 Expanded(
@@ -72,7 +72,7 @@ class HomePage extends StatelessWidget {
                           child: Column(
                             children: [
                               SizedBox(
-                                height: MediaQuery.of(context).size.height,
+                                height: MediaQuery.of(context).size.height - kToolbarHeight - MediaQuery.of(context).padding.top - kTextTabBarHeight, // Subtract the height of the tab bar
                                 child: PageView.builder(
                                   scrollDirection: Axis.vertical,
                                   itemCount: 10,
@@ -95,7 +95,7 @@ class HomePage extends StatelessWidget {
                           child: Column(
                             children: [
                               SizedBox(
-                                height: MediaQuery.of(context).size.height,
+                                height: MediaQuery.of(context).size.height - kToolbarHeight - MediaQuery.of(context).padding.top - kTextTabBarHeight, // Subtract the height of the tab bar
                                 child: PageView.builder(
                                   scrollDirection: Axis.vertical,
                                   itemCount: 10,
@@ -189,6 +189,7 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
 
 
 class VideoFeed extends StatelessWidget {
