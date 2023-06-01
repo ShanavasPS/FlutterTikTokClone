@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tittokclone/networkcalls.dart';
 
 void main() {
   runApp(TikTokApp());
@@ -59,6 +60,41 @@ class _HomePageState extends State<HomePage> {
   FontWeight followingWeight = FontWeight.bold;
   FontWeight forYouWeight = FontWeight.normal;
   String selectedFeed = "Following";
+  String nextItem = ''; // Initial next item value
+
+  @override
+  void initState() {
+    super.initState();
+    print('inside state:');
+    fetchNextFollowingItem();
+    fetchNextForYouItem();
+  }
+
+  Future<void> fetchNextFollowingItem() async {
+    try {
+      final item = await getNextFollowingItem();
+      setState(() {
+        nextItem = item;
+        print(nextItem);
+      });
+    } catch (e) {
+      // Handle error
+      print('Error: $e');
+    }
+  }
+
+  Future<void> fetchNextForYouItem() async {
+    try {
+      final item = await getNextForYouItem();
+      setState(() {
+        nextItem = item;
+        print(nextItem);
+      });
+    } catch (e) {
+      // Handle error
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
