@@ -44,146 +44,168 @@ class CustomPageTransitionsBuilder extends PageTransitionsBuilder {
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Color unselectedTextColor = Colors.white70;
+  Color selectedTextColor = Colors.white;
+  Color followingTextColor = Colors.white70;
+  Color forYouTextColor = Colors.white;
+  FontWeight followingWeight = FontWeight.bold;
+  FontWeight forYouWeight = FontWeight.normal;
+  String selectedFeed = "Following";
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2, // Number of tabs
-      child: Scaffold(
-        body: SafeArea(
-          child: Container(
-            color: Colors.black,
-            child: Column(
-              children: [
-                TabBar(
-                  tabs: [
-                    Tab(text: 'Following'),
-                    Tab(text: 'For You'),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      // Contents of Tab 1
-                      Container(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height - kToolbarHeight - MediaQuery.of(context).padding.top - kTextTabBarHeight, // Subtract the height of the tab bar
-                                child: PageView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: 10,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return VideoFeed(
-                                      videoUrl: 'https://example.com/video.mp4', // Replace with video URL
-                                      username: 'User $index',
-                                      caption: 'This is video $index',
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Contents of Tab 2
-                      Container(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height - kToolbarHeight - MediaQuery.of(context).padding.top - kTextTabBarHeight, // Subtract the height of the tab bar
-                                child: PageView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: 10,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return VideoFeed(
-                                      videoUrl: 'https://example.com/video.mp4', // Replace with video URL
-                                      username: 'User $index',
-                                      caption: 'This is video $index',
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+    return Scaffold(
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: PageController(
+              initialPage: 0,
+              viewportFraction: 1,
+            ),
+            itemCount: 10,
+            onPageChanged: (index) {
+              index = index;
+            },
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              index = index;
+              return VideoFeed(
+                videoUrl: 'https://example.com/video.mp4', // Replace with video URL
+                username: '$selectedFeed User $index',
+                caption: 'This is video $index',
+              );
+            },
+          ),
+          SafeArea(
+            child: Container(
+              padding: EdgeInsets.only(top: 20),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: (){
+                        print("Following tapped.");
+                        setState(() {
+                          followingTextColor = selectedTextColor;
+                          followingWeight = FontWeight.bold;
+                          forYouTextColor = unselectedTextColor;
+                          forYouWeight = FontWeight.normal;
+                          selectedFeed = "Following";
+                        });
+
+                      },
+                      child: Text('Following',
+                          style: TextStyle(
+                              fontSize: 17.0,
+                              fontWeight: followingWeight,
+                              color: followingTextColor)),
+                    ),
+                    SizedBox(
+                      width: 7,
+                    ),
+                    Container(
+                      color: Colors.transparent,
+                      height: 10,
+                      width: 1.0,
+                    ),
+                    SizedBox(
+                      width: 7,
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        print("For You tapped.");
+                        setState(() {
+                          followingTextColor = unselectedTextColor;
+                          followingWeight = FontWeight.normal;
+                          forYouTextColor = selectedTextColor;
+                          forYouWeight = FontWeight.bold;
+                          selectedFeed = "For You";
+                        });
+                      },
+                      child: Text('For You',
+                          style: TextStyle(
+                              fontSize: 17.0,
+                              fontWeight: forYouWeight,
+                              color: forYouTextColor)),
+                    )
+                  ]),
             ),
           ),
+        ],
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.favorite),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.comment),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.share),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.music_note),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.music_note),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.more_horiz),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.black, // Set the background color to black
         ),
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.favorite),
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
             ),
-            SizedBox(height: 16),
-            FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.comment),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Discover',
             ),
-            SizedBox(height: 16),
-            FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.share),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'Activity',
             ),
-            SizedBox(height: 16),
-            FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.music_note),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bookmark),
+              label: 'Bookmarks',
             ),
-            SizedBox(height: 16),
-            FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.music_note),
-            ),
-            SizedBox(height: 16),
-            FloatingActionButton(
-              onPressed: () {},
-              child: Icon(Icons.more_horiz),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
             ),
           ],
-        ),
-        bottomNavigationBar: Theme(
-          data: Theme.of(context).copyWith(
-            canvasColor: Colors.black, // Set the background color to black
-          ),
-          child: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Discover',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                label: 'Activity',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.bookmark),
-                label: 'Bookmarks',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-            ],
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.grey,
-          ),
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey,
         ),
       ),
     );
