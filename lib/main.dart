@@ -65,6 +65,7 @@ class _HomePageState extends State<HomePage> {
   final PageController forYouPageController = PageController(initialPage: 0, viewportFraction: 1);
   List<Map<String, dynamic>> followingItems = []; // List to store fetched items
   List<Map<String, dynamic>> forYouItems = []; // List to store fetched items
+  List<Map<String, dynamic>> answers = []; // List to store fetched items
   int currentPage = 0; // Current page of items
   bool isLoading = false; // Flag to track loading state
   int tabIndex = 0; //To track selected screen
@@ -133,12 +134,12 @@ class _HomePageState extends State<HomePage> {
     });
     try {
       final item = await getNextForYouItem();
+      final answer = await revealAnswer(item["id"]);
       setState(() {
         forYouItems.add(item);
-
+        answers.add(answer);
         currentPage++;
         isLoading = false;
-        print(nextItem);
       });
       print("recived the below item");
       print(forYouItems[0]);
@@ -276,7 +277,8 @@ class _HomePageState extends State<HomePage> {
             print("setting a forYou page");
             print(forYouPageController.page);
             return MCQFeed(
-              content: forYouItems[index]
+              content: forYouItems[index],
+              answer: answers[index],
             );
           } else {
             return _buildLoaderIndicator();
@@ -475,8 +477,8 @@ class FlashCardFeed extends StatelessWidget {
 
 class MCQFeed extends StatefulWidget {
   final Map<String, dynamic> content;
-
-  MCQFeed({required this.content});
+  final Map<String, dynamic> answer;
+  MCQFeed({required this.content, required this.answer});
 
   @override
   MCQFeedState createState() => MCQFeedState();
@@ -501,6 +503,7 @@ class MCQFeedState extends State<MCQFeed> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> content = widget.content;
+    final Map<String, dynamic> answer = widget.answer;
 
     String mainTitle = "";
     if (content["type"] == "flashcard") {
@@ -529,6 +532,15 @@ class MCQFeedState extends State<MCQFeed> {
 
     final String username = content['user']['name'];
     final String description = content['description'];
+
+    // Extract the 'correct_options' array
+    List<dynamic> correctOptions = answer['correct_options'];
+
+    // Extract the first item from 'correct_options' array
+    Map<String, dynamic> firstOption = correctOptions[0];
+
+    // Extract the 'id' value from the first option
+    String correctAnswer = firstOption['id'];
 
     return Container(
       width: MediaQuery
@@ -587,7 +599,16 @@ class MCQFeedState extends State<MCQFeed> {
                                 print("inside set state");
                                 // Change the color when pressed
                                 // Set the new color value based on your requirement
-                                answerAColor = answerAColor == incorrectAnswerColor ? defaultAnswerColor : incorrectAnswerColor;
+                                if(correctAnswer == "A") {
+                                  answerAColor = correctAnswerColor;
+                                } else {
+                                  if(correctAnswer == "B") {
+                                    answerBColor = correctAnswerColor;
+                                  } else {
+                                    answerCColor = correctAnswerColor;
+                                  }
+                                  answerAColor = incorrectAnswerColor;
+                                }
                               });
                             },
                             child: Container(
@@ -612,6 +633,13 @@ class MCQFeedState extends State<MCQFeed> {
                                       ),
                                     ),
                                     Visibility(
+                                      visible: answerAColor == correctAnswerColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8),
+                                        child: Image.asset("images/TickMark.png"),
+                                      ),
+                                    ),
+                                    Visibility(
                                       visible: answerAColor == incorrectAnswerColor,
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 8),
@@ -631,7 +659,16 @@ class MCQFeedState extends State<MCQFeed> {
                                 print("inside set state");
                                 // Change the color when pressed
                                 // Set the new color value based on your requirement
-                                answerBColor = answerBColor == correctAnswerColor ? defaultAnswerColor : correctAnswerColor;
+                                if(correctAnswer == "B") {
+                                  answerBColor = correctAnswerColor;
+                                } else {
+                                  if(correctAnswer == "A") {
+                                    answerAColor = correctAnswerColor;
+                                  } else {
+                                    answerCColor = correctAnswerColor;
+                                  }
+                                  answerBColor = incorrectAnswerColor;
+                                }
                               });
                             },
                             child: Container(
@@ -662,6 +699,13 @@ class MCQFeedState extends State<MCQFeed> {
                                         child: Image.asset("images/TickMark.png"),
                                       ),
                                     ),
+                                    Visibility(
+                                      visible: answerBColor == incorrectAnswerColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8),
+                                        child: Image.asset("images/Cross.png"),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -673,9 +717,16 @@ class MCQFeedState extends State<MCQFeed> {
                               print("answer c tapped");
                               setState(() {
                                 print("inside set state");
-                                // Change the color when pressed
-                                // Set the new color value based on your requirement
-                                answerCColor = answerCColor == correctAnswerColor ? defaultAnswerColor : correctAnswerColor;
+                                if(correctAnswer == "C") {
+                                  answerCColor = correctAnswerColor;
+                                } else {
+                                  if(correctAnswer == "A") {
+                                    answerAColor = correctAnswerColor;
+                                  } else {
+                                    answerBColor = correctAnswerColor;
+                                  }
+                                  answerCColor = incorrectAnswerColor;
+                                }
                               });
                             },
                             child: Container(
@@ -704,6 +755,13 @@ class MCQFeedState extends State<MCQFeed> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 8),
                                         child: Image.asset("images/TickMark.png"),
+                                      ),
+                                    ),
+                                    Visibility(
+                                      visible: answerCColor == incorrectAnswerColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8),
+                                        child: Image.asset("images/Cross.png"),
                                       ),
                                     ),
                                   ],

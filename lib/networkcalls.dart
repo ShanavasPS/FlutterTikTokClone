@@ -31,15 +31,16 @@ Future<Map<String, dynamic>> getNextForYouItem() async {
   }
 }
 
-Future<String> revealAnswer() async {
-  final response = await http.get(Uri.parse('https://cross-platform.rp.devfactory.com/reveal?id=X'));
-  print('inside getNextForYouItem:');
+Future<Map<String, dynamic>> revealAnswer(int mcqID) async {
+  final response = await http.get(Uri.parse('https://cross-platform.rp.devfactory.com/reveal?id=$mcqID'));
+  print('inside revealAnswer:');
   if (response.statusCode == 200) {
     // Parse the response body and extract the next item
     //final nextItem = // extract the next item from the response body
     print("received positive response");
     print(response.body);
-    return "Shanavas";
+    var data = jsonDecode(response.body);
+    return data;
   } else {
     throw Exception('Failed to fetch next item');
   }
