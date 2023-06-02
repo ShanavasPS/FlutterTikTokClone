@@ -367,23 +367,38 @@ Widget buildBottomNavigationBar(BuildContext context) {
     child: BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Image.asset("images/Home.png"),
+          icon: Padding(
+              padding: EdgeInsets.only(bottom: 6),
+              child: Image.asset("images/Home.png")
+          ),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset("images/Discover.png"),
+          icon: Padding(
+              padding: EdgeInsets.only(bottom: 6),
+              child: Image.asset("images/Discover.png")
+          ),
           label: 'Discover',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset("images/Activity.png"),
+          icon: Padding(
+              padding: EdgeInsets.only(bottom: 6),
+              child: Image.asset("images/Activity.png")
+          ),
           label: 'Activity',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset("images/Bookmarks.png"),
+          icon: Padding(
+              padding: EdgeInsets.only(bottom: 6),
+              child: Image.asset("images/Bookmarks.png")
+          ),
           label: 'Bookmarks',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset("images/Profile.png"),
+          icon: Padding(
+              padding: EdgeInsets.only(bottom: 6),
+              child: Image.asset("images/Profile.png")
+          ),
           label: 'Profile',
         ),
       ],
