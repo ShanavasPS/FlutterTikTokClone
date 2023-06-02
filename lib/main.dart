@@ -248,33 +248,15 @@ class _HomePageState extends State<HomePage> {
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-        if(tabIndex == 0) {
           if (index < followingItems.length) {
             print("setting a following page");
             print(followingPageController.page);
-            return VideoFeed(
-              content: followingItems[index],
-              // Replace with video URL
-              username: '${followingItems[index]} $index',
-              caption: 'This is video ${followingItems[index]}',
+            return FlashCardFeed(
+              content: followingItems[index]
             );
           } else {
             return _buildLoaderIndicator();
           }
-        } else {
-          if (index < forYouItems.length) {
-            print("setting a for you page");
-            print(forYouPageController.page);
-            return VideoFeed(
-              content: forYouItems[index],
-              // Replace with video URL
-              username: '${forYouItems[index]} $index',
-              caption: 'This is video ${forYouItems[index]}',
-            );
-          } else {
-            return _buildLoaderIndicator();
-          }
-        }
       },
     );
   }
@@ -293,11 +275,8 @@ class _HomePageState extends State<HomePage> {
           if (index < forYouItems.length) {
             print("setting a forYou page");
             print(forYouPageController.page);
-            return VideoFeed(
-              content: forYouItems[index],
-              // Replace with video URL
-              username: '${forYouItems[index]} $index',
-              caption: 'This is video ${forYouItems[index]}',
+            return MCQFeed(
+              content: forYouItems[index]
             );
           } else {
             return _buildLoaderIndicator();
@@ -410,15 +389,11 @@ Widget buildBottomNavigationBar(BuildContext context) {
   );
 }
 
-class VideoFeed extends StatelessWidget {
+class FlashCardFeed extends StatelessWidget {
   final Map<String, dynamic> content;
-  final String username;
-  final String caption;
 
-  const VideoFeed({
+  const FlashCardFeed({
     required this.content,
-    required this.username,
-    required this.caption,
   });
 
   @override
@@ -451,12 +426,15 @@ class VideoFeed extends StatelessWidget {
           Positioned.fill(
             child: Align(
               alignment: Alignment.center,
-              child: Text(
-                mainTitle,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+              child: Padding(
+                padding: EdgeInsets.only(left: 16.0, right: 73.0),
+                child: Text(
+                  mainTitle,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -495,8 +473,215 @@ class VideoFeed extends StatelessWidget {
   }
 }
 
+class MCQFeed extends StatelessWidget {
+  final Map<String, dynamic> content;
 
-class VideoItem extends StatelessWidget {
+  const MCQFeed({
+    required this.content,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String mainTitle = "";
+    if (content["type"] == "flashcard") {
+      mainTitle = content["flashcard_front"];
+    } else {
+      mainTitle = content["question"];
+    }
+
+    // Access the 'options' array
+    final List<dynamic> options = content['options'];
+    // Find the option with id 'A'
+    final Map<String, dynamic> optionA = options.firstWhere((
+        option) => option['id'] == 'A');
+    // Read the answer from the optionA
+    final String answerA = optionA['answer'];
+    // Find the option with id 'B'
+    final Map<String, dynamic> optionB = options.firstWhere((
+        option) => option['id'] == 'B');
+    // Read the answer from the optionB
+    final String answerB = optionB['answer'];
+    // Find the option with id 'C'
+    final Map<String, dynamic> optionC = options.firstWhere((
+        option) => option['id'] == 'C');
+    // Read the answer from the optionC
+    final String answerC = optionC['answer'];
+
+    final String username = content['user']['name'];
+    final String description = content['description'];
+
+    return Container(
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF001D28),
+                  Color(0xFF00425A),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.0, 1.0],
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.only(top: 150.0, left: 16.0, right: 73.0, bottom: 36),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        mainTitle,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color(0xFFFFFFFF).withOpacity(0.2),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  12, 16, 12, 16),
+                              child: Text(
+                                answerA,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color(0xFFFFFFFF).withOpacity(0.2),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  12, 16, 12, 16),
+                              child: Text(
+                                answerB,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color(0xFFFFFFFF).withOpacity(0.2),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  12, 16, 12, 16),
+                              child: Text(
+                                answerC,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 24, bottom: 6),
+                            child: Text(
+                              username,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 24),
+                            child: Text(
+                              description,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Container(
+              color: const Color(0xFF161616),
+              height: 36,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 4.0),
+                    child: Image.asset("images/Play.png"),
+                  ),
+                  const Text(
+                    'Playlist • Unit 5: Period 5: 1844-1877',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Image.asset("images/Arrow.png"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+    class VideoItem extends StatelessWidget {
   final String videoUrl;
   final String username;
   final String caption;
