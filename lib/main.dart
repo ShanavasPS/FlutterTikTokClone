@@ -611,9 +611,12 @@ class MCQFeedState extends State<MCQFeed> {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8),
-                                      child: Image.asset("images/Cross.png"),
+                                    Visibility(
+                                      visible: answerAColor == incorrectAnswerColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8),
+                                        child: Image.asset("images/Cross.png"),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -652,9 +655,12 @@ class MCQFeedState extends State<MCQFeed> {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8),
-                                      child: Image.asset("images/TickMark.png"),
+                                    Visibility(
+                                      visible: answerBColor == correctAnswerColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8),
+                                        child: Image.asset("images/TickMark.png"),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -693,9 +699,12 @@ class MCQFeedState extends State<MCQFeed> {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8),
-                                      child: Image.asset("images/TickMark.png"),
+                                    Visibility(
+                                      visible: answerCColor == correctAnswerColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 8),
+                                        child: Image.asset("images/TickMark.png"),
+                                      ),
                                     ),
                                   ],
                                 ),
