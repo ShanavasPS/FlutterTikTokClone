@@ -63,8 +63,8 @@ class _HomePageState extends State<HomePage> {
   String nextItem = ''; // Initial next item value
   final PageController followingPageController = PageController(initialPage: 0, viewportFraction: 1);
   final PageController forYouPageController = PageController(initialPage: 0, viewportFraction: 1);
-  List<String> followingItems = []; // List to store fetched items
-  List<String> forYouItems = []; // List to store fetched items
+  List<Map<String, dynamic>> followingItems = []; // List to store fetched items
+  List<Map<String, dynamic>> forYouItems = []; // List to store fetched items
   int currentPage = 0; // Current page of items
   bool isLoading = false; // Flag to track loading state
   int tabIndex = 0; //To track selected screen
@@ -110,7 +110,6 @@ class _HomePageState extends State<HomePage> {
         followingItems.add(item);
 
         currentPage++;
-        nextItem = item;
         isLoading = false;
         print(nextItem);
       });
@@ -138,7 +137,6 @@ class _HomePageState extends State<HomePage> {
         forYouItems.add(item);
 
         currentPage++;
-        nextItem = item;
         isLoading = false;
         print(nextItem);
       });
@@ -340,22 +338,25 @@ Widget buildCustomFloatingActionButton(String imageName, double height, double w
 }
 
 Widget buildFloatingActionButton() {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.end,
-    crossAxisAlignment: CrossAxisAlignment.end,
-    children: [
-      buildCustomFloatingActionButton('images/Ellipse21.png', 55, 55, ""),
-      SizedBox(height: 16),
-      buildCustomFloatingActionButton('images/Like.png', 32, 30, "87"),
-      SizedBox(height: 16),
-      buildCustomFloatingActionButton('images/Comments.png', 32, 30, "2"),
-      SizedBox(height: 16),
-      buildCustomFloatingActionButton('images/Share.png', 32, 30, "17"),
-      SizedBox(height: 16),
-      buildCustomFloatingActionButton('images/Bookmark.png', 32, 30, "203"),
-      SizedBox(height: 16),
-      buildCustomFloatingActionButton('images/Refresh.png', 32, 30, "Flip"),
-    ],
+  return Padding(
+    padding: EdgeInsets.only(bottom: 36.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        buildCustomFloatingActionButton('images/Ellipse21.png', 55, 55, ""),
+        SizedBox(height: 16),
+        buildCustomFloatingActionButton('images/Like.png', 32, 30, "87"),
+        SizedBox(height: 16),
+        buildCustomFloatingActionButton('images/Comments.png', 32, 30, "2"),
+        SizedBox(height: 16),
+        buildCustomFloatingActionButton('images/Share.png', 32, 30, "17"),
+        SizedBox(height: 16),
+        buildCustomFloatingActionButton('images/Bookmark.png', 32, 30, "203"),
+        SizedBox(height: 16),
+        buildCustomFloatingActionButton('images/Refresh.png', 32, 30, "Flip"),
+      ],
+    ),
   );
 }
 
@@ -428,8 +429,18 @@ class VideoFeed extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          VideoPlayerWidget(videoUrl: videoUrl),
           Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF001D28),
+                  Color(0xFF00425A),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.0, 1.0], // Adjust the stops if needed
+              ),
+            ),
             alignment: Alignment.bottomLeft,
             child: Container(
               color: const Color(0xFF161616),

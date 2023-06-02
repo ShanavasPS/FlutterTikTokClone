@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-Future<String> getNextFollowingItem() async {
+Future<Map<String, dynamic>> getNextFollowingItem() async {
   final response = await http.get(Uri.parse('https://cross-platform.rp.devfactory.com/following'));
   print('inside getNextFollowingItem:');
   if (response.statusCode == 200) {
@@ -8,13 +9,14 @@ Future<String> getNextFollowingItem() async {
     //final nextItem = // extract the next item from the response body
     print("received positive response");
     print(response.body);
-    return "Fetched next Following";
+    var data = jsonDecode(response.body);
+    return data;
   } else {
     throw Exception('Failed to fetch next item');
   }
 }
 
-Future<String> getNextForYouItem() async {
+Future<Map<String, dynamic>> getNextForYouItem() async {
   final response = await http.get(Uri.parse('https://cross-platform.rp.devfactory.com/for_you'));
   print('inside getNextForYouItem:');
   if (response.statusCode == 200) {
@@ -22,7 +24,8 @@ Future<String> getNextForYouItem() async {
     //final nextItem = // extract the next item from the response body
     print("received positive response");
     print(response.body);
-    return "Fetched next For You";
+    var data = jsonDecode(response.body);
+    return data;
   } else {
     throw Exception('Failed to fetch next item');
   }
