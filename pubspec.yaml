@@ -67,6 +67,11 @@ flutter:
     - images/Refresh.png
     - images/Share.png
     - images/Comments.png
+    - images/Home.png
+    - images/Discover.png
+    - images/Activity.png
+    - images/Bookmarks.png
+    - images/Profile.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -365,30 +365,31 @@ Widget buildBottomNavigationBar(BuildContext context) {
       canvasColor: Colors.black, // Set the background color to black
     ),
     child: BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Image.asset("images/Home.png"),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
+          icon: Image.asset("images/Discover.png"),
           label: 'Discover',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.add),
+          icon: Image.asset("images/Activity.png"),
           label: 'Activity',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark),
+          icon: Image.asset("images/Bookmarks.png"),
           label: 'Bookmarks',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: Image.asset("images/Profile.png"),
           label: 'Profile',
         ),
       ],
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.grey,
+      showUnselectedLabels: true,
     ),
   );
 }
