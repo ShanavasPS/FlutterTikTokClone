@@ -253,7 +253,7 @@ class _HomePageState extends State<HomePage> {
             print("setting a following page");
             print(followingPageController.page);
             return VideoFeed(
-              videoUrl: 'https://example.com/video.mp4',
+              content: followingItems[index],
               // Replace with video URL
               username: '${followingItems[index]} $index',
               caption: 'This is video ${followingItems[index]}',
@@ -266,7 +266,7 @@ class _HomePageState extends State<HomePage> {
             print("setting a for you page");
             print(forYouPageController.page);
             return VideoFeed(
-              videoUrl: 'https://example.com/video.mp4',
+              content: forYouItems[index],
               // Replace with video URL
               username: '${forYouItems[index]} $index',
               caption: 'This is video ${forYouItems[index]}',
@@ -294,7 +294,7 @@ class _HomePageState extends State<HomePage> {
             print("setting a forYou page");
             print(forYouPageController.page);
             return VideoFeed(
-              videoUrl: 'https://example.com/video.mp4',
+              content: forYouItems[index],
               // Replace with video URL
               username: '${forYouItems[index]} $index',
               caption: 'This is video ${forYouItems[index]}',
@@ -411,18 +411,24 @@ Widget buildBottomNavigationBar(BuildContext context) {
 }
 
 class VideoFeed extends StatelessWidget {
-  final String videoUrl;
+  final Map<String, dynamic> content;
   final String username;
   final String caption;
 
   const VideoFeed({
-    required this.videoUrl,
+    required this.content,
     required this.username,
     required this.caption,
   });
 
   @override
   Widget build(BuildContext context) {
+    String mainTitle = "";
+    if(content["type"] == "flashcard") {
+      mainTitle = content["flashcard_front"];
+    } else {
+      mainTitle = content["question"];
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -438,21 +444,33 @@ class VideoFeed extends StatelessWidget {
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: [0.0, 1.0], // Adjust the stops if needed
+                stops: [0.0, 1.0],
               ),
             ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                mainTitle,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Align(
             alignment: Alignment.bottomLeft,
             child: Container(
               color: const Color(0xFF161616),
               height: 36,
               child: Row(
                 children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 4.0),
-                      child: Image.asset("images/Play.png"),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 4.0),
+                    child: Image.asset("images/Play.png"),
                   ),
                   const Text(
                     'Playlist • Unit 5: Period 5: 1844-1877',
@@ -464,15 +482,13 @@ class VideoFeed extends StatelessWidget {
                   ),
                   const Spacer(),
                   Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Image.asset("images/Arrow.png")
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Image.asset("images/Arrow.png"),
                   ),
                 ],
               ),
             ),
-          )
-
-
+          ),
         ],
       ),
     );
