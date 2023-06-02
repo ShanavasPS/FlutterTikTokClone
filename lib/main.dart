@@ -309,41 +309,52 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+Widget buildCustomFloatingActionButton(String imageName, double height, double weight, String text) {
+  bool showLabel = true;
+  if(text == "") {
+    showLabel = false;
+  }
+  return FloatingActionButton(
+    onPressed: () {
+      // Handle button press
+    },
+    backgroundColor: Colors.transparent,
+    elevation: 0.0,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          imageName,
+          height: height,
+          width: weight,
+        ),
+        Visibility(
+            visible: showLabel,
+            child: Text(
+                text
+            ),
+        ),
+      ],
+    ),
+  );
+}
 
 Widget buildFloatingActionButton() {
   return Column(
     mainAxisAlignment: MainAxisAlignment.end,
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
-      FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.favorite),
-      ),
+      buildCustomFloatingActionButton('images/Ellipse21.png', 55, 55, ""),
       SizedBox(height: 16),
-      FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.comment),
-      ),
+      buildCustomFloatingActionButton('images/Like.png', 32, 30, "87"),
       SizedBox(height: 16),
-      FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.share),
-      ),
+      buildCustomFloatingActionButton('images/Comments.png', 32, 30, "2"),
       SizedBox(height: 16),
-      FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.music_note),
-      ),
+      buildCustomFloatingActionButton('images/Share.png', 32, 30, "17"),
       SizedBox(height: 16),
-      FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.music_note),
-      ),
+      buildCustomFloatingActionButton('images/Bookmark.png', 32, 30, "203"),
       SizedBox(height: 16),
-      FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.more_horiz),
-      ),
+      buildCustomFloatingActionButton('images/Refresh.png', 32, 30, "Flip"),
     ],
   );
 }
