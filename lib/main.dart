@@ -403,7 +403,7 @@ Widget buildBottomNavigationBar(BuildContext context) {
         ),
       ],
       selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: const Color.fromRGBO(255, 255, 255, 0.4),
       showUnselectedLabels: true,
     ),
   );
@@ -429,21 +429,39 @@ class VideoFeed extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           VideoPlayerWidget(videoUrl: videoUrl),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 20,
-                child: Text(
-                  username.substring(0, 1).toUpperCase(),
-                  style: TextStyle(fontSize: 18),
-                ),
+          Container(
+            alignment: Alignment.bottomLeft,
+            child: Container(
+              color: const Color(0xFF161616),
+              height: 36,
+              child: Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 4.0),
+                      child: Image.asset("images/Play.png"),
+                    ),
+                  ),
+                  const Text(
+                    'Playlist • Unit 5: Period 5: 1844-1877',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Image.asset("images/Arrow.png")
+                  ),
+                ],
               ),
-              title: Text(username),
-              subtitle: Text(caption),
             ),
-          ),
+          )
+
+
         ],
       ),
     );

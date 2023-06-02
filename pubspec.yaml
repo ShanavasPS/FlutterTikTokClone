@@ -72,6 +72,8 @@ flutter:
     - images/Activity.png
     - images/Bookmarks.png
     - images/Profile.png
+    - images/Play.png
+    - images/Arrow.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
