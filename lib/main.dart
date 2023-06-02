@@ -473,15 +473,35 @@ class FlashCardFeed extends StatelessWidget {
   }
 }
 
-class MCQFeed extends StatelessWidget {
+class MCQFeed extends StatefulWidget {
   final Map<String, dynamic> content;
 
-  const MCQFeed({
-    required this.content,
-  });
+  MCQFeed({required this.content});
+
+  @override
+  MCQFeedState createState() => MCQFeedState();
+}
+
+class MCQFeedState extends State<MCQFeed> {
+  MCQFeedState() : super();
+
+  @override
+  void initState() {
+    super.initState();
+    print('inside state:');
+  }
+
+  Color defaultAnswerColor = const Color(0xFFFFFFFF).withOpacity(0.2);
+  Color correctAnswerColor = Color(0xFF28B18F);
+  Color incorrectAnswerColor = Color(0xFFDC5F5F);
+  Color answerAColor = Color(0xFFFFFFFF).withOpacity(0.2);
+  Color answerBColor = Color(0xFFFFFFFF).withOpacity(0.2);
+  Color answerCColor = Color(0xFFFFFFFF).withOpacity(0.2);
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> content = widget.content;
+
     String mainTitle = "";
     if (content["type"] == "flashcard") {
       mainTitle = content["flashcard_front"];
@@ -560,58 +580,124 @@ class MCQFeed extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: const Color(0xFFFFFFFF).withOpacity(0.2),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  12, 16, 12, 16),
-                              child: Text(
-                                answerA,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w400,
+                          GestureDetector(
+                            onTap: () {
+                              print("answer a tapped");
+                              setState(() {
+                                print("inside set state");
+                                // Change the color when pressed
+                                // Set the new color value based on your requirement
+                                answerAColor = answerAColor == incorrectAnswerColor ? defaultAnswerColor : incorrectAnswerColor;
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: answerAColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    12, 16, 12, 16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        answerA,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8),
+                                      child: Image.asset("images/Cross.png"),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: const Color(0xFFFFFFFF).withOpacity(0.2),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  12, 16, 12, 16),
-                              child: Text(
-                                answerB,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w400,
+                          GestureDetector(
+                            onTap: () {
+                              print("answer b tapped");
+                              setState(() {
+                                print("inside set state");
+                                // Change the color when pressed
+                                // Set the new color value based on your requirement
+                                answerBColor = answerBColor == correctAnswerColor ? defaultAnswerColor : correctAnswerColor;
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: answerBColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    12, 16, 12, 16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        answerB,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8),
+                                      child: Image.asset("images/TickMark.png"),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: const Color(0xFFFFFFFF).withOpacity(0.2),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  12, 16, 12, 16),
-                              child: Text(
-                                answerC,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w400,
+                          GestureDetector(
+                            onTap: () {
+                              print("answer c tapped");
+                              setState(() {
+                                print("inside set state");
+                                // Change the color when pressed
+                                // Set the new color value based on your requirement
+                                answerCColor = answerCColor == correctAnswerColor ? defaultAnswerColor : correctAnswerColor;
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: answerCColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    12, 16, 12, 16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        answerC,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8),
+                                      child: Image.asset("images/TickMark.png"),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
