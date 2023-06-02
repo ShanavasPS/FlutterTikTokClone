@@ -55,44 +55,110 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Color unselectedTextColor = Colors.white70;
   Color selectedTextColor = Colors.white;
-  Color followingTextColor = Colors.white70;
-  Color forYouTextColor = Colors.white;
+  Color followingTextColor = Colors.white;
+  Color forYouTextColor = Colors.white70;
   FontWeight followingWeight = FontWeight.bold;
   FontWeight forYouWeight = FontWeight.normal;
   String selectedFeed = "Following";
   String nextItem = ''; // Initial next item value
+  final PageController followingPageController = PageController(initialPage: 0, viewportFraction: 1);
+  final PageController forYouPageController = PageController(initialPage: 0, viewportFraction: 1);
+  List<String> followingItems = []; // List to store fetched items
+  List<String> forYouItems = []; // List to store fetched items
+  int currentPage = 0; // Current page of items
+  bool isLoading = false; // Flag to track loading state
+  int tabIndex = 0; //To track selected screen
 
   @override
   void initState() {
     super.initState();
     print('inside state:');
+    followingPageController.addListener(followingPageListener);
+    forYouPageController.addListener(forYouPageListener);
     fetchNextFollowingItem();
     fetchNextForYouItem();
   }
 
+  void followingPageListener() {
+    print("inside followingPageListener");
+    print(followingPageController.page);
+    print(followingItems.length);
+    if (followingPageController.page == followingItems.length) {
+      print("condition met");
+      fetchNextFollowingItem();
+    }
+  }
+
+  void forYouPageListener() {
+    print("inside forYouPageListener");
+    print(forYouPageController.page);
+    print(forYouItems.length);
+    if (forYouPageController.page == forYouItems.length) {
+      print("condition met");
+      fetchNextForYouItem();
+    }
+  }
+
   Future<void> fetchNextFollowingItem() async {
+    print("Inside fetchNextFollowingItem");
+    setState(() {
+      isLoading = true;
+    });
     try {
       final item = await getNextFollowingItem();
       setState(() {
+        followingItems.add(item);
+
+        currentPage++;
         nextItem = item;
+        isLoading = false;
         print(nextItem);
       });
+      print("recived the below item");
+      print(followingItems[0]);
+      print(followingItems.length);
     } catch (e) {
       // Handle error
       print('Error: $e');
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
   Future<void> fetchNextForYouItem() async {
+    print("Inside fetchNextForYouItem");
+
+    setState(() {
+      isLoading = true;
+    });
     try {
       final item = await getNextForYouItem();
       setState(() {
+        forYouItems.add(item);
+
+        currentPage++;
         nextItem = item;
+        isLoading = false;
         print(nextItem);
       });
+      print("recived the below item");
+      print(forYouItems[0]);
+      print(forYouItems.length);
     } catch (e) {
       // Handle error
       print('Error: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Widget buildPageView() {
+    if(tabIndex == 0) {
+      return buildPageView1(followingPageController, followingItems.length);
+    } else {
+      return buildPageView2(forYouPageController, forYouItems.length);
     }
   }
 
@@ -101,154 +167,220 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Stack(
         children: [
-          PageView.builder(
-            controller: PageController(
-              initialPage: 0,
-              viewportFraction: 1,
-            ),
-            itemCount: 10,
-            onPageChanged: (index) {
-              index = index;
-            },
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              index = index;
-              return VideoFeed(
-                videoUrl: 'https://example.com/video.mp4', // Replace with video URL
-                username: '$selectedFeed User $index',
-                caption: 'This is video $index',
-              );
-            },
-          ),
-          SafeArea(
-            child: Container(
-              padding: EdgeInsets.only(top: 20),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: (){
-                        print("Following tapped.");
-                        setState(() {
-                          followingTextColor = selectedTextColor;
-                          followingWeight = FontWeight.bold;
-                          forYouTextColor = unselectedTextColor;
-                          forYouWeight = FontWeight.normal;
-                          selectedFeed = "Following";
-                        });
+          buildPageView(),
+          buildPageViewButtons(),
+        ],
+      ),
+      floatingActionButton: buildFloatingActionButton(),
+      bottomNavigationBar: buildBottomNavigationBar(context),
+    );
+  }
 
-                      },
-                      child: Text('Following',
-                          style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: followingWeight,
-                              color: followingTextColor)),
-                    ),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    Container(
-                      color: Colors.transparent,
-                      height: 10,
-                      width: 1.0,
-                    ),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        print("For You tapped.");
-                        setState(() {
-                          followingTextColor = unselectedTextColor;
-                          followingWeight = FontWeight.normal;
-                          forYouTextColor = selectedTextColor;
-                          forYouWeight = FontWeight.bold;
-                          selectedFeed = "For You";
-                        });
-                      },
-                      child: Text('For You',
-                          style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: forYouWeight,
-                              color: forYouTextColor)),
-                    )
-                  ]),
-            ),
-          ),
-        ],
+  Widget _buildLoaderIndicator() {
+    return isLoading ? CircularProgressIndicator() : SizedBox.shrink();
+  }
+
+  Widget buildPageViewButtons() {
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.only(top: 20),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              GestureDetector(
+                onTap: (){
+                  print("Following tapped.");
+                  setState(() {
+                    followingTextColor = selectedTextColor;
+                    followingWeight = FontWeight.bold;
+                    forYouTextColor = unselectedTextColor;
+                    forYouWeight = FontWeight.normal;
+                    selectedFeed = "Following";
+                    tabIndex = 0;
+                  });
+
+                },
+                child: Text('Following',
+                    style: TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: followingWeight,
+                        color: followingTextColor)),
+              ),
+              SizedBox(
+                width: 7,
+              ),
+              Container(
+                color: Colors.transparent,
+                height: 10,
+                width: 1.0,
+              ),
+              SizedBox(
+                width: 7,
+              ),
+              GestureDetector(
+                onTap: (){
+                  print("For You tapped.");
+                  setState(() {
+                    followingTextColor = unselectedTextColor;
+                    followingWeight = FontWeight.normal;
+                    forYouTextColor = selectedTextColor;
+                    forYouWeight = FontWeight.bold;
+                    selectedFeed = "For You";
+                    tabIndex = 1;
+                  });
+                },
+                child: Text('For You',
+                    style: TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: forYouWeight,
+                        color: forYouTextColor)),
+              )
+            ]),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.favorite),
-          ),
-          SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.comment),
-          ),
-          SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.share),
-          ),
-          SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.music_note),
-          ),
-          SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.music_note),
-          ),
-          SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.more_horiz),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.black, // Set the background color to black
-        ),
-        child: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Discover',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Activity',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark),
-              label: 'Bookmarks',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey,
-        ),
-      ),
+    );
+  }
+
+  Widget buildPageView1(PageController controller, int itemCount) {
+    return PageView.builder(
+      controller: tabIndex == 0 ? followingPageController: forYouPageController,
+      itemCount: tabIndex == 0 ? followingItems.length + 1: forYouItems.length + 1,
+      onPageChanged: (index) {
+        index = index;
+      },
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        if(tabIndex == 0) {
+          if (index < followingItems.length) {
+            print("setting a following page");
+            print(followingPageController.page);
+            return VideoFeed(
+              videoUrl: 'https://example.com/video.mp4',
+              // Replace with video URL
+              username: '${followingItems[index]} $index',
+              caption: 'This is video ${followingItems[index]}',
+            );
+          } else {
+            return _buildLoaderIndicator();
+          }
+        } else {
+          if (index < forYouItems.length) {
+            print("setting a for you page");
+            print(forYouPageController.page);
+            return VideoFeed(
+              videoUrl: 'https://example.com/video.mp4',
+              // Replace with video URL
+              username: '${forYouItems[index]} $index',
+              caption: 'This is video ${forYouItems[index]}',
+            );
+          } else {
+            return _buildLoaderIndicator();
+          }
+        }
+      },
+    );
+  }
+
+  Widget buildPageView2(PageController controller, int itemCount) {
+    return PageView.builder(
+      controller: forYouPageController,
+      itemCount: forYouItems.length + 1,
+      onPageChanged: (index) {
+        index = index;
+        print("onPageChanged index to $index");
+      },
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+          print("For you index is $index");
+          if (index < forYouItems.length) {
+            print("setting a forYou page");
+            print(forYouPageController.page);
+            return VideoFeed(
+              videoUrl: 'https://example.com/video.mp4',
+              // Replace with video URL
+              username: '${forYouItems[index]} $index',
+              caption: 'This is video ${forYouItems[index]}',
+            );
+          } else {
+            return _buildLoaderIndicator();
+          }
+      },
     );
   }
 }
 
 
+Widget buildFloatingActionButton() {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.end,
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.favorite),
+      ),
+      SizedBox(height: 16),
+      FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.comment),
+      ),
+      SizedBox(height: 16),
+      FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.share),
+      ),
+      SizedBox(height: 16),
+      FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.music_note),
+      ),
+      SizedBox(height: 16),
+      FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.music_note),
+      ),
+      SizedBox(height: 16),
+      FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.more_horiz),
+      ),
+    ],
+  );
+}
+
+Widget buildBottomNavigationBar(BuildContext context) {
+  return Theme(
+    data: Theme.of(context).copyWith(
+      canvasColor: Colors.black, // Set the background color to black
+    ),
+    child: BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Discover',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add),
+          label: 'Activity',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bookmark),
+          label: 'Bookmarks',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profile',
+        ),
+      ],
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.grey,
+    ),
+  );
+}
 
 class VideoFeed extends StatelessWidget {
   final String videoUrl;
