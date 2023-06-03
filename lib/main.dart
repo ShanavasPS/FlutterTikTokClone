@@ -168,10 +168,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: [
-          buildPageViewButtons(),
+          buildTopBar(),
           Expanded(
               child: buildPageView()
           ),
+          buildSongBarWidget(),
         ],
       ),
       floatingActionButton: buildFloatingActionButton(),
@@ -183,7 +184,7 @@ class _HomePageState extends State<HomePage> {
     return isLoading ? CircularProgressIndicator() : SizedBox.shrink();
   }
 
-  Widget buildPageViewButtons() {
+  Widget buildTopBar() {
     return SafeArea(
       child: Container(
         color: Colors.black,
@@ -245,6 +246,37 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget buildSongBarWidget() {
+    return Align(
+      alignment: Alignment.bottomLeft,
+      child: Container(
+        color: const Color(0xFF161616),
+        height: 36,
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 4.0),
+              child: Image.asset("images/Play.png"),
+            ),
+            const Text(
+              'Playlist • Unit 5: Period 5: 1844-1877',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Image.asset("images/Arrow.png"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildPageView1(PageController controller, int itemCount) {
     return PageView.builder(
       controller: tabIndex == 0 ? followingPageController: forYouPageController,
@@ -255,8 +287,6 @@ class _HomePageState extends State<HomePage> {
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
         if (index < followingItems.length) {
-          print("setting a following page");
-          print(followingPageController.page);
           return FlashCardFeed(
               content: followingItems[index]
           );
@@ -483,7 +513,7 @@ class FlashCardFeedState extends State<FlashCardFeed> {
               width: double.infinity,
               height: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.only(top: 115.0, left: 16.0, right: 73.0, bottom: 36),
+                padding: const EdgeInsets.only(left: 16.0, right: 73.0),
                 child: Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -807,34 +837,6 @@ class FlashCardFeedState extends State<FlashCardFeed> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Container(
-              color: const Color(0xFF161616),
-              height: 36,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 4.0),
-                    child: Image.asset("images/Play.png"),
-                  ),
-                  const Text(
-                    'Playlist • Unit 5: Period 5: 1844-1877',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: Image.asset("images/Arrow.png"),
-                  ),
-                ],
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -933,262 +935,235 @@ class MCQFeedState extends State<MCQFeed> {
               ),
             ),
           ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: EdgeInsets.only(top: 150.0, left: 16.0, right: 73.0, bottom: 36),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        mainTitle,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 73.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Container(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          mainTitle,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              print("answer a tapped");
-                              setState(() {
-                                print("inside set state");
-                                // Change the color when pressed
-                                // Set the new color value based on your requirement
-                                if(correctAnswer == "A") {
-                                  answerAColor = correctAnswerColor;
-                                } else {
-                                  if(correctAnswer == "B") {
-                                    answerBColor = correctAnswerColor;
-                                  } else {
-                                    answerCColor = correctAnswerColor;
-                                  }
-                                  answerAColor = incorrectAnswerColor;
-                                }
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: answerAColor,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    12, 16, 12, 16),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        answerA,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
+                  ),
+                  const SizedBox(height: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          print("answer a tapped");
+                          setState(() {
+                            print("inside set state");
+                            // Change the color when pressed
+                            // Set the new color value based on your requirement
+                            if(correctAnswer == "A") {
+                              answerAColor = correctAnswerColor;
+                            } else {
+                              if(correctAnswer == "B") {
+                                answerBColor = correctAnswerColor;
+                              } else {
+                                answerCColor = correctAnswerColor;
+                              }
+                              answerAColor = incorrectAnswerColor;
+                            }
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: answerAColor,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                12, 16, 12, 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    answerA,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                    Visibility(
-                                      visible: answerAColor == correctAnswerColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Image.asset("images/TickMark.png"),
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: answerAColor == incorrectAnswerColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Image.asset("images/Cross.png"),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          GestureDetector(
-                            onTap: () {
-                              print("answer b tapped");
-                              setState(() {
-                                print("inside set state");
-                                // Change the color when pressed
-                                // Set the new color value based on your requirement
-                                if(correctAnswer == "B") {
-                                  answerBColor = correctAnswerColor;
-                                } else {
-                                  if(correctAnswer == "A") {
-                                    answerAColor = correctAnswerColor;
-                                  } else {
-                                    answerCColor = correctAnswerColor;
-                                  }
-                                  answerBColor = incorrectAnswerColor;
-                                }
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: answerBColor,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    12, 16, 12, 16),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        answerB,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: answerBColor == correctAnswerColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Image.asset("images/TickMark.png"),
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: answerBColor == incorrectAnswerColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Image.asset("images/Cross.png"),
-                                      ),
-                                    ),
-                                  ],
+                                Visibility(
+                                  visible: answerAColor == correctAnswerColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Image.asset("images/TickMark.png"),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          GestureDetector(
-                            onTap: () {
-                              print("answer c tapped");
-                              setState(() {
-                                print("inside set state");
-                                if(correctAnswer == "C") {
-                                  answerCColor = correctAnswerColor;
-                                } else {
-                                  if(correctAnswer == "A") {
-                                    answerAColor = correctAnswerColor;
-                                  } else {
-                                    answerBColor = correctAnswerColor;
-                                  }
-                                  answerCColor = incorrectAnswerColor;
-                                }
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: answerCColor,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    12, 16, 12, 16),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        answerC,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: answerCColor == correctAnswerColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Image.asset("images/TickMark.png"),
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: answerCColor == incorrectAnswerColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Image.asset("images/Cross.png"),
-                                      ),
-                                    ),
-                                  ],
+                                Visibility(
+                                  visible: answerAColor == incorrectAnswerColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Image.asset("images/Cross.png"),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 24, bottom: 6),
-                            child: Text(
-                              username,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 24),
-                            child: Text(
-                              description,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Container(
-              color: const Color(0xFF161616),
-              height: 36,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0, right: 4.0),
-                    child: Image.asset("images/Play.png"),
-                  ),
-                  const Text(
-                    'Playlist • Unit 5: Period 5: 1844-1877',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: Image.asset("images/Arrow.png"),
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: () {
+                          print("answer b tapped");
+                          setState(() {
+                            print("inside set state");
+                            // Change the color when pressed
+                            // Set the new color value based on your requirement
+                            if(correctAnswer == "B") {
+                              answerBColor = correctAnswerColor;
+                            } else {
+                              if(correctAnswer == "A") {
+                                answerAColor = correctAnswerColor;
+                              } else {
+                                answerCColor = correctAnswerColor;
+                              }
+                              answerBColor = incorrectAnswerColor;
+                            }
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: answerBColor,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                12, 16, 12, 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    answerB,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: answerBColor == correctAnswerColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Image.asset("images/TickMark.png"),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: answerBColor == incorrectAnswerColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Image.asset("images/Cross.png"),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: () {
+                          print("answer c tapped");
+                          setState(() {
+                            print("inside set state");
+                            if(correctAnswer == "C") {
+                              answerCColor = correctAnswerColor;
+                            } else {
+                              if(correctAnswer == "A") {
+                                answerAColor = correctAnswerColor;
+                              } else {
+                                answerBColor = correctAnswerColor;
+                              }
+                              answerCColor = incorrectAnswerColor;
+                            }
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: answerCColor,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                12, 16, 12, 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    answerC,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: answerCColor == correctAnswerColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Image.asset("images/TickMark.png"),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: answerCColor == incorrectAnswerColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Image.asset("images/Cross.png"),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24, bottom: 6),
+                        child: Text(
+                          username,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: Text(
+                          description,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
