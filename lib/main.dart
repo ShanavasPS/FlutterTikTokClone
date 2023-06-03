@@ -401,15 +401,19 @@ class FlashCardFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String mainTitle = "";
-    if (content["type"] == "flashcard") {
-      mainTitle = content["flashcard_front"];
-    } else {
-      mainTitle = content["question"];
-    }
+    String flashcardFrontText = content["flashcard_front"];
+    String flashcardBackText = content["flashcard_back"];
 
     final String username = content['user']['name'];
     final String description = content['description'];
+
+    Color defaultAnswerColor = const Color(0xFFFFFFFF).withOpacity(0.2);
+    Color decriptionTextColor = const Color(0xFFFFFFFF).withOpacity(0.7);
+    Color princetonOrange = const Color(0xFFF17D23);
+    Color mellowApricot = const Color(0xFFFBB668);
+    Color mustard = const Color(0xFFFFD449);
+    Color darkGreenColor = const Color(0xFF16624F);
+    Color illuminatingEmerald = const Color(0xFF1F8A70);
 
     return Container(
       width: MediaQuery
@@ -447,7 +451,7 @@ class FlashCardFeed extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          mainTitle,
+                          flashcardFrontText,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -456,37 +460,196 @@ class FlashCardFeed extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 24, bottom: 6),
+                    Visibility(
+                      visible: true,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 2,
+                            decoration: BoxDecoration(
+                              color: defaultAnswerColor,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 24),
+                            child: Align(
+                              alignment: Alignment.topLeft,
                               child: Text(
-                                username,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
+                                "Answer",
+                                style: TextStyle(
+                                  color: Color(0xFF2DC59F),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 4),
+                            child: Text(
+                              flashcardBackText,
+                              style: TextStyle(
+                                color: decriptionTextColor,
+                                fontSize: 21,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 28, bottom: 5),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "How well did you know this?",
+                                style: TextStyle(
+                                  color: decriptionTextColor,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 24),
-                              child: Text(
-                                description,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: princetonOrange,
+                                  ),
+                                  width: (MediaQuery.of(context).size.width - 8 * 6) / 5,
+                                  height: 52,
+                                  child: const Center(
+                                    child: Text(
+                                      "1",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: mellowApricot,
+                                  ),
+                                  height: 52,
+                                  child: const Center(
+                                    child: Text(
+                                      "2",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: mustard,
+                                  ),
+                                  height: 52,
+                                  child: const Center(
+                                    child: Text(
+                                      "3",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: darkGreenColor,
+                                  ),
+                                  height: 52,
+                                  child: const Center(
+                                    child: Text(
+                                      "4",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: illuminatingEmerald,
+                                  ),
+                                  height: 52,
+                                  child: const Center(
+                                    child: Text(
+                                      "5",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 24),
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 6),
+                                child: Text(
+                                  username,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 24),
+                                child: Text(
+                                  description,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
