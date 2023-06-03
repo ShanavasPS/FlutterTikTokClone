@@ -249,15 +249,15 @@ class _HomePageState extends State<HomePage> {
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-          if (index < followingItems.length) {
-            print("setting a following page");
-            print(followingPageController.page);
-            return FlashCardFeed(
+        if (index < followingItems.length) {
+          print("setting a following page");
+          print(followingPageController.page);
+          return FlashCardFeed(
               content: followingItems[index]
-            );
-          } else {
-            return _buildLoaderIndicator();
-          }
+          );
+        } else {
+          return _buildLoaderIndicator();
+        }
       },
     );
   }
@@ -272,17 +272,17 @@ class _HomePageState extends State<HomePage> {
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-          print("For you index is $index");
-          if (index < forYouItems.length) {
-            print("setting a forYou page");
-            print(forYouPageController.page);
-            return MCQFeed(
-              content: forYouItems[index],
-              answer: answers[index],
-            );
-          } else {
-            return _buildLoaderIndicator();
-          }
+        print("For you index is $index");
+        if (index < forYouItems.length) {
+          print("setting a forYou page");
+          print(forYouPageController.page);
+          return MCQFeed(
+            content: forYouItems[index],
+            answer: answers[index],
+          );
+        } else {
+          return _buildLoaderIndicator();
+        }
       },
     );
   }
@@ -308,10 +308,10 @@ Widget buildCustomFloatingActionButton(String imageName, double height, double w
           width: weight,
         ),
         Visibility(
-            visible: showLabel,
-            child: Text(
-                text
-            ),
+          visible: showLabel,
+          child: Text(
+              text
+          ),
         ),
       ],
     ),
@@ -400,15 +400,26 @@ class FlashCardFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     String mainTitle = "";
-    if(content["type"] == "flashcard") {
+    if (content["type"] == "flashcard") {
       mainTitle = content["flashcard_front"];
     } else {
       mainTitle = content["question"];
     }
+
+    final String username = content['user']['name'];
+    final String description = content['description'];
+
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -429,14 +440,53 @@ class FlashCardFeed extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: EdgeInsets.only(left: 16.0, right: 73.0),
-                child: Text(
-                  mainTitle,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                padding: EdgeInsets.only(top: 150.0, left: 16.0, right: 73.0, bottom: 36),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        mainTitle,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 24, bottom: 6),
+                            child: Text(
+                              username,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 24),
+                            child: Text(
+                              description,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -829,67 +879,6 @@ class MCQFeedState extends State<MCQFeed> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-    class VideoItem extends StatelessWidget {
-  final String videoUrl;
-  final String username;
-  final String caption;
-
-  const VideoItem({
-    required this.videoUrl,
-    required this.username,
-    required this.caption,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Stack(
-          fit: StackFit.expand,
-          children: [
-            VideoPlayerWidget(videoUrl: videoUrl),
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 20,
-                child: Text(
-                  username.substring(0, 1).toUpperCase(),
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              title: Text(username),
-              subtitle: Text(caption),
-            ),
-          ],
-        ),
-    );
-  }
-}
-
-
-class VideoPlayerWidget extends StatelessWidget {
-  final String videoUrl;
-
-  const VideoPlayerWidget({required this.videoUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: Container(
-        color: Colors.blue,
-        child: Center(
-          child: Text(
-            'Video Player Placeholder',
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-        ),
       ),
     );
   }
