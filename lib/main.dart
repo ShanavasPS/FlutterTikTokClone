@@ -166,10 +166,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          buildPageView(),
           buildPageViewButtons(),
+          Expanded(
+              child: buildPageView()
+          ),
         ],
       ),
       floatingActionButton: buildFloatingActionButton(),
@@ -184,7 +186,8 @@ class _HomePageState extends State<HomePage> {
   Widget buildPageViewButtons() {
     return SafeArea(
       child: Container(
-        padding: EdgeInsets.only(top: 20),
+        color: Colors.black,
+        padding: const EdgeInsets.only(top: 20, bottom: 15),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
