@@ -557,12 +557,19 @@ class FlashCardFeedState extends State<FlashCardFeed> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 4),
-                              child: Text(
-                                flashcardBackText,
-                                style: TextStyle(
-                                  color: decriptionTextColor,
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.w400,
+                              child: SingleChildScrollView(
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxHeight: MediaQuery.of(context).size.height * 0.2,
+                                  ),
+                                  child: Text(
+                                    flashcardBackText,
+                                    style: TextStyle(
+                                      color: decriptionTextColor,
+                                      fontSize: 21,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -947,12 +954,17 @@ class MCQFeedState extends State<MCQFeed> {
                     child: Container(
                       child: Align(
                         alignment: Alignment.center,
-                        child: Text(
-                          mainTitle,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height * 0.3,
+                          ),
+                          child: Text(
+                            mainTitle,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
