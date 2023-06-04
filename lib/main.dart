@@ -72,6 +72,8 @@ class _HomePageState extends State<HomePage> {
   bool isLoading = false; // Flag to track loading state
   int tabIndex = 0; //To track selected screen
   bool didReceiveAvatarUrl = false;
+  bool isFollowingPageInitialized = false;
+  bool isForYouPageInitialized = false;
 
   @override
   void initState() {
@@ -79,8 +81,13 @@ class _HomePageState extends State<HomePage> {
     print('inside state:');
     followingPageController.addListener(followingPageListener);
     forYouPageController.addListener(forYouPageListener);
-    fetchNextFollowingItem();
-    fetchNextForYouItem();
+    if(tabIndex == 0) {
+      fetchNextFollowingItem();
+      isFollowingPageInitialized = true;
+    } else {
+      fetchNextForYouItem();
+      isForYouPageInitialized = true;
+    }
   }
 
   void updateButtonState(bool value) {
@@ -207,8 +214,10 @@ class _HomePageState extends State<HomePage> {
                     forYouWeight = FontWeight.normal;
                     selectedFeed = "Following";
                     tabIndex = 0;
+                    if(!isFollowingPageInitialized) {
+                      fetchNextFollowingItem();
+                    }
                   });
-
                 },
                 child: Text('Following',
                     style: TextStyle(
@@ -237,6 +246,9 @@ class _HomePageState extends State<HomePage> {
                     forYouWeight = FontWeight.bold;
                     selectedFeed = "For You";
                     tabIndex = 1;
+                    if(!isForYouPageInitialized) {
+                      fetchNextForYouItem();
+                    }
                   });
                 },
                 child: Text('For You',
