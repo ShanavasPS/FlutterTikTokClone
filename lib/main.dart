@@ -162,14 +162,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget buildPageView() {
-    if(tabIndex == 0) {
-      return buildPageView1(followingPageController, followingItems.length);
-    } else {
-      return buildPageView2(forYouPageController, forYouItems.length);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     print("Inside build of main");
@@ -289,15 +281,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget buildPageView() {
+    print("inside buildPageView");
+    if(tabIndex == 0) {
+      return buildPageView1(followingPageController, followingItems.length);
+    } else {
+      return buildPageView2(forYouPageController, forYouItems.length);
+    }
+  }
+
   Widget buildPageView1(PageController controller, int itemCount) {
     return PageView.builder(
-      controller: tabIndex == 0 ? followingPageController: forYouPageController,
-      itemCount: tabIndex == 0 ? followingItems.length + 1: forYouItems.length + 1,
-      onPageChanged: (index) {
-        index = index;
+      controller: followingPageController,
+      itemCount: followingItems.length + 1,
+      onPageChanged: (pageIndex) {
+        print("Inside page1 onPageChanged1");
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
+        print("Index inside itemBuilder Page 1 is $index");
         if (index < followingItems.length) {
           return FlashCardFeed(
               content: followingItems[index]
@@ -313,13 +315,12 @@ class _HomePageState extends State<HomePage> {
     return PageView.builder(
       controller: forYouPageController,
       itemCount: forYouItems.length + 1,
-      onPageChanged: (index) {
-        index = index;
-        print("onPageChanged index to $index");
+      onPageChanged: (pageIndex) {
+        print("Inside page2 onPageChanged");
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-        print("For you index is $index");
+        print("Index inside itemBuilder Page 2 is $index");
         if (index < forYouItems.length) {
           print("setting a forYou page");
           print(forYouPageController.page);
