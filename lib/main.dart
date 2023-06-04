@@ -437,13 +437,22 @@ class FlashCardFeed extends StatefulWidget {
 class FlashCardFeedState extends State<FlashCardFeed> {
   FlashCardFeedState() : super();
 
+  bool showBackOfFlashCard = false;
+
   @override
   void initState() {
     super.initState();
     print('inside state:');
   }
 
-  bool showBackOfFlashCard = false;
+  void updateFlashCardFeedState(bool showBackOfFlashCard) {
+    // Update the state value in the parent widget
+    setState(() {
+      print("Inside Flash Card Feed State $showBackOfFlashCard");
+      // Update the state value with the new value received from the child
+      this.showBackOfFlashCard = showBackOfFlashCard;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -454,9 +463,6 @@ class FlashCardFeedState extends State<FlashCardFeed> {
 
     final String username = content['user']['name'];
     final String description = content['description'];
-
-    Color defaultAnswerColor = const Color(0xFFFFFFFF).withOpacity(0.2);
-    Color decriptionTextColor = const Color(0xFFFFFFFF).withOpacity(0.7);
 
     return Container(
       width: MediaQuery
@@ -503,52 +509,7 @@ class FlashCardFeedState extends State<FlashCardFeed> {
                           ),
                         ),
                       ),
-                      Visibility(
-                        visible: showBackOfFlashCard,
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 2,
-                              decoration: BoxDecoration(
-                                color: defaultAnswerColor,
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 24),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Answer",
-                                  style: TextStyle(
-                                    color: Color(0xFF2DC59F),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 4),
-                              child: SingleChildScrollView(
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxHeight: MediaQuery.of(context).size.height * 0.2,
-                                  ),
-                                  child: Text(
-                                    flashcardBackText,
-                                    style: TextStyle(
-                                      color: decriptionTextColor,
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            RatingView(showBackOfFlashCard: showBackOfFlashCard, updateFlashCardView: updateStateValue),
-                          ],
-                        ),
-                      ),
+                      FlashCardBack(flashcardBackText: flashcardBackText, showBackOfFlashCard: showBackOfFlashCard, updateFlashCardFeedState: updateFlashCardFeedState),
                       buildUserInfo(username, description),
                     ],
                   ),
@@ -559,14 +520,6 @@ class FlashCardFeedState extends State<FlashCardFeed> {
         ],
       ),
     );
-  }
-
-  void updateStateValue(bool newValue) {
-    // Update the state value in the parent widget
-    setState(() {
-      // Update the state value with the new value received from the child
-      showBackOfFlashCard = newValue;
-    });
   }
 }
 
@@ -588,13 +541,6 @@ class MCQFeedState extends State<MCQFeed> {
     print('inside state:');
   }
 
-  Color defaultAnswerColor = const Color(0xFFFFFFFF).withOpacity(0.2);
-  Color correctAnswerColor = Color(0xFF28B18F);
-  Color incorrectAnswerColor = Color(0xFFDC5F5F);
-  Color answerAColor = Color(0xFFFFFFFF).withOpacity(0.2);
-  Color answerBColor = Color(0xFFFFFFFF).withOpacity(0.2);
-  Color answerCColor = Color(0xFFFFFFFF).withOpacity(0.2);
-
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> content = widget.content;
@@ -607,35 +553,8 @@ class MCQFeedState extends State<MCQFeed> {
       mainTitle = content["question"];
     }
 
-    // Access the 'options' array
-    final List<dynamic> options = content['options'];
-    // Find the option with id 'A'
-    final Map<String, dynamic> optionA = options.firstWhere((
-        option) => option['id'] == 'A');
-    // Read the answer from the optionA
-    final String answerA = optionA['answer'];
-    // Find the option with id 'B'
-    final Map<String, dynamic> optionB = options.firstWhere((
-        option) => option['id'] == 'B');
-    // Read the answer from the optionB
-    final String answerB = optionB['answer'];
-    // Find the option with id 'C'
-    final Map<String, dynamic> optionC = options.firstWhere((
-        option) => option['id'] == 'C');
-    // Read the answer from the optionC
-    final String answerC = optionC['answer'];
-
     final String username = content['user']['name'];
     final String description = content['description'];
-
-    // Extract the 'correct_options' array
-    List<dynamic> correctOptions = answer['correct_options'];
-
-    // Extract the first item from 'correct_options' array
-    Map<String, dynamic> firstOption = correctOptions[0];
-
-    // Extract the 'id' value from the first option
-    String correctAnswer = firstOption['id'];
 
     return Container(
       width: MediaQuery
@@ -683,183 +602,7 @@ class MCQFeedState extends State<MCQFeed> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          print("answer a tapped");
-                          setState(() {
-                            print("inside set state");
-                            // Change the color when pressed
-                            // Set the new color value based on your requirement
-                            if(correctAnswer == "A") {
-                              answerAColor = correctAnswerColor;
-                            } else {
-                              if(correctAnswer == "B") {
-                                answerBColor = correctAnswerColor;
-                              } else {
-                                answerCColor = correctAnswerColor;
-                              }
-                              answerAColor = incorrectAnswerColor;
-                            }
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: answerAColor,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                12, 16, 12, 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    answerA,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: answerAColor == correctAnswerColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Image.asset("images/TickMark.png"),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: answerAColor == incorrectAnswerColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Image.asset("images/Cross.png"),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      GestureDetector(
-                        onTap: () {
-                          print("answer b tapped");
-                          setState(() {
-                            print("inside set state");
-                            // Change the color when pressed
-                            // Set the new color value based on your requirement
-                            if(correctAnswer == "B") {
-                              answerBColor = correctAnswerColor;
-                            } else {
-                              if(correctAnswer == "A") {
-                                answerAColor = correctAnswerColor;
-                              } else {
-                                answerCColor = correctAnswerColor;
-                              }
-                              answerBColor = incorrectAnswerColor;
-                            }
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: answerBColor,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                12, 16, 12, 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    answerB,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: answerBColor == correctAnswerColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Image.asset("images/TickMark.png"),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: answerBColor == incorrectAnswerColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Image.asset("images/Cross.png"),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      GestureDetector(
-                        onTap: () {
-                          print("answer c tapped");
-                          setState(() {
-                            print("inside set state");
-                            if(correctAnswer == "C") {
-                              answerCColor = correctAnswerColor;
-                            } else {
-                              if(correctAnswer == "A") {
-                                answerAColor = correctAnswerColor;
-                              } else {
-                                answerBColor = correctAnswerColor;
-                              }
-                              answerCColor = incorrectAnswerColor;
-                            }
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: answerCColor,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                12, 16, 12, 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    answerC,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: answerCColor == correctAnswerColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Image.asset("images/TickMark.png"),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: answerCColor == incorrectAnswerColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8),
-                                    child: Image.asset("images/Cross.png"),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      AnswerSelectionView(content: content, answer: answer),
                       buildUserInfo(username, description),
                     ],
                   ),
@@ -932,10 +675,106 @@ Widget buildUserInfo(String username, String description) {
   );
 }
 
+class FlashCardBack extends StatefulWidget {
+  final String flashcardBackText;
+  final bool showBackOfFlashCard;
+  final Function(bool) updateFlashCardFeedState;
+  FlashCardBack({required this.flashcardBackText, required this.showBackOfFlashCard, required this.updateFlashCardFeedState});
+
+  @override
+  FlashCardBackState createState() => FlashCardBackState();
+}
+
+class FlashCardBackState extends State<FlashCardBack> {
+  FlashCardBackState() : super();
+
+  bool showBack = false;
+
+  @override
+  void initState() {
+    super.initState();
+    print("Inside initState");
+    print('inside FlashCardBackState: $showBack');
+  }
+
+  @override
+  void didUpdateWidget(covariant FlashCardBack oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.showBackOfFlashCard != oldWidget.showBackOfFlashCard) {
+      setState(() {
+        showBack = widget.showBackOfFlashCard;
+      });
+    }
+  }
+
+  void updateFlashCardBackState(bool showBackOfFlashCard) {
+    // Update the state value in the parent widget
+    setState(() {
+      print("Inside FlashCardBackState $showBackOfFlashCard");
+      // Update the state value with the new value received from the child
+      showBack = showBackOfFlashCard;
+      widget.updateFlashCardFeedState(showBackOfFlashCard);
+    });
+  }
+
+  Color defaultAnswerColor = const Color(0xFFFFFFFF).withOpacity(0.2);
+  Color decriptionTextColor = const Color(0xFFFFFFFF).withOpacity(0.7);
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: showBack,
+      child: Column(
+        children: [
+          Container(
+            height: 2,
+            decoration: BoxDecoration(
+              color: defaultAnswerColor,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 24),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Answer",
+                style: TextStyle(
+                  color: Color(0xFF2DC59F),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 4),
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.2,
+                ),
+                child: Text(
+                  widget.flashcardBackText,
+                  style: TextStyle(
+                    color: decriptionTextColor,
+                    fontSize: 21,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          RatingView(showBackOfFlashCard: showBack, updateFlashCardBackState: updateFlashCardBackState),
+        ],
+      ),
+    );
+  }
+}
+
 class RatingView extends StatefulWidget {
   final bool showBackOfFlashCard;
-  final Function(bool) updateFlashCardView;
-  RatingView({required this.showBackOfFlashCard, required this.updateFlashCardView});
+  final Function(bool) updateFlashCardBackState;
+  RatingView({required this.showBackOfFlashCard, required this.updateFlashCardBackState});
 
   @override
   RatingViewState createState() => RatingViewState();
@@ -999,7 +838,7 @@ class RatingViewState extends State<RatingView> {
                         showButtonFive = false;
                         isColoredBoxSelected = true;
                       } else {
-                        widget.updateFlashCardView(false);
+                        widget.updateFlashCardBackState(false);
                       }
                     });
                   },
@@ -1042,7 +881,7 @@ class RatingViewState extends State<RatingView> {
                         showButtonFive = false;
                         isColoredBoxSelected = true;
                       } else {
-                        widget.updateFlashCardView(false);
+                        widget.updateFlashCardBackState(false);
                       }
                     });
                   },
@@ -1084,7 +923,7 @@ class RatingViewState extends State<RatingView> {
                         showButtonFive = false;
                         isColoredBoxSelected = true;
                       } else {
-                        widget.updateFlashCardView(false);
+                        widget.updateFlashCardBackState(false);
                       }
                     });
                   },
@@ -1126,7 +965,7 @@ class RatingViewState extends State<RatingView> {
                         showButtonFive = false;
                         isColoredBoxSelected = true;
                       } else {
-                        widget.updateFlashCardView(false);
+                        widget.updateFlashCardBackState(false);
                       }
                     });
                   },
@@ -1168,7 +1007,7 @@ class RatingViewState extends State<RatingView> {
                         showButtonFour = false;
                         isColoredBoxSelected = true;
                       } else {
-                        widget.updateFlashCardView(false);
+                        widget.updateFlashCardBackState(false);
                       }
                     });
                   },
@@ -1194,6 +1033,246 @@ class RatingViewState extends State<RatingView> {
               ),
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+class AnswerSelectionView extends StatefulWidget {
+  final Map<String, dynamic> content;
+  final Map<String, dynamic> answer;
+  AnswerSelectionView({required this.content, required this.answer});
+
+  @override
+  AnswerSelectionViewState createState() => AnswerSelectionViewState();
+}
+
+class AnswerSelectionViewState extends State<AnswerSelectionView> {
+  AnswerSelectionViewState() : super();
+
+  @override
+  void initState() {
+    super.initState();
+    print('inside state:');
+  }
+
+  Color correctAnswerColor = Color(0xFF28B18F);
+  Color incorrectAnswerColor = Color(0xFFDC5F5F);
+  Color answerAColor = Color(0xFFFFFFFF).withOpacity(0.2);
+  Color answerBColor = Color(0xFFFFFFFF).withOpacity(0.2);
+  Color answerCColor = Color(0xFFFFFFFF).withOpacity(0.2);
+
+  @override
+  Widget build(BuildContext context) {
+    final Map<String, dynamic> content = widget.content;
+    final Map<String, dynamic> answer = widget.answer;
+
+    // Access the 'options' array
+    final List<dynamic> options = content['options'];
+    // Find the option with id 'A'
+    final Map<String, dynamic> optionA = options.firstWhere((
+        option) => option['id'] == 'A');
+    // Read the answer from the optionA
+    final String answerA = optionA['answer'];
+    // Find the option with id 'B'
+    final Map<String, dynamic> optionB = options.firstWhere((
+        option) => option['id'] == 'B');
+    // Read the answer from the optionB
+    final String answerB = optionB['answer'];
+    // Find the option with id 'C'
+    final Map<String, dynamic> optionC = options.firstWhere((
+        option) => option['id'] == 'C');
+    // Read the answer from the optionC
+    final String answerC = optionC['answer'];
+
+    // Extract the 'correct_options' array
+    List<dynamic> correctOptions = answer['correct_options'];
+
+    // Extract the first item from 'correct_options' array
+    Map<String, dynamic> firstOption = correctOptions[0];
+
+    // Extract the 'id' value from the first option
+    String correctAnswer = firstOption['id'];
+
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            print("answer a tapped");
+            setState(() {
+              print("inside set state");
+              // Change the color when pressed
+              // Set the new color value based on your requirement
+              if(correctAnswer == "A") {
+                answerAColor = correctAnswerColor;
+              } else {
+                if(correctAnswer == "B") {
+                  answerBColor = correctAnswerColor;
+                } else {
+                  answerCColor = correctAnswerColor;
+                }
+                answerAColor = incorrectAnswerColor;
+              }
+            });
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: answerAColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  12, 16, 12, 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      answerA,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: answerAColor == correctAnswerColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Image.asset("images/TickMark.png"),
+                    ),
+                  ),
+                  Visibility(
+                    visible: answerAColor == incorrectAnswerColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Image.asset("images/Cross.png"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: () {
+            print("answer b tapped");
+            setState(() {
+              print("inside set state");
+              // Change the color when pressed
+              // Set the new color value based on your requirement
+              if(correctAnswer == "B") {
+                answerBColor = correctAnswerColor;
+              } else {
+                if(correctAnswer == "A") {
+                  answerAColor = correctAnswerColor;
+                } else {
+                  answerCColor = correctAnswerColor;
+                }
+                answerBColor = incorrectAnswerColor;
+              }
+            });
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: answerBColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  12, 16, 12, 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      answerB,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: answerBColor == correctAnswerColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Image.asset("images/TickMark.png"),
+                    ),
+                  ),
+                  Visibility(
+                    visible: answerBColor == incorrectAnswerColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Image.asset("images/Cross.png"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: () {
+            print("answer c tapped");
+            setState(() {
+              print("inside set state");
+              if(correctAnswer == "C") {
+                answerCColor = correctAnswerColor;
+              } else {
+                if(correctAnswer == "A") {
+                  answerAColor = correctAnswerColor;
+                } else {
+                  answerBColor = correctAnswerColor;
+                }
+                answerCColor = incorrectAnswerColor;
+              }
+            });
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: answerCColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  12, 16, 12, 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      answerC,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: answerCColor == correctAnswerColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Image.asset("images/TickMark.png"),
+                    ),
+                  ),
+                  Visibility(
+                    visible: answerCColor == incorrectAnswerColor,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Image.asset("images/Cross.png"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );
