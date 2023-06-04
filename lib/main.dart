@@ -481,19 +481,7 @@ class FlashCardFeedState extends State<FlashCardFeed> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF001D28),
-                  Color(0xFF00425A),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.0, 1.0],
-              ),
-            ),
-          ),
+          GradientBackground(),
           GestureDetector(
             onTap: () {
               print("container tapped");
@@ -510,6 +498,7 @@ class FlashCardFeedState extends State<FlashCardFeed> {
               });
             },
             child: Container(
+              color: Colors.transparent,
               width: double.infinity,
               height: double.infinity,
               child: Padding(
@@ -894,19 +883,7 @@ class MCQFeedState extends State<MCQFeed> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF001D28),
-                  Color(0xFF00425A),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.0, 1.0],
-              ),
-            ),
-          ),
+          GradientBackground(),
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -1128,6 +1105,22 @@ class MCQFeedState extends State<MCQFeed> {
       ),
     );
   }
+}
+
+Widget GradientBackground() {
+  return Container(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Color(0xFF001D28),
+          Color(0xFF00425A),
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        stops: [0.0, 1.0],
+      ),
+    ),
+  );
 }
 
 Widget buildUserInfo(String username, String description) {
