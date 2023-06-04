@@ -71,6 +71,7 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 0; // Current page of items
   bool isLoading = false; // Flag to track loading state
   int tabIndex = 0; //To track selected screen
+  bool didReceiveAvatarUrl = false;
 
   @override
   void initState() {
@@ -80,6 +81,12 @@ class _HomePageState extends State<HomePage> {
     forYouPageController.addListener(forYouPageListener);
     fetchNextFollowingItem();
     fetchNextForYouItem();
+  }
+
+  void updateButtonState(bool value) {
+    setState(() {
+      didReceiveAvatarUrl = value;
+    });
   }
 
   void followingPageListener() {
@@ -165,6 +172,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("Inside build of main");
+    String avatar = "";
+    if(followingItems.isNotEmpty) {
+      avatar = followingItems[0]["user"]["avatar"];
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -175,7 +187,7 @@ class _HomePageState extends State<HomePage> {
           buildSongBarWidget(),
         ],
       ),
-      floatingActionButton: buildFloatingActionButton(),
+      floatingActionButton: buildFloatingActionButton(avatar),
       bottomNavigationBar: buildBottomNavigationBar(context),
     );
   }
@@ -353,14 +365,57 @@ Widget buildCustomFloatingActionButton(String imageName, double height, double w
   );
 }
 
-Widget buildFloatingActionButton() {
+Widget buildCustomFloatingNetworkActionButton(String imageName, String errorImage, double height, double weight, String text) {
+  bool showLabel = true;
+  if(text == "") {
+    showLabel = false;
+  }
+  return FloatingActionButton(
+    onPressed: () {
+      // Handle button press
+    },
+    backgroundColor: Colors.transparent,
+    elevation: 0.0,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.network(
+          imageName,
+          loadingBuilder: (context, child, progress) {
+            if (progress == null) return child;
+            return Center(
+              child: CircularProgressIndicator(
+                value: progress.cumulativeBytesLoaded / progress.expectedTotalBytes!,
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              errorImage,
+              height: height,
+              width: weight,
+            );
+          },
+        ),
+        Visibility(
+          visible: showLabel,
+          child: Text(
+              text
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget buildFloatingActionButton(String avatar) {
   return Padding(
     padding: EdgeInsets.only(bottom: 36.0),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        buildCustomFloatingActionButton('images/Ellipse21.png', 55, 55, ""),
+        buildCustomFloatingNetworkActionButton(avatar, 'images/Ellipse21.png', 55, 55, ""),
         SizedBox(height: 16),
         buildCustomFloatingActionButton('images/Like.png', 32, 30, "87"),
         SizedBox(height: 16),
@@ -546,13 +601,7 @@ class MCQFeedState extends State<MCQFeed> {
     final Map<String, dynamic> content = widget.content;
     final Map<String, dynamic> answer = widget.answer;
 
-    String mainTitle = "";
-    if (content["type"] == "flashcard") {
-      mainTitle = content["flashcard_front"];
-    } else {
-      mainTitle = content["question"];
-    }
-
+    final String mainTitle = content["question"];
     final String username = content['user']['name'];
     final String description = content['description'];
 
