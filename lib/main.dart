@@ -179,17 +179,26 @@ class _HomePageState extends State<HomePage> {
       avatar = followingItems[0]["user"]["avatar"];
     }
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          buildTopBar(),
-          Expanded(
-              child: buildPageView()
-          ),
-          buildSongBarWidget(),
-        ],
+          GradientBackground(),
+          buildForeground(),
+        ]
       ),
       floatingActionButton: buildFloatingActionButton(avatar),
       bottomNavigationBar: buildBottomNavigationBar(context),
+    );
+  }
+
+  Widget buildForeground() {
+    return Column(
+      children: [
+        buildTopBar(),
+        Expanded(
+            child: buildPageView()
+        ),
+        buildSongBarWidget(),
+      ],
     );
   }
 
@@ -562,51 +571,45 @@ class FlashCardFeedState extends State<FlashCardFeed> {
           .of(context)
           .size
           .height,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          GradientBackground(),
-          GestureDetector(
-            onTap: () {
-              print("container tapped");
-              print(showBackOfFlashCard);
-              setState(() {
-                print("inside set state");
-                showBackOfFlashCard = !showBackOfFlashCard;
-              });
-            },
+      child: GestureDetector(
+        onTap: () {
+          print("container tapped");
+          print(showBackOfFlashCard);
+          setState(() {
+            print("inside set state");
+            showBackOfFlashCard = !showBackOfFlashCard;
+          });
+        },
+        child: Container(
+          color: Colors.transparent,
+          width: double.infinity,
+          height: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 73.0),
             child: Container(
-              color: Colors.transparent,
-              width: double.infinity,
-              height: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, right: 73.0),
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            flashcardFrontText,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        flashcardFrontText,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      FlashCardBack(flashcardBackText: flashcardBackText, showBackOfFlashCard: showBackOfFlashCard, updateFlashCardFeedState: updateFlashCardFeedState),
-                      buildUserInfo(username, description),
-                    ],
+                    ),
                   ),
-                ),
+                  FlashCardBack(flashcardBackText: flashcardBackText, showBackOfFlashCard: showBackOfFlashCard, updateFlashCardFeedState: updateFlashCardFeedState),
+                  buildUserInfo(username, description),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -648,52 +651,42 @@ class MCQFeedState extends State<MCQFeed> {
           .of(context)
           .size
           .height,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          GradientBackground(),
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 73.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Container(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height * 0.3,
-                          ),
-                          child: Text(
-                            mainTitle,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0, right: 73.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Container(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.3,
+                    ),
+                    child: Text(
+                      mainTitle,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      AnswerSelectionView(content: content, answer: answer),
-                      buildUserInfo(username, description),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AnswerSelectionView(content: content, answer: answer),
+                buildUserInfo(username, description),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
