@@ -233,13 +233,10 @@ class _HomePageState extends State<HomePage> {
                     forYouWeight = FontWeight.normal;
                     selectedFeed = "Following";
                     tabIndex = 0;
-                    if(followingPageIndex >= 0) {
-                      // Ensure that PageView is built and rendered before calling jumpToPage
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        followingPageController.jumpToPage(0);
-                        // Manually set the page to 0
-                      });
-                    }
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      followingPageController.jumpToPage(0);
+                      // Manually set the page to 0
+                    });
                     if(!isFollowingPageInitialized) {
                       fetchNextFollowingItem();
                       isFollowingPageInitialized = true;
@@ -274,13 +271,10 @@ class _HomePageState extends State<HomePage> {
                     selectedFeed = "For You";
                     tabIndex = 1;
                     print("for you page index is $forYouPageIndex");
-                    if(forYouPageIndex >= 0) {
-                      // Ensure that PageView is built and rendered before calling jumpToPage
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        forYouPageController.jumpToPage(0);
-                        // Manually set the page to 0
-                      });
-                    }
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      forYouPageController.jumpToPage(0);
+                      // Manually set the page to 0
+                    });
                     if(!isForYouPageInitialized) {
                       fetchNextForYouItem();
                       isForYouPageInitialized = true;
