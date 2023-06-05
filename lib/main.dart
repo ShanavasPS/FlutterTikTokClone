@@ -216,78 +216,102 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildTopBar() {
     return SafeArea(
-      child: Container(
-        color: Colors.black,
-        padding: const EdgeInsets.only(top: 20, bottom: 15),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              GestureDetector(
-                onTap: (){
-                  print("Following tapped.");
-                  setState(() {
-                    followingTextColor = selectedTextColor;
-                    followingWeight = FontWeight.bold;
-                    forYouTextColor = unselectedTextColor;
-                    forYouWeight = FontWeight.normal;
-                    selectedFeed = "Following";
-                    tabIndex = 0;
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      followingPageController.jumpToPage(0);
-                      // Manually set the page to 0
-                    });
-                    if(!isFollowingPageInitialized) {
-                      fetchNextFollowingItem();
-                      isFollowingPageInitialized = true;
-                    }
-                  });
-                },
-                child: Text('Following',
+      child: Stack(
+        children: [
+          Container(
+            height: 54,
+            color: Colors.black,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 4),
+                  child: Image.asset("images/Time.png"),
+                ),
+                Text('10 m',
                     style: TextStyle(
-                        fontSize: 17.0,
-                        fontWeight: followingWeight,
-                        color: followingTextColor)),
-              ),
-              SizedBox(
-                width: 7,
-              ),
-              Container(
-                color: Colors.transparent,
-                height: 10,
-                width: 1.0,
-              ),
-              SizedBox(
-                width: 7,
-              ),
-              GestureDetector(
-                onTap: (){
-                  print("For You tapped.");
-                  setState(() {
-                    followingTextColor = unselectedTextColor;
-                    followingWeight = FontWeight.normal;
-                    forYouTextColor = selectedTextColor;
-                    forYouWeight = FontWeight.bold;
-                    selectedFeed = "For You";
-                    tabIndex = 1;
-                    print("for you page index is $forYouPageIndex");
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      forYouPageController.jumpToPage(0);
-                      // Manually set the page to 0
-                    });
-                    if(!isForYouPageInitialized) {
-                      fetchNextForYouItem();
-                      isForYouPageInitialized = true;
-                    }
-                  });
-                },
-                child: Text('For You',
-                    style: TextStyle(
-                        fontSize: 17.0,
-                        fontWeight: forYouWeight,
-                        color: forYouTextColor)),
-              )
-            ]),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                        color: unselectedTextColor)
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      print("Following tapped.");
+                      setState(() {
+                        followingTextColor = selectedTextColor;
+                        followingWeight = FontWeight.bold;
+                        forYouTextColor = unselectedTextColor;
+                        forYouWeight = FontWeight.normal;
+                        selectedFeed = "Following";
+                        tabIndex = 0;
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          followingPageController.jumpToPage(0);
+                          // Manually set the page to 0
+                        });
+                        if(!isFollowingPageInitialized) {
+                          fetchNextFollowingItem();
+                          isFollowingPageInitialized = true;
+                        }
+                      });
+                    },
+                    child: Text('Following',
+                        style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: followingWeight,
+                            color: followingTextColor)),
+                  ),
+                  const SizedBox(
+                    width: 18,
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      print("For You tapped.");
+                      setState(() {
+                        followingTextColor = unselectedTextColor;
+                        followingWeight = FontWeight.normal;
+                        forYouTextColor = selectedTextColor;
+                        forYouWeight = FontWeight.bold;
+                        selectedFeed = "For You";
+                        tabIndex = 1;
+                        print("for you page index is $forYouPageIndex");
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          forYouPageController.jumpToPage(0);
+                          // Manually set the page to 0
+                        });
+                        if(!isForYouPageInitialized) {
+                          fetchNextForYouItem();
+                          isForYouPageInitialized = true;
+                        }
+                      });
+                    },
+                    child: Text('For You',
+                        style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: forYouWeight,
+                            color: forYouTextColor)),
+                  )
+                ]
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8, right: 16),
+            child: Align(
+                alignment: Alignment.topRight,
+                child: Image.asset("images/Search.png")
+            ),
+          ),
+        ]
       ),
     );
   }
