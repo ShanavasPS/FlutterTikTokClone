@@ -203,7 +203,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildLoaderIndicator() {
-    return isLoading ? CircularProgressIndicator() : SizedBox.shrink();
+    return isLoading ? Center(
+      child: SizedBox(
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            color: const Color(0xFFFFFFFF).withOpacity(0.5),
+          )
+      ),
+    ) : SizedBox.shrink();
   }
 
   Widget buildTopBar() {
