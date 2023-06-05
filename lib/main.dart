@@ -214,7 +214,32 @@ class _HomePageState extends State<HomePage> {
     ) : SizedBox.shrink();
   }
 
+  double measureTextWidth(String text, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout();
+
+    return textPainter.width;
+  }
+
   Widget buildTopBar() {
+
+    final followingTextStyle = TextStyle(
+        fontSize: 17.0,
+        fontWeight: followingWeight,
+        color: followingTextColor);
+
+    final forYouTextStyle = TextStyle(
+        fontSize: 17.0,
+        fontWeight: forYouWeight,
+        color: forYouTextColor);
+
+    const String followingText = "Following";
+    const String forYouText = "For You";
+
     return SafeArea(
       child: Stack(
         children: [
@@ -241,67 +266,73 @@ class _HomePageState extends State<HomePage> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      print("Following tapped.");
-                      setState(() {
-                        followingTextColor = selectedTextColor;
-                        followingWeight = FontWeight.bold;
-                        forYouTextColor = unselectedTextColor;
-                        forYouWeight = FontWeight.normal;
-                        selectedFeed = "Following";
-                        tabIndex = 0;
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          followingPageController.jumpToPage(0);
-                          // Manually set the page to 0
-                        });
-                        if(!isFollowingPageInitialized) {
-                          fetchNextFollowingItem();
-                          isFollowingPageInitialized = true;
-                        }
-                      });
-                    },
-                    child: Text('Following',
-                        style: TextStyle(
-                            fontSize: 17.0,
-                            fontWeight: followingWeight,
-                            color: followingTextColor)),
+            child: Column(
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: (){
+                          print("Following tapped.");
+                          setState(() {
+                            followingTextColor = selectedTextColor;
+                            followingWeight = FontWeight.bold;
+                            forYouTextColor = unselectedTextColor;
+                            forYouWeight = FontWeight.normal;
+                            selectedFeed = followingText;
+                            tabIndex = 0;
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              followingPageController.jumpToPage(0);
+                              // Manually set the page to 0
+                            });
+                            if(!isFollowingPageInitialized) {
+                              fetchNextFollowingItem();
+                              isFollowingPageInitialized = true;
+                            }
+                          });
+                        },
+                        child: Text(followingText,
+                            style: followingTextStyle),
+                      ),
+                      const SizedBox(
+                        width: 18,
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          print("For You tapped.");
+                          setState(() {
+                            followingTextColor = unselectedTextColor;
+                            followingWeight = FontWeight.normal;
+                            forYouTextColor = selectedTextColor;
+                            forYouWeight = FontWeight.bold;
+                            selectedFeed = forYouText;
+                            tabIndex = 1;
+                            print("for you page index is $forYouPageIndex");
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              forYouPageController.jumpToPage(0);
+                              // Manually set the page to 0
+                            });
+                            if(!isForYouPageInitialized) {
+                              fetchNextForYouItem();
+                              isForYouPageInitialized = true;
+                            }
+                          });
+                        },
+                        child: Text(forYouText,
+                            style: forYouTextStyle),
+                      )
+                    ]
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5, left: tabIndex == 1? measureTextWidth(forYouText, forYouTextStyle) + 18 + 15: 0, right: tabIndex == 0 ? measureTextWidth(followingText, followingTextStyle)/2 + 15 + 18 : 0),
+                  child: Container(
+                    width: 30,
+                    height: 4,
+                    color: Colors.white,
                   ),
-                  const SizedBox(
-                    width: 18,
-                  ),
-                  GestureDetector(
-                    onTap: (){
-                      print("For You tapped.");
-                      setState(() {
-                        followingTextColor = unselectedTextColor;
-                        followingWeight = FontWeight.normal;
-                        forYouTextColor = selectedTextColor;
-                        forYouWeight = FontWeight.bold;
-                        selectedFeed = "For You";
-                        tabIndex = 1;
-                        print("for you page index is $forYouPageIndex");
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          forYouPageController.jumpToPage(0);
-                          // Manually set the page to 0
-                        });
-                        if(!isForYouPageInitialized) {
-                          fetchNextForYouItem();
-                          isForYouPageInitialized = true;
-                        }
-                      });
-                    },
-                    child: Text('For You',
-                        style: TextStyle(
-                            fontSize: 17.0,
-                            fontWeight: forYouWeight,
-                            color: forYouTextColor)),
-                  )
-                ]
+                ),
+              ],
             ),
           ),
           Padding(
