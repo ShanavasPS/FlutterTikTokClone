@@ -61,8 +61,6 @@ class _HomePageState extends State<HomePage> {
   Color forYouTextColor = Colors.white70;
   FontWeight followingWeight = FontWeight.bold;
   FontWeight forYouWeight = FontWeight.normal;
-  String selectedFeed = "Following";
-  String nextItem = ''; // Initial next item value
   final PageController followingPageController = PageController(initialPage: 0);
   final PageController forYouPageController = PageController(initialPage: 0);
   List<Map<String, dynamic>> followingItems = []; // List to store fetched items
@@ -130,7 +128,6 @@ class _HomePageState extends State<HomePage> {
 
         currentPage++;
         isLoading = false;
-        print(nextItem);
       });
       print("recived the below item");
       print(followingItems[0]);
@@ -280,7 +277,6 @@ class _HomePageState extends State<HomePage> {
                             followingWeight = FontWeight.bold;
                             forYouTextColor = unselectedTextColor;
                             forYouWeight = FontWeight.normal;
-                            selectedFeed = followingText;
                             tabIndex = 0;
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               followingPageController.jumpToPage(0);
@@ -306,7 +302,6 @@ class _HomePageState extends State<HomePage> {
                             followingWeight = FontWeight.normal;
                             forYouTextColor = selectedTextColor;
                             forYouWeight = FontWeight.bold;
-                            selectedFeed = forYouText;
                             tabIndex = 1;
                             print("for you page index is $forYouPageIndex");
                             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -324,8 +319,9 @@ class _HomePageState extends State<HomePage> {
                       )
                     ]
                 ),
-                Padding(
+                AnimatedPadding(
                   padding: EdgeInsets.only(top: 5, left: tabIndex == 1? measureTextWidth(forYouText, forYouTextStyle) + 18 + 15: 0, right: tabIndex == 0 ? measureTextWidth(followingText, followingTextStyle)/2 + 15 + 18 : 0),
+                  duration: const Duration(milliseconds: 300),
                   child: Container(
                     width: 30,
                     height: 4,
