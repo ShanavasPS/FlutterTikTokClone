@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Color unselectedTextColor = Colors.white70;
   Color selectedTextColor = Colors.white;
   Color followingTextColor = Colors.white;
@@ -75,6 +76,15 @@ class _HomePageState extends State<HomePage> {
   int followingPageIndex = 0;
   int forYouPageIndex = 0;
 
+  AppLifecycleState _lastLifecycleState = AppLifecycleState.resumed;
+  DateTime _sessionStartTime = DateTime.now();
+  Duration _totalSessionDuration = Duration.zero;
+  int seconds = 0;
+  int minutes = 0;
+  int hours = 0;
+  String actualTimeSpent =  "";
+  late Timer _timer;
+
   @override
   void initState() {
     super.initState();
@@ -88,6 +98,45 @@ class _HomePageState extends State<HomePage> {
       fetchNextForYouItem();
       isForYouPageInitialized = true;
     }
+    WidgetsBinding.instance.addObserver(this);
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      if (_lastLifecycleState == AppLifecycleState.resumed) {
+        setState(() {
+          _totalSessionDuration = DateTime.now().difference(_sessionStartTime);
+          seconds = _totalSessionDuration.inSeconds.remainder(60);
+          minutes = _totalSessionDuration.inMinutes.remainder(60);
+          hours = _totalSessionDuration.inHours;
+          int preFix = seconds;
+          String postFix = "s";
+          if(hours > 0) {
+            preFix = hours;
+            postFix = "h";
+          } else if(minutes > 0) {
+            preFix = minutes;
+            postFix = "m";
+          }
+          actualTimeSpent = "$preFix $postFix";
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      _sessionStartTime = DateTime.now();
+    } else if (state == AppLifecycleState.paused) {
+      _totalSessionDuration += DateTime.now().difference(_sessionStartTime);
+    }
+    _lastLifecycleState = state;
   }
 
   void updateButtonState(bool value) {
@@ -252,11 +301,15 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.only(left: 16, right: 4),
                   child: Image.asset("images/Time.png"),
                 ),
-                Text('10 m',
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: unselectedTextColor)
+                Padding(
+                  padding: const EdgeInsets.only(top: 1),
+                  child: Text(
+                      actualTimeSpent,
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          color: unselectedTextColor)
+                  ),
                 ),
               ],
             ),
