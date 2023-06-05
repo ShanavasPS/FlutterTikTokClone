@@ -63,8 +63,8 @@ class _HomePageState extends State<HomePage> {
   FontWeight forYouWeight = FontWeight.normal;
   String selectedFeed = "Following";
   String nextItem = ''; // Initial next item value
-  final PageController followingPageController = PageController(initialPage: 0, viewportFraction: 1);
-  final PageController forYouPageController = PageController(initialPage: 0, viewportFraction: 1);
+  final PageController followingPageController = PageController(initialPage: 0);
+  final PageController forYouPageController = PageController(initialPage: 0);
   List<Map<String, dynamic>> followingItems = []; // List to store fetched items
   List<Map<String, dynamic>> forYouItems = []; // List to store fetched items
   List<Map<String, dynamic>> answers = []; // List to store fetched items
@@ -74,6 +74,8 @@ class _HomePageState extends State<HomePage> {
   bool didReceiveAvatarUrl = false;
   bool isFollowingPageInitialized = false;
   bool isForYouPageInitialized = false;
+  int followingPageIndex = 0;
+  int forYouPageIndex = 0;
 
   @override
   void initState() {
@@ -214,8 +216,16 @@ class _HomePageState extends State<HomePage> {
                     forYouWeight = FontWeight.normal;
                     selectedFeed = "Following";
                     tabIndex = 0;
+                    if(followingPageIndex > 0) {
+                      // Ensure that PageView is built and rendered before calling jumpToPage
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        followingPageController.jumpToPage(0);
+                        // Manually set the page to 0
+                      });
+                    }
                     if(!isFollowingPageInitialized) {
                       fetchNextFollowingItem();
+                      isFollowingPageInitialized = true;
                     }
                   });
                 },
@@ -246,8 +256,17 @@ class _HomePageState extends State<HomePage> {
                     forYouWeight = FontWeight.bold;
                     selectedFeed = "For You";
                     tabIndex = 1;
+                    print("for you page index is $forYouPageIndex");
+                    if(forYouPageIndex >= 0) {
+                      // Ensure that PageView is built and rendered before calling jumpToPage
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        forYouPageController.jumpToPage(0);
+                        // Manually set the page to 0
+                      });
+                    }
                     if(!isForYouPageInitialized) {
                       fetchNextForYouItem();
+                      isForYouPageInitialized = true;
                     }
                   });
                 },
@@ -308,6 +327,7 @@ class _HomePageState extends State<HomePage> {
       itemCount: followingItems.length + 1,
       onPageChanged: (pageIndex) {
         print("Inside page1 onPageChanged1");
+        followingPageIndex = pageIndex;
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
@@ -329,6 +349,7 @@ class _HomePageState extends State<HomePage> {
       itemCount: forYouItems.length + 1,
       onPageChanged: (pageIndex) {
         print("Inside page2 onPageChanged");
+        forYouPageIndex = pageIndex;
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
