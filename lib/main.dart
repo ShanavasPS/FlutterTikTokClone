@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                     forYouWeight = FontWeight.normal;
                     selectedFeed = "Following";
                     tabIndex = 0;
-                    if(followingPageIndex > 0) {
+                    if(followingPageIndex >= 0) {
                       // Ensure that PageView is built and rendered before calling jumpToPage
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         followingPageController.jumpToPage(0);
