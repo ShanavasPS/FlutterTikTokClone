@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/utils/tiktok_images.dart';
-import 'package:tiktokclone/utils/tiktok_strings.dart';
-import 'package:tiktokclone/utils/tiktok_colors.dart';
+
+import '../utils/tiktok_colors.dart';
+import '../utils/tiktok_images.dart';
+import '../utils/tiktok_strings.dart';
 
 Widget buildBottomNavigationBar(BuildContext context) {
   return Theme(

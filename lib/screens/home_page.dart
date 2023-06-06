@@ -1,15 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/network/network_calls.dart';
-import 'package:tiktokclone/screens/mcq_card.dart';
-import 'package:tiktokclone/screens/flash_card.dart';
-import 'package:tiktokclone/widgets/floating_action_buttons.dart';
-import 'package:tiktokclone/utils/tiktok_colors.dart';
-import 'package:tiktokclone/utils/tiktok_strings.dart';
-import 'package:tiktokclone/utils/tiktok_images.dart';
-import 'package:tiktokclone/widgets/gradient_background.dart';
-import 'package:tiktokclone/widgets/bottom_navigation_bar.dart';
+
+import '../network/network_calls.dart';
+import '../utils/tiktok_colors.dart';
+import '../utils/tiktok_images.dart';
+import '../utils/tiktok_strings.dart';
+import '../widgets/bottom_navigation_bar.dart';
+import '../widgets/floating_action_buttons.dart';
+import '../widgets/gradient_background.dart';
+import 'flash_card.dart';
+import 'mcq_card.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

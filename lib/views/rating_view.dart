@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/utils/tiktok_colors.dart';
-import 'package:tiktokclone/utils/tiktok_strings.dart';
+
+import '../utils/tiktok_colors.dart';
+import '../utils/tiktok_strings.dart';
 
 class RatingView extends StatefulWidget {
   final bool showBackOfFlashCard;

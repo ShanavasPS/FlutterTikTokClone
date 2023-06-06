@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
-import 'package:tiktokclone/utils/tiktok_strings.dart';
+
+import 'tiktok_strings.dart';
 
 class TikTokImages {
   TikTokImages._();

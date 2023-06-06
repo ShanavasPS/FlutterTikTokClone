@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tiktokclone/utils/tiktok_colors.dart';
+
+import '../utils/tiktok_colors.dart';
 
 Widget gradientBackground() {
   return Container(

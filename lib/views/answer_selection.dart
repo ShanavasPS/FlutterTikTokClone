@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/utils/tiktok_colors.dart';
-import 'package:tiktokclone/utils/tiktok_images.dart';
-import 'package:tiktokclone/utils/tiktok_strings.dart';
 
+import '../utils/tiktok_strings.dart';
 import '../widgets/answer_options.dart';
 
 class AnswerSelectionView extends StatefulWidget {
