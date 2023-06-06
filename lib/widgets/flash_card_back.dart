@@ -7,7 +7,7 @@ class FlashCardBack extends StatefulWidget {
   final String flashcardBackText;
   final bool showBackOfFlashCard;
   final Function(bool) updateFlashCardFeedState;
-  FlashCardBack({required this.flashcardBackText, required this.showBackOfFlashCard, required this.updateFlashCardFeedState});
+  const FlashCardBack({super.key, required this.flashcardBackText, required this.showBackOfFlashCard, required this.updateFlashCardFeedState});
 
   @override
   FlashCardBackState createState() => FlashCardBackState();
@@ -72,7 +72,7 @@ class FlashCardBackState extends State<FlashCardBack> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 4),
+            padding: const EdgeInsets.only(top: 4),
             child: SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(

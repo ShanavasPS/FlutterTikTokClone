@@ -6,7 +6,7 @@ import 'package:tittokclone/utils/tiktok_strings.dart';
 class RatingView extends StatefulWidget {
   final bool showBackOfFlashCard;
   final Function(bool) updateFlashCardBackState;
-  RatingView({required this.showBackOfFlashCard, required this.updateFlashCardBackState});
+  const RatingView({super.key, required this.showBackOfFlashCard, required this.updateFlashCardBackState});
 
   @override
   RatingViewState createState() => RatingViewState();
@@ -90,7 +90,7 @@ class RatingViewState extends State<RatingView> {
             ),
             Visibility(
                 visible: showButtonOne,
-                child: SizedBox(width: 8)
+                child: const SizedBox(width: 8)
             ),
             Visibility(
               visible: showButtonTwo,
@@ -132,7 +132,7 @@ class RatingViewState extends State<RatingView> {
             ),
             Visibility(
                 visible: showButtonTwo,
-                child: SizedBox(width: 8)
+                child: const SizedBox(width: 8)
             ),
             Visibility(
               visible: showButtonThree,
@@ -174,7 +174,7 @@ class RatingViewState extends State<RatingView> {
             ),
             Visibility(
                 visible: showButtonThree,
-                child: SizedBox(width: 8)
+                child: const SizedBox(width: 8)
             ),
             Visibility(
               visible: showButtonFour,
@@ -216,7 +216,7 @@ class RatingViewState extends State<RatingView> {
             ),
             Visibility(
                 visible: showButtonOne,
-                child: SizedBox(width: 8)
+                child: const SizedBox(width: 8)
             ),
             Visibility(
               visible: showButtonFive,

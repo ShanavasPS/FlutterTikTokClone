@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tittokclone/utils/tiktok_colors.dart';
+import 'package:tittokclone/utils/tiktok_images.dart';
 import 'package:tittokclone/utils/tiktok_strings.dart';
 
 class AnswerSelectionView extends StatefulWidget {
   final Map<String, dynamic> content;
   final Map<String, dynamic> answer;
-  AnswerSelectionView({required this.content, required this.answer});
+  const AnswerSelectionView({super.key, required this.content, required this.answer});
 
   @override
   AnswerSelectionViewState createState() => AnswerSelectionViewState();
@@ -20,6 +21,10 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
     super.initState();
     print('inside state:');
   }
+
+  Color answerAColor = TikTokColors.defaultAnswerColor;
+  Color answerBColor = TikTokColors.defaultAnswerColor;
+  Color answerCColor = TikTokColors.defaultAnswerColor;
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +58,6 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
     // Extract the 'id' value from the first option
     String correctAnswer = firstOption['id'];
 
-    Color answerAColor = TikTokColors.defaultAnswerColor;
-    Color answerBColor = TikTokColors.defaultAnswerColor;
-    Color answerCColor = TikTokColors.defaultAnswerColor;
-
     return Column(
       children: [
         GestureDetector(
@@ -64,9 +65,12 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
             print("answer a tapped");
             setState(() {
               print("inside set state");
+              print("correct answer is $correctAnswer");
+              print("correct answer is ${TikTokStrings.answerA}");
               // Change the color when pressed
               // Set the new color value based on your requirement
               if(correctAnswer == TikTokStrings.answerA) {
+                print("inside first condition");
                 answerAColor = TikTokColors.correctAnswerColor;
               } else {
                 if(correctAnswer == TikTokStrings.answerB) {
@@ -101,16 +105,16 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
                   ),
                   Visibility(
                     visible: answerAColor == TikTokColors.correctAnswerColor,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Image.asset("images/TickMark.png"),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: TikTokImages.tick,
                     ),
                   ),
                   Visibility(
                     visible: answerAColor == TikTokColors.incorrectAnswerColor,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Image.asset("images/Cross.png"),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: TikTokImages.cross,
                     ),
                   ),
                 ],
@@ -161,16 +165,16 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
                   ),
                   Visibility(
                     visible: answerBColor == TikTokColors.correctAnswerColor,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Image.asset("images/TickMark.png"),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: TikTokImages.tick,
                     ),
                   ),
                   Visibility(
                     visible: answerBColor == TikTokColors.incorrectAnswerColor,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Image.asset("images/Cross.png"),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: TikTokImages.cross,
                     ),
                   ),
                 ],
@@ -219,16 +223,16 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
                   ),
                   Visibility(
                     visible: answerCColor == TikTokColors.correctAnswerColor,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Image.asset("images/TickMark.png"),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: TikTokImages.tick,
                     ),
                   ),
                   Visibility(
                     visible: answerCColor == TikTokColors.incorrectAnswerColor,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Image.asset("images/Cross.png"),
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: TikTokImages.cross,
                     ),
                   ),
                 ],

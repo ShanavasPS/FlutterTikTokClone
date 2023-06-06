@@ -24,5 +24,28 @@ class TikTokStrings {
   static const String secondPostFix = "s";
   static const String minutePostFix = "m";
   static const String hourPostFix = "h";
+  static const String likeCount = "87";
+  static const String commentsCount = "2";
+  static const String shareCount = "17";
+  static const String bookmarkCount = "23";
+  static const String flip = "Flip";
 
+  //Image path
+  static const String ellipsesImagePath = "images/Ellipse21.png";
+  static const String likeImagePath = "images/Like.png";
+  static const String commentsImagePath = "images/Comments.png";
+  static const String shareImagePath = "images/Share.png";
+  static const String bookmarkImagePath = "images/Bookmark.png";
+  static const String refreshImagePath = "images/Refresh.png";
+  static const String timeImagePath = "images/Time.png";
+  static const String searchImagePath = "images/Search.png";
+  static const String playImagePath = "images/Play.png";
+  static const String arrowImagePath = "images/Arrow.png";
+  static const String homeImagePath = "images/Home.png";
+  static const String discoverImagePath = "images/Discover.png";
+  static const String activityImagePath = "images/Activity.png";
+  static const String bookmarksImagePath = "images/Bookmarks.png";
+  static const String profileImagePath = "images/Profile.png";
+  static const String tickImagePath = "images/TickMark.png";
+  static const String crossImagePath = "images/Cross.png";
 }

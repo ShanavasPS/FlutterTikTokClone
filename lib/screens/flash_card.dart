@@ -6,7 +6,7 @@ import 'package:tittokclone/utils/tiktok_colors.dart';
 
 class FlashCardFeed extends StatefulWidget {
   final Map<String, dynamic> content;
-  FlashCardFeed({required this.content});
+  const FlashCardFeed({super.key, required this.content});
 
   @override
   FlashCardFeedState createState() => FlashCardFeedState();
@@ -66,27 +66,25 @@ class FlashCardFeedState extends State<FlashCardFeed> {
           height: double.infinity,
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 73.0),
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        flashcardFrontText,
-                        style: const TextStyle(
-                          color: TikTokColors.selectedText,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      flashcardFrontText,
+                      style: const TextStyle(
+                        color: TikTokColors.selectedText,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  FlashCardBack(flashcardBackText: flashcardBackText, showBackOfFlashCard: showBackOfFlashCard, updateFlashCardFeedState: updateFlashCardFeedState),
-                  buildUserInfo(username, description),
-                ],
-              ),
+                ),
+                FlashCardBack(flashcardBackText: flashcardBackText, showBackOfFlashCard: showBackOfFlashCard, updateFlashCardFeedState: updateFlashCardFeedState),
+                buildUserInfo(username, description),
+              ],
             ),
           ),
         ),

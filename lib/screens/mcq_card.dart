@@ -7,7 +7,7 @@ import 'package:tittokclone/utils/common.dart';
 class MCQFeed extends StatefulWidget {
   final Map<String, dynamic> content;
   final Map<String, dynamic> answer;
-  MCQFeed({required this.content, required this.answer});
+  const MCQFeed({super.key, required this.content, required this.answer});
 
   @override
   MCQFeedState createState() => MCQFeedState();
@@ -46,20 +46,18 @@ class MCQFeedState extends State<MCQFeed> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Container(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.3,
-                    ),
-                    child: Text(
-                      mainTitle,
-                      style: const TextStyle(
-                        color: TikTokColors.selectedText,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+              child: Align(
+                alignment: Alignment.center,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.3,
+                  ),
+                  child: Text(
+                    mainTitle,
+                    style: const TextStyle(
+                      color: TikTokColors.selectedText,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

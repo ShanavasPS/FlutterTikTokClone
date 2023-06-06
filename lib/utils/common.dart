@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tittokclone/utils/tiktok_colors.dart';
 import 'package:tittokclone/utils/tiktok_strings.dart';
+import 'package:tittokclone/utils/tiktok_images.dart';
 
 Widget buildCustomFloatingActionButton(String imageName, double height, double weight, String text) {
   bool showLabel = true;
@@ -77,22 +78,22 @@ Widget buildCustomFloatingNetworkActionButton(String imageName, String errorImag
 
 Widget buildFloatingActionButton(String avatar) {
   return Padding(
-    padding: EdgeInsets.only(bottom: 36.0),
+    padding: const EdgeInsets.only(bottom: 36.0),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        buildCustomFloatingNetworkActionButton(avatar, 'images/Ellipse21.png', 55, 55, ""),
-        SizedBox(height: 16),
-        buildCustomFloatingActionButton('images/Like.png', 32, 30, "87"),
-        SizedBox(height: 16),
-        buildCustomFloatingActionButton('images/Comments.png', 32, 30, "2"),
-        SizedBox(height: 16),
-        buildCustomFloatingActionButton('images/Share.png', 32, 30, "17"),
-        SizedBox(height: 16),
-        buildCustomFloatingActionButton('images/Bookmark.png', 32, 30, "203"),
-        SizedBox(height: 16),
-        buildCustomFloatingActionButton('images/Refresh.png', 32, 30, "Flip"),
+        buildCustomFloatingNetworkActionButton(avatar, TikTokStrings.ellipsesImagePath, 55, 55, ""),
+        const SizedBox(height: 16),
+        buildCustomFloatingActionButton(TikTokStrings.likeImagePath, 32, 30, TikTokStrings.likeCount),
+        const SizedBox(height: 16),
+        buildCustomFloatingActionButton(TikTokStrings.commentsImagePath, 32, 30, TikTokStrings.commentsCount),
+        const SizedBox(height: 16),
+        buildCustomFloatingActionButton(TikTokStrings.shareImagePath, 32, 30, TikTokStrings.shareCount),
+        const SizedBox(height: 16),
+        buildCustomFloatingActionButton(TikTokStrings.bookmarkImagePath, 32, 30, TikTokStrings.bookmarkCount),
+        const SizedBox(height: 16),
+        buildCustomFloatingActionButton(TikTokStrings.refreshImagePath, 32, 30, TikTokStrings.flip),
       ],
     ),
   );
@@ -104,39 +105,39 @@ Widget buildBottomNavigationBar(BuildContext context) {
       canvasColor: TikTokColors.statusBar, // Set the background color to black
     ),
     child: BottomNavigationBar(
-      items: <BottomNavigationBarItem>[
+      items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Padding(
               padding: EdgeInsets.only(bottom: 6),
-              child: Image.asset("images/Home.png")
+              child: TikTokImages.home
           ),
           label: TikTokStrings.bottomBarHome,
         ),
         BottomNavigationBarItem(
           icon: Padding(
               padding: EdgeInsets.only(bottom: 6),
-              child: Image.asset("images/Discover.png")
+              child: TikTokImages.discover
           ),
           label: TikTokStrings.bottomBarDiscover,
         ),
         BottomNavigationBarItem(
           icon: Padding(
               padding: EdgeInsets.only(bottom: 6),
-              child: Image.asset("images/Activity.png")
+              child: TikTokImages.activity
           ),
           label: TikTokStrings.bottomBarActivity,
         ),
         BottomNavigationBarItem(
           icon: Padding(
               padding: EdgeInsets.only(bottom: 6),
-              child: Image.asset("images/Bookmarks.png")
+              child: TikTokImages.bookmarks
           ),
           label: TikTokStrings.bottomBarBookmarks,
         ),
         BottomNavigationBarItem(
           icon: Padding(
               padding: EdgeInsets.only(bottom: 6),
-              child: Image.asset("images/Profile.png")
+              child: TikTokImages.profile
           ),
           label: TikTokStrings.bottomBarProfile,
         ),
@@ -148,7 +149,7 @@ Widget buildBottomNavigationBar(BuildContext context) {
   );
 }
 
-Widget GradientBackground() {
+Widget gradientBackground() {
   return Container(
     decoration: const BoxDecoration(
       gradient: LinearGradient(
@@ -171,35 +172,33 @@ Widget buildUserInfo(String username, String description) {
         padding: const EdgeInsets.only(top: 24),
         child: Align(
           alignment: Alignment.bottomLeft,
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(bottom: 6),
-                  child: Text(
-                    username,
-                    style: const TextStyle(
-                      color: TikTokColors.selectedText,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: Text(
+                  username,
+                  style: const TextStyle(
+                    color: TikTokColors.selectedText,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 24),
-                  child: Text(
-                    description,
-                    style: const TextStyle(
-                      color: TikTokColors.selectedText,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: Text(
+                  description,
+                  style: const TextStyle(
+                    color: TikTokColors.selectedText,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

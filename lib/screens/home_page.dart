@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tittokclone/networkcalls.dart';
 import 'mcq_card.dart';
@@ -8,6 +7,7 @@ import 'flash_card.dart';
 import 'package:tittokclone/utils/common.dart';
 import 'package:tittokclone/utils/tiktok_colors.dart';
 import 'package:tittokclone/utils/tiktok_strings.dart';
+import 'package:tittokclone/utils/tiktok_images.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       isForYouPageInitialized = true;
     }
     WidgetsBinding.instance.addObserver(this);
-    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_lastLifecycleState == AppLifecycleState.resumed) {
         setState(() {
           _totalSessionDuration = DateTime.now().difference(_sessionStartTime);
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     return Scaffold(
       body: Stack(
           children: [
-            GradientBackground(),
+            gradientBackground(),
             buildForeground(),
           ]
       ),
@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             color: TikTokColors.progressIndicatorColor,
           )
       ),
-    ) : SizedBox.shrink();
+    ) : const SizedBox.shrink();
   }
 
   double measureTextWidth(String text, TextStyle style) {
@@ -253,9 +253,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 4),
-                    child: Image.asset("images/Time.png"),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16, right: 4),
+                    child: TikTokImages.time,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 1),
@@ -340,11 +340,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8, right: 16),
+            const Padding(
+              padding: EdgeInsets.only(top: 8, right: 16),
               child: Align(
                   alignment: Alignment.topRight,
-                  child: Image.asset("images/Search.png")
+                  child: TikTokImages.search,
               ),
             ),
           ]
@@ -359,12 +359,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         color: TikTokColors.playlistBackgroundColor,
         height: 36,
         child: Row(
-          children: [
+          children: const [
             Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 4.0),
-              child: Image.asset("images/Play.png"),
+              padding: EdgeInsets.only(left: 16.0, right: 4.0),
+              child: TikTokImages.play,
             ),
-            const Text(
+            Text(
               'Playlist • Unit 5: Period 5: 1844-1877',
               style: TextStyle(
                 color: TikTokColors.selectedText,
@@ -372,10 +372,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const Spacer(),
+            Spacer(),
             Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Image.asset("images/Arrow.png"),
+              padding: EdgeInsets.only(right: 16.0),
+              child: TikTokImages.arrow,
             ),
           ],
         ),
