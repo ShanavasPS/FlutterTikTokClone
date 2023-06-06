@@ -237,53 +237,38 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   Widget buildPageView() {
     print("inside buildPageView");
-    if(tabIndex == 0) {
-      return buildPageView1(followingPageController, followingItems.length);
-    } else {
-      return buildPageView2(forYouPageController, forYouItems.length);
-    }
-  }
+    final PageController controller = tabIndex == 0
+        ? followingPageController
+        : forYouPageController;
+    final int itemCount = tabIndex == 0
+        ? followingItems.length
+        : forYouItems.length;
 
-  Widget buildPageView1(PageController controller, int itemCount) {
     return PageView.builder(
       controller: controller,
       itemCount: itemCount + 1,
       onPageChanged: (pageIndex) {
-        print("Inside page1 onPageChanged1");
-        followingPageIndex = pageIndex;
-      },
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) {
-        print("Index inside itemBuilder Page 1 is $index");
-        if (index < itemCount) {
-          return FlashCardFeed(
-              content: followingItems[index]
-          );
+        print("Inside onPageChanged");
+        if (tabIndex == 0) {
+          followingPageIndex = pageIndex;
         } else {
-          return buildLoaderIndicator(isLoading);
+          forYouPageIndex = pageIndex;
         }
       },
-    );
-  }
-
-  Widget buildPageView2(PageController controller, int itemCount) {
-    return PageView.builder(
-      controller: controller,
-      itemCount: itemCount + 1,
-      onPageChanged: (pageIndex) {
-        print("Inside page2 onPageChanged");
-        forYouPageIndex = pageIndex;
-      },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-        print("Index inside itemBuilder Page 2 is $index");
+        print("Index inside itemBuilder is $index");
         if (index < itemCount) {
-          print("setting a forYou page");
-          print(controller.page);
-          return MCQFeed(
-            content: forYouItems[index],
-            answer: answers[index],
-          );
+          if (tabIndex == 0) {
+            return FlashCardFeed(content: followingItems[index]);
+          } else {
+            print("setting a forYou page");
+            print(controller.page);
+            return MCQFeed(
+              content: forYouItems[index],
+              answer: answers[index],
+            );
+          }
         } else {
           return buildLoaderIndicator(isLoading);
         }
