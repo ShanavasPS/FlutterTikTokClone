@@ -3,11 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tiktokclone/utils/common.dart';
 
-import '../model/answer_model.dart';
 import '../model/data_model.dart';
-import '../model/flashcard_data.dart';
-import '../model/mcq_data.dart';
-import '../utils/tiktok_strings.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/floating_action_buttons.dart';
 import '../widgets/gradient_background.dart';
@@ -30,17 +26,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final PageController followingPageController = PageController(initialPage: 0);
   final PageController forYouPageController = PageController(initialPage: 0);
 
-  List<FlashcardData> followingItems = [];
-  List<McqData> forYouItems = [];
-  List<AnswerData> answers = [];
-
-  int tabIndex = 0; //To track selected screen
-  int followingPageIndex = 0;
-  int forYouPageIndex = 0;
-
   bool isLoading = false; // Flag to track loading state
-  bool isFollowingPageInitialized = false;
-  bool isForYouPageInitialized = false;
 
   AppLifecycleState _lastLifecycleState = AppLifecycleState.resumed;
 
@@ -58,21 +44,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     print('inside state:');
-    followingPageController.addListener(() {
-      pageListener(followingPageController, fetchNextFollowingItem);
-    });
 
-    forYouPageController.addListener(() {
-      pageListener(forYouPageController, fetchNextForYouItem);
-    });
+    initPageControllers();
 
-    if(tabIndex == 0) {
-      fetchNextFollowingItem();
-      isFollowingPageInitialized = true;
-    } else {
-      fetchNextForYouItem();
-      isForYouPageInitialized = true;
-    }
+    initializeData();
+
     WidgetsBinding.instance.addObserver(this);
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_lastLifecycleState == AppLifecycleState.resumed) {
@@ -82,6 +58,24 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         });
       }
     });
+  }
+
+  void initPageControllers() {
+    followingPageController.addListener(() {
+      pageListener(followingPageController, fetchNextFollowingItem);
+    });
+
+    forYouPageController.addListener(() {
+      pageListener(forYouPageController, fetchNextForYouItem);
+    });
+  }
+
+  void initializeData() {
+    if (dataRepository.tabIndex == 0) {
+      fetchNextFollowingItem();
+    } else {
+      fetchNextForYouItem();
+    }
   }
 
   @override
@@ -105,32 +99,29 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void pageListener(PageController controller, Future<void> Function() fetchData) {
     print("Inside pageListener");
     print(controller.page);
-    if((tabIndex == 0 && controller.page == followingItems.length) ||
-        (tabIndex == 1 && controller.page == forYouItems.length)) {
+    if((dataRepository.tabIndex == 0 && controller.page == dataRepository.followingItems.length) ||
+        (dataRepository.tabIndex == 1 && controller.page == dataRepository.forYouItems.length)) {
       print("condition met");
       fetchData();
     }
   }
 
-  Future<void> fetchData(Future<void> Function() fetchDataMethod) async {
-    print("Inside fetchData");
-
+  void setLoadingState(bool loading) {
     setState(() {
-      isLoading = true;
+      isLoading = loading;
     });
+  }
+
+  Future<void> fetchData(Future<void> Function() fetchDataMethod) async {
+    setLoadingState(true);
 
     try {
       await fetchDataMethod();
-
-      setState(() {
-        isLoading = false;
-      });
     } catch (e) {
       // Handle error
       print('Error: $e');
-      setState(() {
-        isLoading = false;
-      });
+    } finally {
+      setLoadingState(false);
     }
   }
 
@@ -145,23 +136,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     print("Inside build of main");
-    String avatar = "";
-    String playlist = TikTokStrings.playlist;
-    followingItems = dataRepository.followingItems;
-    forYouItems = dataRepository.forYouItems;
-    answers = dataRepository.answers;
-
-    if(tabIndex == 0) {
-      if(followingPageIndex < followingItems.length) {
-        avatar = followingItems[followingPageIndex].user.avatar;
-        playlist += followingItems[followingPageIndex].playlist;
-      }
-    } else {
-      if(forYouPageIndex < forYouItems.length) {
-        avatar = forYouItems[forYouPageIndex].user.avatar;
-        playlist += forYouItems[forYouPageIndex].playlist;
-      }
-    }
+    final List<dynamic> avatarAndPlaylist = dataRepository.updateAvatarAndPlaylist();
+    String avatar = avatarAndPlaylist[0];
+    String playlist = avatarAndPlaylist[1];
 
     return Scaffold(
       body: Stack(
@@ -170,7 +147,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             buildForeground(playlist),
           ]
       ),
-      floatingActionButton: buildFloatingActionButtons(avatar, tabIndex),
+      floatingActionButton: buildFloatingActionButtons(avatar, dataRepository.tabIndex),
       bottomNavigationBar: buildBottomNavigationBar(context),
     );
   }
@@ -178,7 +155,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget buildForeground(String playlist) {
     return Column(
       children: [
-        buildTopBar(tabIndex, actualTimeSpent, followingTapped, forYouTapped),
+        buildTopBar(dataRepository.tabIndex, actualTimeSpent, followingTapped, forYouTapped),
         Expanded(
             child: buildPageView()
         ),
@@ -190,14 +167,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void followingTapped() {
     print("Following tapped.");
     setState(() {
-      tabIndex = 0;
+      dataRepository.tabIndex = 0;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         followingPageController.jumpToPage(0);
         // Manually set the page to 0
       });
-      if(!isFollowingPageInitialized) {
+      if(!dataRepository.isFollowingPageInitialized) {
         fetchNextFollowingItem();
-        isFollowingPageInitialized = true;
       }
     });
   }
@@ -205,51 +181,50 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void forYouTapped() {
     print("For You tapped.");
     setState(() {
-      tabIndex = 1;
-      print("for you page index is $forYouPageIndex");
+      dataRepository.tabIndex = 1;
+      print("for you page index is ${dataRepository.forYouPageIndex}");
       WidgetsBinding.instance.addPostFrameCallback((_) {
         forYouPageController.jumpToPage(0);
         // Manually set the page to 0
       });
-      if(!isForYouPageInitialized) {
+      if(!dataRepository.isForYouPageInitialized) {
         fetchNextForYouItem();
-        isForYouPageInitialized = true;
       }
     });
   }
 
   Widget buildPageView() {
     print("inside buildPageView");
-    final PageController controller = tabIndex == 0
+    final PageController controller = dataRepository.tabIndex == 0
         ? followingPageController
         : forYouPageController;
-    final int itemCount = tabIndex == 0
-        ? followingItems.length
-        : forYouItems.length;
+    final int itemCount = dataRepository.tabIndex == 0
+        ? dataRepository.followingItems.length
+        : dataRepository.forYouItems.length;
 
     return PageView.builder(
       controller: controller,
       itemCount: itemCount + 1,
       onPageChanged: (pageIndex) {
         print("Inside onPageChanged");
-        if (tabIndex == 0) {
-          followingPageIndex = pageIndex;
+        if (dataRepository.tabIndex == 0) {
+          dataRepository.followingPageIndex = pageIndex;
         } else {
-          forYouPageIndex = pageIndex;
+          dataRepository.forYouPageIndex = pageIndex;
         }
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
         print("Index inside itemBuilder is $index");
         if (index < itemCount) {
-          if (tabIndex == 0) {
-            return FlashCardFeed(content: followingItems[index]);
+          if (dataRepository.tabIndex == 0) {
+            return FlashCardFeed(content: dataRepository.followingItems[index]);
           } else {
             print("setting a forYou page");
             print(controller.page);
             return MCQFeed(
-              content: forYouItems[index],
-              answer: answers[index],
+              content: dataRepository.forYouItems[index],
+              answer: dataRepository.answers[index],
             );
           }
         } else {
