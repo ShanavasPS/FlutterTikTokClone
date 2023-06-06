@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'rating_view.dart';
+import 'package:tittokclone/utils/tiktok_colors.dart';
 
 class FlashCardBack extends StatefulWidget {
   final String flashcardBackText;
@@ -43,9 +44,6 @@ class FlashCardBackState extends State<FlashCardBack> {
     });
   }
 
-  Color defaultAnswerColor = const Color(0xFFFFFFFF).withOpacity(0.2);
-  Color decriptionTextColor = const Color(0xFFFFFFFF).withOpacity(0.7);
-
   @override
   Widget build(BuildContext context) {
     return Visibility(
@@ -55,7 +53,7 @@ class FlashCardBackState extends State<FlashCardBack> {
           Container(
             height: 2,
             decoration: BoxDecoration(
-              color: defaultAnswerColor,
+              color: TikTokColors.defaultAnswerColor,
             ),
           ),
           const Padding(
@@ -65,7 +63,7 @@ class FlashCardBackState extends State<FlashCardBack> {
               child: Text(
                 "Answer",
                 style: TextStyle(
-                  color: Color(0xFF2DC59F),
+                  color: TikTokColors.answerTitleColor,
                   fontSize: 13,
                   fontWeight: FontWeight.w800,
                 ),
@@ -82,7 +80,7 @@ class FlashCardBackState extends State<FlashCardBack> {
                 child: Text(
                   widget.flashcardBackText,
                   style: TextStyle(
-                    color: decriptionTextColor,
+                    color: TikTokColors.descriptionTextColor,
                     fontSize: 21,
                     fontWeight: FontWeight.w400,
                   ),

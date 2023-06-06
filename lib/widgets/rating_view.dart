@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tittokclone/utils/tiktok_colors.dart';
 
 class RatingView extends StatefulWidget {
   final bool showBackOfFlashCard;
@@ -26,14 +27,6 @@ class RatingViewState extends State<RatingView> {
   bool showButtonFive = true;
   bool isColoredBoxSelected = false;
 
-  Color princetonOrange = const Color(0xFFF17D23);
-  Color mellowApricot = const Color(0xFFFBB668);
-  Color mustard = const Color(0xFFFFD449);
-  Color darkGreenColor = const Color(0xFF16624F);
-  Color illuminatingEmerald = const Color(0xFF1F8A70);
-
-  Color decriptionTextColor = const Color(0xFFFFFFFF).withOpacity(0.7);
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,7 +38,7 @@ class RatingViewState extends State<RatingView> {
             child: Text(
               "How well did you know this?",
               style: TextStyle(
-                color: decriptionTextColor,
+                color: TikTokColors.descriptionTextColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
               ),
@@ -76,7 +69,7 @@ class RatingViewState extends State<RatingView> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: princetonOrange,
+                      color: TikTokColors.princetonOrange,
                     ),
                     width: (MediaQuery.of(context).size.width - 8 * 6) / 5,
                     height: 52,
@@ -119,7 +112,7 @@ class RatingViewState extends State<RatingView> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: mellowApricot,
+                      color: TikTokColors.mellowApricot,
                     ),
                     height: 52,
                     child: const Center(
@@ -161,7 +154,7 @@ class RatingViewState extends State<RatingView> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: mustard,
+                      color: TikTokColors.mustard,
                     ),
                     height: 52,
                     child: const Center(
@@ -203,7 +196,7 @@ class RatingViewState extends State<RatingView> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: darkGreenColor,
+                      color: TikTokColors.darkGreenColor,
                     ),
                     height: 52,
                     child: const Center(
@@ -245,7 +238,7 @@ class RatingViewState extends State<RatingView> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: illuminatingEmerald,
+                      color: TikTokColors.illuminatingEmerald,
                     ),
                     height: 52,
                     child: const Center(

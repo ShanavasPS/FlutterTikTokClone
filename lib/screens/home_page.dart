@@ -6,6 +6,7 @@ import 'package:tittokclone/networkcalls.dart';
 import 'mcq_card.dart';
 import 'flash_card.dart';
 import 'package:tittokclone/utils/common.dart';
+import 'package:tittokclone/utils/tiktok_colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -213,7 +214,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           width: 20,
           height: 20,
           child: CircularProgressIndicator(
-            color: const Color(0xFFFFFFFF).withOpacity(0.5),
+            color: TikTokColors.progressIndicatorColor,
           )
       ),
     ) : SizedBox.shrink();
@@ -359,7 +360,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Container(
-        color: const Color(0xFF161616),
+        color: TikTokColors.playlistBackgroundColor,
         height: 36,
         child: Row(
           children: [

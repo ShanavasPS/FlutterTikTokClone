@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tittokclone/utils/tiktok_colors.dart';
 
 Widget buildCustomFloatingActionButton(String imageName, double height, double weight, String text) {
   bool showLabel = true;
@@ -151,8 +152,8 @@ Widget GradientBackground() {
     decoration: const BoxDecoration(
       gradient: LinearGradient(
         colors: [
-          Color(0xFF001D28),
-          Color(0xFF00425A),
+          TikTokColors.backgroundGradientBegin,
+          TikTokColors.backgroundGradientEnd,
         ],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
