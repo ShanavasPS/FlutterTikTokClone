@@ -29,7 +29,7 @@ class TikTokStrings {
   static const String shareCount = "17";
   static const String bookmarkCount = "203";
   static const String flip = "Flip";
-
+  static const String playlist = "Playlist • ";
   //Image path
   static const String ellipsesImagePath = "images/Ellipse21.png";
   static const String followImagePath = "images/Follow.png";

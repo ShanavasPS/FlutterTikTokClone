@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:tiktokclone/utils/common.dart';
 
 import '../network/network_calls.dart';
 import '../utils/tiktok_colors.dart';
@@ -9,6 +10,8 @@ import '../utils/tiktok_strings.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/floating_action_buttons.dart';
 import '../widgets/gradient_background.dart';
+import '../widgets/loader_indicator.dart';
+import '../widgets/song_bar.dart';
 import 'flash_card.dart';
 import 'mcq_card.dart';
 
@@ -21,31 +24,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  Color followingTextColor = TikTokColors.selectedText;
-  Color forYouTextColor = TikTokColors.unselectedText;
-  FontWeight followingWeight = FontWeight.bold;
-  FontWeight forYouWeight = FontWeight.normal;
+
   final PageController followingPageController = PageController(initialPage: 0);
   final PageController forYouPageController = PageController(initialPage: 0);
+
   List<Map<String, dynamic>> followingItems = []; // List to store fetched items
   List<Map<String, dynamic>> forYouItems = []; // List to store fetched items
   List<Map<String, dynamic>> answers = []; // List to store fetched items
-  int currentPage = 0; // Current page of items
-  bool isLoading = false; // Flag to track loading state
+
   int tabIndex = 0; //To track selected screen
-  bool didReceiveAvatarUrl = false;
-  bool isFollowingPageInitialized = false;
-  bool isForYouPageInitialized = false;
   int followingPageIndex = 0;
   int forYouPageIndex = 0;
 
+  bool isLoading = false; // Flag to track loading state
+  bool isFollowingPageInitialized = false;
+  bool isForYouPageInitialized = false;
+
   AppLifecycleState _lastLifecycleState = AppLifecycleState.resumed;
+
   DateTime _sessionStartTime = DateTime.now();
+
   Duration _totalSessionDuration = Duration.zero;
-  int seconds = 0;
-  int minutes = 0;
-  int hours = 0;
+
   String actualTimeSpent =  "";
+
   late Timer _timer;
 
   @override
@@ -66,19 +68,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       if (_lastLifecycleState == AppLifecycleState.resumed) {
         setState(() {
           _totalSessionDuration = DateTime.now().difference(_sessionStartTime);
-          seconds = _totalSessionDuration.inSeconds.remainder(60);
-          minutes = _totalSessionDuration.inMinutes.remainder(60);
-          hours = _totalSessionDuration.inHours;
-          int preFix = seconds;
-          String postFix = TikTokStrings.secondPostFix;
-          if(hours > 0) {
-            preFix = hours;
-            postFix = TikTokStrings.hourPostFix;
-          } else if(minutes > 0) {
-            preFix = minutes;
-            postFix = TikTokStrings.minutePostFix;
-          }
-          actualTimeSpent = "$preFix $postFix";
+          actualTimeSpent = getDuration(_totalSessionDuration);
         });
       }
     });
@@ -100,12 +90,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       _totalSessionDuration += DateTime.now().difference(_sessionStartTime);
     }
     _lastLifecycleState = state;
-  }
-
-  void updateButtonState(bool value) {
-    setState(() {
-      didReceiveAvatarUrl = value;
-    });
   }
 
   void followingPageListener() {
@@ -137,8 +121,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       final item = await getNextFollowingItem();
       setState(() {
         followingItems.add(item);
-
-        currentPage++;
         isLoading = false;
       });
       print("recived the below item");
@@ -165,7 +147,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       setState(() {
         forYouItems.add(item);
         answers.add(answer);
-        currentPage++;
         isLoading = false;
       });
       print("recived the below item");
@@ -184,13 +165,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     print("Inside build of main");
     String avatar = "";
+    String playlist = TikTokStrings.playlist;
+    Map<String, dynamic> content;
     if(tabIndex == 0) {
       if(followingPageIndex < followingItems.length) {
-        avatar = followingItems[followingPageIndex]["user"]["avatar"];
+        content = followingItems[followingPageIndex];
+        avatar = content["user"]["avatar"];
+        playlist += content["playlist"];
       }
     } else {
       if(forYouPageIndex < forYouItems.length) {
-        avatar = forYouItems[forYouPageIndex]["user"]["avatar"];
+        content = forYouItems[forYouPageIndex];
+        avatar = content["user"]["avatar"];
+        playlist += content["playlist"];
       }
     }
 
@@ -198,7 +185,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       body: Stack(
           children: [
             gradientBackground(),
-            buildForeground(),
+            buildForeground(playlist),
           ]
       ),
       floatingActionButton: buildFloatingActionButtons(avatar, tabIndex),
@@ -206,52 +193,29 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
   }
 
-  Widget buildForeground() {
+  Widget buildForeground(String playlist) {
     return Column(
       children: [
         buildTopBar(),
         Expanded(
             child: buildPageView()
         ),
-        buildSongBarWidget(),
+        buildSongBarWidget(playlist),
       ],
     );
-  }
-
-  Widget _buildLoaderIndicator() {
-    return isLoading ? Center(
-      child: SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            color: TikTokColors.progressIndicatorColor,
-          )
-      ),
-    ) : const SizedBox.shrink();
-  }
-
-  double measureTextWidth(String text, TextStyle style) {
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      textDirection: TextDirection.ltr,
-    );
-
-    textPainter.layout();
-
-    return textPainter.width;
   }
 
   Widget buildTopBar() {
 
     final followingTextStyle = TextStyle(
         fontSize: 17.0,
-        fontWeight: followingWeight,
-        color: followingTextColor);
+        fontWeight: tabIndex == 0 ? FontWeight.bold: FontWeight.normal,
+        color: tabIndex == 0 ? TikTokColors.selectedText: TikTokColors.unselectedText);
 
     final forYouTextStyle = TextStyle(
         fontSize: 17.0,
-        fontWeight: forYouWeight,
-        color: forYouTextColor);
+        fontWeight: tabIndex == 1 ? FontWeight.bold: FontWeight.normal,
+        color: tabIndex == 1 ? TikTokColors.selectedText: TikTokColors.unselectedText);
 
     return SafeArea(
       child: Stack(
@@ -293,10 +257,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           onTap: (){
                             print("Following tapped.");
                             setState(() {
-                              followingTextColor = TikTokColors.selectedText;
-                              followingWeight = FontWeight.bold;
-                              forYouTextColor = TikTokColors.unselectedText;
-                              forYouWeight = FontWeight.normal;
                               tabIndex = 0;
                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                 followingPageController.jumpToPage(0);
@@ -318,10 +278,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           onTap: (){
                             print("For You tapped.");
                             setState(() {
-                              followingTextColor = TikTokColors.unselectedText;
-                              followingWeight = FontWeight.normal;
-                              forYouTextColor = TikTokColors.selectedText;
-                              forYouWeight = FontWeight.bold;
                               tabIndex = 1;
                               print("for you page index is $forYouPageIndex");
                               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -363,37 +319,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
   }
 
-  Widget buildSongBarWidget() {
-    return Align(
-      alignment: Alignment.bottomLeft,
-      child: Container(
-        color: TikTokColors.playlistBackgroundColor,
-        height: 36,
-        child: Row(
-          children: const [
-            Padding(
-              padding: EdgeInsets.only(left: 16.0, right: 4.0),
-              child: TikTokImages.play,
-            ),
-            Text(
-              'Playlist • Unit 5: Period 5: 1844-1877',
-              style: TextStyle(
-                color: TikTokColors.selectedText,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Spacer(),
-            Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: TikTokImages.arrow,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget buildPageView() {
     print("inside buildPageView");
     if(tabIndex == 0) {
@@ -405,8 +330,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   Widget buildPageView1(PageController controller, int itemCount) {
     return PageView.builder(
-      controller: followingPageController,
-      itemCount: followingItems.length + 1,
+      controller: controller,
+      itemCount: itemCount + 1,
       onPageChanged: (pageIndex) {
         print("Inside page1 onPageChanged1");
         followingPageIndex = pageIndex;
@@ -414,12 +339,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
         print("Index inside itemBuilder Page 1 is $index");
-        if (index < followingItems.length) {
+        if (index < itemCount) {
           return FlashCardFeed(
               content: followingItems[index]
           );
         } else {
-          return _buildLoaderIndicator();
+          return buildLoaderIndicator(isLoading);
         }
       },
     );
@@ -427,8 +352,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   Widget buildPageView2(PageController controller, int itemCount) {
     return PageView.builder(
-      controller: forYouPageController,
-      itemCount: forYouItems.length + 1,
+      controller: controller,
+      itemCount: itemCount + 1,
       onPageChanged: (pageIndex) {
         print("Inside page2 onPageChanged");
         forYouPageIndex = pageIndex;
@@ -436,15 +361,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
         print("Index inside itemBuilder Page 2 is $index");
-        if (index < forYouItems.length) {
+        if (index < itemCount) {
           print("setting a forYou page");
-          print(forYouPageController.page);
+          print(controller.page);
           return MCQFeed(
             content: forYouItems[index],
             answer: answers[index],
           );
         } else {
-          return _buildLoaderIndicator();
+          return buildLoaderIndicator(isLoading);
         }
       },
     );
