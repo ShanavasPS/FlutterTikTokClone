@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktokclone/model/flashcard_data.dart';
 
 import '../utils/tiktok_colors.dart';
 import '../views/flash_card_back.dart';
@@ -6,7 +7,7 @@ import '../widgets/user_info.dart';
 
 
 class FlashCardFeed extends StatefulWidget {
-  final Map<String, dynamic> content;
+  final FlashcardData content;
   const FlashCardFeed({super.key, required this.content});
 
   @override
@@ -35,13 +36,13 @@ class FlashCardFeedState extends State<FlashCardFeed> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> content = widget.content;
+    final FlashcardData content = widget.content;
 
-    String flashcardFrontText = content["flashcard_front"];
-    String flashcardBackText = content["flashcard_back"];
+    String flashcardFrontText = content.flashcardFront;
+    String flashcardBackText = content.flashcardBack;
 
-    final String username = content['user']['name'];
-    final String description = content['description'];
+    final String username = content.user.name;
+    final String description = content.description;
 
     return Container(
       width: MediaQuery

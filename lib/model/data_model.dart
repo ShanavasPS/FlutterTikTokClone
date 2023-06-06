@@ -1,15 +1,20 @@
 import 'package:tiktokclone/network/network_calls.dart';
 
+import 'answer_model.dart';
+import 'flashcard_data.dart';
+import 'mcq_data.dart';
+
 class DataRepository {
 
-  List<Map<String, dynamic>> followingItems = [];
-  List<Map<String, dynamic>> forYouItems = [];
-  List<Map<String, dynamic>> answers = [];
+  List<FlashcardData> followingItems = [];
+  List<McqData> forYouItems = [];
+  List<AnswerData> answers = [];
 
   Future<void> fetchNextFollowingItem() async {
     try {
-      final item = await getNextFollowingItem();
-      followingItems.add(item);
+      final jsonData = await getNextFollowingItem();
+      FlashcardData flashcardData = FlashcardData.fromJson(jsonData);
+      followingItems.add(flashcardData);
       print("received the below item");
       print(followingItems[0]);
       print(followingItems.length);
@@ -21,10 +26,12 @@ class DataRepository {
 
   Future<void> fetchNextForYouItem() async {
     try {
-      final item = await getNextForYouItem();
-      final answer = await revealAnswer(item["id"]);
-      forYouItems.add(item);
-      answers.add(answer);
+      final jsonData = await getNextForYouItem();
+      McqData mcqData = McqData.fromJson(jsonData);
+      final answerData = await revealAnswer(mcqData.id);
+      AnswerData quizData = AnswerData.fromJson(answerData);
+      forYouItems.add(mcqData);
+      answers.add(quizData);
       print("received the below item");
       print(forYouItems[0]);
       print(forYouItems.length);

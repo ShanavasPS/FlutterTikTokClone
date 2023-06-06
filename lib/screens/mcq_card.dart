@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tiktokclone/model/answer_model.dart';
 
+import '../model/mcq_data.dart';
 import '../utils/tiktok_colors.dart';
 import '../views/answer_selection.dart';
 import '../widgets/user_info.dart';
 
 
 class MCQFeed extends StatefulWidget {
-  final Map<String, dynamic> content;
-  final Map<String, dynamic> answer;
+  final McqData content;
+  final AnswerData answer;
   const MCQFeed({super.key, required this.content, required this.answer});
 
   @override
@@ -26,12 +28,12 @@ class MCQFeedState extends State<MCQFeed> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> content = widget.content;
-    final Map<String, dynamic> answer = widget.answer;
+    final McqData content = widget.content;
+    final AnswerData answer = widget.answer;
 
-    final String mainTitle = content["question"];
-    final String username = content['user']['name'];
-    final String description = content['description'];
+    final String mainTitle = content.question;
+    final String username = content.user.name;
+    final String description = content.description;
 
     return Container(
       width: MediaQuery

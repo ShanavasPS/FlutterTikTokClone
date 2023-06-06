@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tiktokclone/utils/common.dart';
 
+import '../model/answer_model.dart';
 import '../model/data_model.dart';
-import '../network/network_calls.dart';
+import '../model/flashcard_data.dart';
+import '../model/mcq_data.dart';
 import '../utils/tiktok_strings.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/floating_action_buttons.dart';
@@ -28,9 +30,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final PageController followingPageController = PageController(initialPage: 0);
   final PageController forYouPageController = PageController(initialPage: 0);
 
-  List<Map<String, dynamic>> followingItems = []; // List to store fetched items
-  List<Map<String, dynamic>> forYouItems = []; // List to store fetched items
-  List<Map<String, dynamic>> answers = []; // List to store fetched items
+  List<FlashcardData> followingItems = [];
+  List<McqData> forYouItems = [];
+  List<AnswerData> answers = [];
 
   int tabIndex = 0; //To track selected screen
   int followingPageIndex = 0;
@@ -56,8 +58,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     print('inside state:');
-    followingPageController.addListener(followingPageListener);
-    forYouPageController.addListener(forYouPageListener);
+    followingPageController.addListener(() {
+      pageListener(followingPageController, fetchNextFollowingItem);
+    });
+
+    forYouPageController.addListener(() {
+      pageListener(forYouPageController, fetchNextForYouItem);
+    });
+
     if(tabIndex == 0) {
       fetchNextFollowingItem();
       isFollowingPageInitialized = true;
@@ -94,63 +102,44 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     _lastLifecycleState = state;
   }
 
-  void followingPageListener() {
-    print("inside followingPageListener");
-    print(followingPageController.page);
-    print(followingItems.length);
-    if (followingPageController.page == followingItems.length) {
+  void pageListener(PageController controller, Future<void> Function() fetchData) {
+    print("Inside pageListener");
+    print(controller.page);
+    if((tabIndex == 0 && controller.page == followingItems.length) ||
+        (tabIndex == 1 && controller.page == forYouItems.length)) {
       print("condition met");
-      fetchNextFollowingItem();
+      fetchData();
     }
   }
 
-  void forYouPageListener() {
-    print("inside forYouPageListener");
-    print(forYouPageController.page);
-    print(forYouItems.length);
-    if (forYouPageController.page == forYouItems.length) {
-      print("condition met");
-      fetchNextForYouItem();
+  Future<void> fetchData(Future<void> Function() fetchDataMethod) async {
+    print("Inside fetchData");
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await fetchDataMethod();
+
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      // Handle error
+      print('Error: $e');
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
   Future<void> fetchNextFollowingItem() async {
-    print("Inside fetchNextFollowingItem");
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      await dataRepository.fetchNextFollowingItem();
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {
-      // Handle error
-      print('Error: $e');
-      setState(() {
-        isLoading = false;
-      });
-    }
+    fetchData(dataRepository.fetchNextFollowingItem);
   }
 
   Future<void> fetchNextForYouItem() async {
-    print("Inside fetchNextForYouItem");
-
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      await dataRepository.fetchNextForYouItem();
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {
-      // Handle error
-      print('Error: $e');
-      setState(() {
-        isLoading = false;
-      });
-    }
+    fetchData(dataRepository.fetchNextForYouItem);
   }
 
   @override
@@ -158,22 +147,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     print("Inside build of main");
     String avatar = "";
     String playlist = TikTokStrings.playlist;
-    Map<String, dynamic> content;
     followingItems = dataRepository.followingItems;
     forYouItems = dataRepository.forYouItems;
     answers = dataRepository.answers;
 
     if(tabIndex == 0) {
       if(followingPageIndex < followingItems.length) {
-        content = followingItems[followingPageIndex];
-        avatar = content["user"]["avatar"];
-        playlist += content["playlist"];
+        avatar = followingItems[followingPageIndex].user.avatar;
+        playlist += followingItems[followingPageIndex].playlist;
       }
     } else {
       if(forYouPageIndex < forYouItems.length) {
-        content = forYouItems[forYouPageIndex];
-        avatar = content["user"]["avatar"];
-        playlist += content["playlist"];
+        avatar = forYouItems[forYouPageIndex].user.avatar;
+        playlist += forYouItems[forYouPageIndex].playlist;
       }
     }
 
