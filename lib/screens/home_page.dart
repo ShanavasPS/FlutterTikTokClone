@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tiktokclone/utils/common.dart';
 
+import '../model/data_model.dart';
 import '../network/network_calls.dart';
 import '../utils/tiktok_strings.dart';
 import '../widgets/bottom_navigation_bar.dart';
@@ -48,6 +49,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   String actualTimeSpent =  "";
 
   late Timer _timer;
+
+  DataRepository dataRepository = DataRepository();
 
   @override
   void initState() {
@@ -117,14 +120,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       isLoading = true;
     });
     try {
-      final item = await getNextFollowingItem();
+      await dataRepository.fetchNextFollowingItem();
       setState(() {
-        followingItems.add(item);
         isLoading = false;
       });
-      print("recived the below item");
-      print(followingItems[0]);
-      print(followingItems.length);
     } catch (e) {
       // Handle error
       print('Error: $e');
@@ -141,16 +140,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       isLoading = true;
     });
     try {
-      final item = await getNextForYouItem();
-      final answer = await revealAnswer(item["id"]);
+      await dataRepository.fetchNextForYouItem();
       setState(() {
-        forYouItems.add(item);
-        answers.add(answer);
         isLoading = false;
       });
-      print("recived the below item");
-      print(forYouItems[0]);
-      print(forYouItems.length);
     } catch (e) {
       // Handle error
       print('Error: $e');
@@ -166,6 +159,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     String avatar = "";
     String playlist = TikTokStrings.playlist;
     Map<String, dynamic> content;
+    followingItems = dataRepository.followingItems;
+    forYouItems = dataRepository.forYouItems;
+    answers = dataRepository.answers;
+
     if(tabIndex == 0) {
       if(followingPageIndex < followingItems.length) {
         content = followingItems[followingPageIndex];
