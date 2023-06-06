@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:tiktokclone/utils/common.dart';
 
 import '../network/network_calls.dart';
-import '../utils/tiktok_colors.dart';
-import '../utils/tiktok_images.dart';
 import '../utils/tiktok_strings.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../widgets/floating_action_buttons.dart';
 import '../widgets/gradient_background.dart';
 import '../widgets/loader_indicator.dart';
 import '../widgets/song_bar.dart';
+import '../widgets/top_bar.dart';
 import 'flash_card.dart';
 import 'mcq_card.dart';
 
@@ -196,7 +195,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget buildForeground(String playlist) {
     return Column(
       children: [
-        buildTopBar(),
+        buildTopBar(tabIndex, actualTimeSpent, followingTapped, forYouTapped),
         Expanded(
             child: buildPageView()
         ),
@@ -205,118 +204,35 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
   }
 
-  Widget buildTopBar() {
+  void followingTapped() {
+    print("Following tapped.");
+    setState(() {
+      tabIndex = 0;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        followingPageController.jumpToPage(0);
+        // Manually set the page to 0
+      });
+      if(!isFollowingPageInitialized) {
+        fetchNextFollowingItem();
+        isFollowingPageInitialized = true;
+      }
+    });
+  }
 
-    final followingTextStyle = TextStyle(
-        fontSize: 17.0,
-        fontWeight: tabIndex == 0 ? FontWeight.bold: FontWeight.normal,
-        color: tabIndex == 0 ? TikTokColors.selectedText: TikTokColors.unselectedText);
-
-    final forYouTextStyle = TextStyle(
-        fontSize: 17.0,
-        fontWeight: tabIndex == 1 ? FontWeight.bold: FontWeight.normal,
-        color: tabIndex == 1 ? TikTokColors.selectedText: TikTokColors.unselectedText);
-
-    return SafeArea(
-      child: Stack(
-          children: [
-            Container(
-              height: 54,
-              color: TikTokColors.statusBar,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 16, right: 4),
-                    child: TikTokImages.time,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 1),
-                    child: Text(
-                        actualTimeSpent,
-                        style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: TikTokColors.unselectedText)
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            print("Following tapped.");
-                            setState(() {
-                              tabIndex = 0;
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                followingPageController.jumpToPage(0);
-                                // Manually set the page to 0
-                              });
-                              if(!isFollowingPageInitialized) {
-                                fetchNextFollowingItem();
-                                isFollowingPageInitialized = true;
-                              }
-                            });
-                          },
-                          child: Text(TikTokStrings.following,
-                              style: followingTextStyle),
-                        ),
-                        const SizedBox(
-                          width: 18,
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            print("For You tapped.");
-                            setState(() {
-                              tabIndex = 1;
-                              print("for you page index is $forYouPageIndex");
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                forYouPageController.jumpToPage(0);
-                                // Manually set the page to 0
-                              });
-                              if(!isForYouPageInitialized) {
-                                fetchNextForYouItem();
-                                isForYouPageInitialized = true;
-                              }
-                            });
-                          },
-                          child: Text(TikTokStrings.forYou,
-                              style: forYouTextStyle),
-                        )
-                      ]
-                  ),
-                  AnimatedPadding(
-                    padding: EdgeInsets.only(top: 5, left: tabIndex == 1? measureTextWidth(TikTokStrings.forYou, forYouTextStyle) + 18 + 15: 0, right: tabIndex == 0 ? measureTextWidth(TikTokStrings.following, followingTextStyle)/2 + 15 + 18 : 0),
-                    duration: const Duration(milliseconds: 300),
-                    child: Container(
-                      width: 30,
-                      height: 4,
-                      color: TikTokColors.selectedText,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 8, right: 16),
-              child: Align(
-                  alignment: Alignment.topRight,
-                  child: TikTokImages.search,
-              ),
-            ),
-          ]
-      ),
-    );
+  void forYouTapped() {
+    print("For You tapped.");
+    setState(() {
+      tabIndex = 1;
+      print("for you page index is $forYouPageIndex");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        forYouPageController.jumpToPage(0);
+        // Manually set the page to 0
+      });
+      if(!isForYouPageInitialized) {
+        fetchNextForYouItem();
+        isForYouPageInitialized = true;
+      }
+    });
   }
 
   Widget buildPageView() {
