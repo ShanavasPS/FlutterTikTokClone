@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget buildCustomFloatingActionButton(String imageName, double height, double weight, String text) {
+Widget buildCustomFloatingActionButton(String imageName, double height, double width, String text) {
   bool showLabel = true;
   if(text.isEmpty) {
     showLabel = false;
@@ -18,7 +17,7 @@ Widget buildCustomFloatingActionButton(String imageName, double height, double w
         Image.asset(
           imageName,
           height: height,
-          width: weight,
+          width: width,
         ),
         Visibility(
           visible: showLabel,
