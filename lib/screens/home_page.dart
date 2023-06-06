@@ -184,9 +184,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     print("Inside build of main");
     String avatar = "";
-    if(followingItems.isNotEmpty) {
-      avatar = followingItems[0]["user"]["avatar"];
+    if(tabIndex == 0) {
+      if(followingPageIndex < followingItems.length) {
+        avatar = followingItems[followingPageIndex]["user"]["avatar"];
+      }
+    } else {
+      if(forYouPageIndex < forYouItems.length) {
+        avatar = forYouItems[forYouPageIndex]["user"]["avatar"];
+      }
     }
+
     return Scaffold(
       body: Stack(
           children: [

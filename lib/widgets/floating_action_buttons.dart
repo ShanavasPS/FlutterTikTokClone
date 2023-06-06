@@ -11,6 +11,7 @@ Widget buildFloatingActionButtons(String avatar, int tabIndex) {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         buildCustomFloatingNetworkImageActionButton(avatar, TikTokStrings.ellipsesImagePath, TikTokStrings.followImagePath, 55, 45, tabIndex == 1),
+        const SizedBox(height: 4),
         buildCustomFloatingActionButton(TikTokStrings.likeImagePath, 26, 28, TikTokStrings.likeCount),
         buildCustomFloatingActionButton(TikTokStrings.commentsImagePath, 26, 27, TikTokStrings.commentsCount),
         buildCustomFloatingActionButton(TikTokStrings.shareImagePath, 28, 27, TikTokStrings.shareCount),
