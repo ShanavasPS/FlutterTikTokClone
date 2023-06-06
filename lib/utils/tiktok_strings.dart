@@ -18,9 +18,9 @@ class TikTokStrings {
   static const String ratingFour = "4";
   static const String ratingFive = "5";
   static const String answer = "Answer";
-  static const String answerA = "A";
-  static const String answerB = "B";
-  static const String answerC = "C";
+  static const String optionA = "A";
+  static const String optionB = "B";
+  static const String optionC = "C";
   static const String secondPostFix = "s";
   static const String minutePostFix = "m";
   static const String hourPostFix = "h";

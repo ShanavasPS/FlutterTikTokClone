@@ -4,6 +4,8 @@ import 'package:tiktokclone/utils/tiktok_colors.dart';
 import 'package:tiktokclone/utils/tiktok_images.dart';
 import 'package:tiktokclone/utils/tiktok_strings.dart';
 
+import '../widgets/answer_options.dart';
+
 class AnswerSelectionView extends StatefulWidget {
   final Map<String, dynamic> content;
   final Map<String, dynamic> answer;
@@ -22,9 +24,9 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
     print('inside state:');
   }
 
-  Color answerAColor = TikTokColors.defaultAnswerColor;
-  Color answerBColor = TikTokColors.defaultAnswerColor;
-  Color answerCColor = TikTokColors.defaultAnswerColor;
+  bool didTapOptionA = false;
+  bool didTapOptionB = false;
+  bool didTapOptionC = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,63 +66,12 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
           onTap: () {
             print("answer a tapped");
             setState(() {
+              didTapOptionA = true;
               print("inside set state");
               print("correct answer is $correctAnswer");
-              print("correct answer is ${TikTokStrings.answerA}");
-              // Change the color when pressed
-              // Set the new color value based on your requirement
-              if(correctAnswer == TikTokStrings.answerA) {
-                print("inside first condition");
-                answerAColor = TikTokColors.correctAnswerColor;
-              } else {
-                if(correctAnswer == TikTokStrings.answerB) {
-                  answerBColor = TikTokColors.correctAnswerColor;
-                } else {
-                  answerCColor = TikTokColors.correctAnswerColor;
-                }
-                answerAColor = TikTokColors.incorrectAnswerColor;
-              }
             });
           },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: answerAColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  12, 16, 12, 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      answerA,
-                      style: const TextStyle(
-                        color: TikTokColors.selectedText,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: answerAColor == TikTokColors.correctAnswerColor,
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: TikTokImages.tick,
-                    ),
-                  ),
-                  Visibility(
-                    visible: answerAColor == TikTokColors.incorrectAnswerColor,
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: TikTokImages.cross,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          child: answerOptions(TikTokStrings.optionA, answerA, correctAnswer, didTapOptionA, didTapOptionA || didTapOptionB || didTapOptionC),
         ),
         const SizedBox(height: 8),
         GestureDetector(
@@ -128,59 +79,10 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
             print("answer b tapped");
             setState(() {
               print("inside set state");
-              // Change the color when pressed
-              // Set the new color value based on your requirement
-              if(correctAnswer == TikTokStrings.answerB) {
-                answerBColor = TikTokColors.correctAnswerColor;
-              } else {
-                if(correctAnswer == TikTokStrings.answerA) {
-                  answerAColor = TikTokColors.correctAnswerColor;
-                } else {
-                  answerCColor = TikTokColors.correctAnswerColor;
-                }
-                answerBColor = TikTokColors.incorrectAnswerColor;
-              }
+              didTapOptionB = true;
             });
           },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: answerBColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  12, 16, 12, 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      answerB,
-                      style: const TextStyle(
-                        color: TikTokColors.selectedText,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: answerBColor == TikTokColors.correctAnswerColor,
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: TikTokImages.tick,
-                    ),
-                  ),
-                  Visibility(
-                    visible: answerBColor == TikTokColors.incorrectAnswerColor,
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: TikTokImages.cross,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          child: answerOptions(TikTokStrings.optionB, answerB, correctAnswer, didTapOptionB, didTapOptionA || didTapOptionB || didTapOptionC),
         ),
         const SizedBox(height: 8),
         GestureDetector(
@@ -188,57 +90,10 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
             print("answer c tapped");
             setState(() {
               print("inside set state");
-              if(correctAnswer == TikTokStrings.answerC) {
-                answerCColor = TikTokColors.correctAnswerColor;
-              } else {
-                if(correctAnswer == TikTokStrings.answerA) {
-                  answerAColor = TikTokColors.correctAnswerColor;
-                } else {
-                  answerBColor = TikTokColors.correctAnswerColor;
-                }
-                answerCColor = TikTokColors.incorrectAnswerColor;
-              }
+              didTapOptionC = true;
             });
           },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: answerCColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  12, 16, 12, 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      answerC,
-                      style: const TextStyle(
-                        color: TikTokColors.selectedText,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: answerCColor == TikTokColors.correctAnswerColor,
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: TikTokImages.tick,
-                    ),
-                  ),
-                  Visibility(
-                    visible: answerCColor == TikTokColors.incorrectAnswerColor,
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: TikTokImages.cross,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          child: answerOptions(TikTokStrings.optionC, answerC, correctAnswer, didTapOptionC, didTapOptionA || didTapOptionB || didTapOptionC),
         ),
       ],
     );
