@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tittokclone/utils/tiktok_colors.dart';
+import 'package:tittokclone/utils/tiktok_strings.dart';
 
 class AnswerSelectionView extends StatefulWidget {
   final Map<String, dynamic> content;
@@ -65,10 +66,10 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
               print("inside set state");
               // Change the color when pressed
               // Set the new color value based on your requirement
-              if(correctAnswer == "A") {
+              if(correctAnswer == TikTokStrings.answerA) {
                 answerAColor = TikTokColors.correctAnswerColor;
               } else {
-                if(correctAnswer == "B") {
+                if(correctAnswer == TikTokStrings.answerB) {
                   answerBColor = TikTokColors.correctAnswerColor;
                 } else {
                   answerCColor = TikTokColors.correctAnswerColor;
@@ -92,7 +93,7 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
                     child: Text(
                       answerA,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: TikTokColors.selectedText,
                         fontSize: 17,
                         fontWeight: FontWeight.w400,
                       ),
@@ -125,10 +126,10 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
               print("inside set state");
               // Change the color when pressed
               // Set the new color value based on your requirement
-              if(correctAnswer == "B") {
+              if(correctAnswer == TikTokStrings.answerB) {
                 answerBColor = TikTokColors.correctAnswerColor;
               } else {
-                if(correctAnswer == "A") {
+                if(correctAnswer == TikTokStrings.answerA) {
                   answerAColor = TikTokColors.correctAnswerColor;
                 } else {
                   answerCColor = TikTokColors.correctAnswerColor;
@@ -152,7 +153,7 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
                     child: Text(
                       answerB,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: TikTokColors.selectedText,
                         fontSize: 17,
                         fontWeight: FontWeight.w400,
                       ),
@@ -183,10 +184,10 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
             print("answer c tapped");
             setState(() {
               print("inside set state");
-              if(correctAnswer == "C") {
+              if(correctAnswer == TikTokStrings.answerC) {
                 answerCColor = TikTokColors.correctAnswerColor;
               } else {
-                if(correctAnswer == "A") {
+                if(correctAnswer == TikTokStrings.answerA) {
                   answerAColor = TikTokColors.correctAnswerColor;
                 } else {
                   answerBColor = TikTokColors.correctAnswerColor;
@@ -210,7 +211,7 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
                     child: Text(
                       answerC,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: TikTokColors.selectedText,
                         fontSize: 17,
                         fontWeight: FontWeight.w400,
                       ),

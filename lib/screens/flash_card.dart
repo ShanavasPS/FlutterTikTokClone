@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tittokclone/widgets/flash_card_back.dart';
 import 'package:tittokclone/utils/common.dart';
+import 'package:tittokclone/utils/tiktok_colors.dart';
 
 class FlashCardFeed extends StatefulWidget {
   final Map<String, dynamic> content;
@@ -75,7 +76,7 @@ class FlashCardFeedState extends State<FlashCardFeed> {
                       child: Text(
                         flashcardFrontText,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: TikTokColors.selectedText,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),

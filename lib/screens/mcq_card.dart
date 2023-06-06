@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tittokclone/utils/tiktok_colors.dart';
 import 'package:tittokclone/widgets/answer_selection.dart';
 import 'package:tittokclone/utils/common.dart';
 
@@ -55,7 +56,7 @@ class MCQFeedState extends State<MCQFeed> {
                     child: Text(
                       mainTitle,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: TikTokColors.selectedText,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),

@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class TikTokColors {
   TikTokColors._();
 
@@ -17,4 +19,8 @@ class TikTokColors {
   static const Color playlistBackgroundColor = Color(0xFF161616);
   static const Color backgroundGradientBegin = Color(0xFF001D28);
   static const Color backgroundGradientEnd = Color(0xFF00425A);
+  static const Color statusBar = Colors.black;
+  static const Color unselectedText = Colors.white70;
+  static const Color selectedText = Colors.white;
+  static final Color unselectedBottomBarText = const Color(0xFFFFFFFF).withOpacity(0.4);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tittokclone/utils/tiktok_colors.dart';
+import 'package:tittokclone/utils/tiktok_strings.dart';
 
 class RatingView extends StatefulWidget {
   final bool showBackOfFlashCard;
@@ -36,7 +37,7 @@ class RatingViewState extends State<RatingView> {
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(
-              "How well did you know this?",
+              TikTokStrings.howWellDidYouKnowThis,
               style: TextStyle(
                 color: TikTokColors.descriptionTextColor,
                 fontSize: 15,
@@ -75,9 +76,9 @@ class RatingViewState extends State<RatingView> {
                     height: 52,
                     child: const Center(
                       child: Text(
-                        "1",
+                        TikTokStrings.ratingOne,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: TikTokColors.selectedText,
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
                         ),
@@ -117,9 +118,9 @@ class RatingViewState extends State<RatingView> {
                     height: 52,
                     child: const Center(
                       child: Text(
-                        "2",
+                        TikTokStrings.ratingTwo,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: TikTokColors.selectedText,
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
                         ),
@@ -159,9 +160,9 @@ class RatingViewState extends State<RatingView> {
                     height: 52,
                     child: const Center(
                       child: Text(
-                        "3",
+                        TikTokStrings.ratingThree,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: TikTokColors.selectedText,
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
                         ),
@@ -201,9 +202,9 @@ class RatingViewState extends State<RatingView> {
                     height: 52,
                     child: const Center(
                       child: Text(
-                        "4",
+                        TikTokStrings.ratingFour,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: TikTokColors.selectedText,
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
                         ),
@@ -243,9 +244,9 @@ class RatingViewState extends State<RatingView> {
                     height: 52,
                     child: const Center(
                       child: Text(
-                        "5",
+                        TikTokStrings.ratingFive,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: TikTokColors.selectedText,
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
                         ),

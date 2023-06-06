@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tittokclone/utils/tiktok_colors.dart';
+import 'package:tittokclone/utils/tiktok_strings.dart';
 
 Widget buildCustomFloatingActionButton(String imageName, double height, double weight, String text) {
   bool showLabel = true;
-  if(text == "") {
+  if(text.isEmpty) {
     showLabel = false;
   }
   return FloatingActionButton(
@@ -33,7 +34,7 @@ Widget buildCustomFloatingActionButton(String imageName, double height, double w
 
 Widget buildCustomFloatingNetworkActionButton(String imageName, String errorImage, double height, double weight, String text) {
   bool showLabel = true;
-  if(text == "") {
+  if(text.isEmpty) {
     showLabel = false;
   }
   return FloatingActionButton(
@@ -100,7 +101,7 @@ Widget buildFloatingActionButton(String avatar) {
 Widget buildBottomNavigationBar(BuildContext context) {
   return Theme(
     data: Theme.of(context).copyWith(
-      canvasColor: Colors.black, // Set the background color to black
+      canvasColor: TikTokColors.statusBar, // Set the background color to black
     ),
     child: BottomNavigationBar(
       items: <BottomNavigationBarItem>[
@@ -109,39 +110,39 @@ Widget buildBottomNavigationBar(BuildContext context) {
               padding: EdgeInsets.only(bottom: 6),
               child: Image.asset("images/Home.png")
           ),
-          label: 'Home',
+          label: TikTokStrings.bottomBarHome,
         ),
         BottomNavigationBarItem(
           icon: Padding(
               padding: EdgeInsets.only(bottom: 6),
               child: Image.asset("images/Discover.png")
           ),
-          label: 'Discover',
+          label: TikTokStrings.bottomBarDiscover,
         ),
         BottomNavigationBarItem(
           icon: Padding(
               padding: EdgeInsets.only(bottom: 6),
               child: Image.asset("images/Activity.png")
           ),
-          label: 'Activity',
+          label: TikTokStrings.bottomBarActivity,
         ),
         BottomNavigationBarItem(
           icon: Padding(
               padding: EdgeInsets.only(bottom: 6),
               child: Image.asset("images/Bookmarks.png")
           ),
-          label: 'Bookmarks',
+          label: TikTokStrings.bottomBarBookmarks,
         ),
         BottomNavigationBarItem(
           icon: Padding(
               padding: EdgeInsets.only(bottom: 6),
               child: Image.asset("images/Profile.png")
           ),
-          label: 'Profile',
+          label: TikTokStrings.bottomBarProfile,
         ),
       ],
-      selectedItemColor: Colors.white,
-      unselectedItemColor: const Color.fromRGBO(255, 255, 255, 0.4),
+      selectedItemColor: TikTokColors.selectedText,
+      unselectedItemColor: TikTokColors.unselectedBottomBarText,
       showUnselectedLabels: true,
     ),
   );
@@ -180,7 +181,7 @@ Widget buildUserInfo(String username, String description) {
                   child: Text(
                     username,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: TikTokColors.selectedText,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
@@ -191,7 +192,7 @@ Widget buildUserInfo(String username, String description) {
                   child: Text(
                     description,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: TikTokColors.selectedText,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                     ),

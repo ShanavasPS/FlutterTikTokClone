@@ -7,6 +7,7 @@ import 'mcq_card.dart';
 import 'flash_card.dart';
 import 'package:tittokclone/utils/common.dart';
 import 'package:tittokclone/utils/tiktok_colors.dart';
+import 'package:tittokclone/utils/tiktok_strings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,10 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  Color unselectedTextColor = Colors.white70;
-  Color selectedTextColor = Colors.white;
-  Color followingTextColor = Colors.white;
-  Color forYouTextColor = Colors.white70;
+  Color followingTextColor = TikTokColors.selectedText;
+  Color forYouTextColor = TikTokColors.unselectedText;
   FontWeight followingWeight = FontWeight.bold;
   FontWeight forYouWeight = FontWeight.normal;
   final PageController followingPageController = PageController(initialPage: 0);
@@ -67,13 +66,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           minutes = _totalSessionDuration.inMinutes.remainder(60);
           hours = _totalSessionDuration.inHours;
           int preFix = seconds;
-          String postFix = "s";
+          String postFix = TikTokStrings.secondPostFix;
           if(hours > 0) {
             preFix = hours;
-            postFix = "h";
+            postFix = TikTokStrings.hourPostFix;
           } else if(minutes > 0) {
             preFix = minutes;
-            postFix = "m";
+            postFix = TikTokStrings.minutePostFix;
           }
           actualTimeSpent = "$preFix $postFix";
         });
@@ -243,15 +242,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         fontWeight: forYouWeight,
         color: forYouTextColor);
 
-    const String followingText = "Following";
-    const String forYouText = "For You";
-
     return SafeArea(
       child: Stack(
           children: [
             Container(
               height: 54,
-              color: Colors.black,
+              color: TikTokColors.statusBar,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8),
@@ -265,10 +261,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     padding: const EdgeInsets.only(top: 1),
                     child: Text(
                         actualTimeSpent,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w400,
-                            color: unselectedTextColor)
+                            color: TikTokColors.unselectedText)
                     ),
                   ),
                 ],
@@ -286,9 +282,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           onTap: (){
                             print("Following tapped.");
                             setState(() {
-                              followingTextColor = selectedTextColor;
+                              followingTextColor = TikTokColors.selectedText;
                               followingWeight = FontWeight.bold;
-                              forYouTextColor = unselectedTextColor;
+                              forYouTextColor = TikTokColors.unselectedText;
                               forYouWeight = FontWeight.normal;
                               tabIndex = 0;
                               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -301,7 +297,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               }
                             });
                           },
-                          child: Text(followingText,
+                          child: Text(TikTokStrings.following,
                               style: followingTextStyle),
                         ),
                         const SizedBox(
@@ -311,9 +307,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           onTap: (){
                             print("For You tapped.");
                             setState(() {
-                              followingTextColor = unselectedTextColor;
+                              followingTextColor = TikTokColors.unselectedText;
                               followingWeight = FontWeight.normal;
-                              forYouTextColor = selectedTextColor;
+                              forYouTextColor = TikTokColors.selectedText;
                               forYouWeight = FontWeight.bold;
                               tabIndex = 1;
                               print("for you page index is $forYouPageIndex");
@@ -327,18 +323,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               }
                             });
                           },
-                          child: Text(forYouText,
+                          child: Text(TikTokStrings.forYou,
                               style: forYouTextStyle),
                         )
                       ]
                   ),
                   AnimatedPadding(
-                    padding: EdgeInsets.only(top: 5, left: tabIndex == 1? measureTextWidth(forYouText, forYouTextStyle) + 18 + 15: 0, right: tabIndex == 0 ? measureTextWidth(followingText, followingTextStyle)/2 + 15 + 18 : 0),
+                    padding: EdgeInsets.only(top: 5, left: tabIndex == 1? measureTextWidth(TikTokStrings.forYou, forYouTextStyle) + 18 + 15: 0, right: tabIndex == 0 ? measureTextWidth(TikTokStrings.following, followingTextStyle)/2 + 15 + 18 : 0),
                     duration: const Duration(milliseconds: 300),
                     child: Container(
                       width: 30,
                       height: 4,
-                      color: Colors.white,
+                      color: TikTokColors.selectedText,
                     ),
                   ),
                 ],
@@ -371,7 +367,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             const Text(
               'Playlist • Unit 5: Period 5: 1844-1877',
               style: TextStyle(
-                color: Colors.white,
+                color: TikTokColors.selectedText,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
               ),

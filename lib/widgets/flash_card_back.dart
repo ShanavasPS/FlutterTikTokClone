@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'rating_view.dart';
 import 'package:tittokclone/utils/tiktok_colors.dart';
+import 'package:tittokclone/utils/tiktok_strings.dart';
 
 class FlashCardBack extends StatefulWidget {
   final String flashcardBackText;
@@ -61,7 +62,7 @@ class FlashCardBackState extends State<FlashCardBack> {
             child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                "Answer",
+                TikTokStrings.answer,
                 style: TextStyle(
                   color: TikTokColors.answerTitleColor,
                   fontSize: 13,
