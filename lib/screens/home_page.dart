@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             buildForeground(),
           ]
       ),
-      floatingActionButton: buildFloatingActionButtons(avatar),
+      floatingActionButton: buildFloatingActionButtons(avatar, tabIndex),
       bottomNavigationBar: buildBottomNavigationBar(context),
     );
   }

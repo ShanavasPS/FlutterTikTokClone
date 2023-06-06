@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget buildCustomFloatingNetworkImageActionButton(String imageName, String errorImage, String secondaryImage, double height, double width) {
+Widget buildCustomFloatingNetworkImageActionButton(String imageName, String errorImage, String secondaryImage, double height, double width, bool showFollow) {
   return FloatingActionButton(
     onPressed: () {
       // Handle button press
@@ -35,12 +35,15 @@ Widget buildCustomFloatingNetworkImageActionButton(String imageName, String erro
               },
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Image.asset(
-              secondaryImage,
-              height: 24,
-              width: 24,
+          Visibility(
+            visible: showFollow,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Image.asset(
+                secondaryImage,
+                height: 24,
+                width: 24,
+              ),
             ),
           ),
         ],

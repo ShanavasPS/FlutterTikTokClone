@@ -4,13 +4,13 @@ import '../utils/tiktok_strings.dart';
 import 'custom_floating_action_button.dart';
 import 'custom_floating_network_action_button.dart';
 
-Widget buildFloatingActionButtons(String avatar) {
+Widget buildFloatingActionButtons(String avatar, int tabIndex) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 36.0),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        buildCustomFloatingNetworkImageActionButton(avatar, TikTokStrings.ellipsesImagePath, TikTokStrings.followImagePath, 55, 45),
+        buildCustomFloatingNetworkImageActionButton(avatar, TikTokStrings.ellipsesImagePath, TikTokStrings.followImagePath, 55, 45, tabIndex == 1),
         buildCustomFloatingActionButton(TikTokStrings.likeImagePath, 26, 28, TikTokStrings.likeCount),
         buildCustomFloatingActionButton(TikTokStrings.commentsImagePath, 26, 27, TikTokStrings.commentsCount),
         buildCustomFloatingActionButton(TikTokStrings.shareImagePath, 28, 27, TikTokStrings.shareCount),
