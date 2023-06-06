@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:tittokclone/networkcalls.dart';
+import 'package:tiktokclone/networkcalls.dart';
 import 'mcq_card.dart';
 import 'flash_card.dart';
-import 'package:tittokclone/utils/common.dart';
-import 'package:tittokclone/utils/tiktok_colors.dart';
-import 'package:tittokclone/utils/tiktok_strings.dart';
-import 'package:tittokclone/utils/tiktok_images.dart';
+import 'package:tiktokclone/utils/common.dart';
+import 'package:tiktokclone/utils/tiktok_colors.dart';
+import 'package:tiktokclone/utils/tiktok_strings.dart';
+import 'package:tiktokclone/utils/tiktok_images.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

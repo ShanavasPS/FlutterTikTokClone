@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tittokclone/utils/tiktok_colors.dart';
-import 'package:tittokclone/widgets/answer_selection.dart';
-import 'package:tittokclone/utils/common.dart';
+import 'package:tiktokclone/utils/tiktok_colors.dart';
+import 'package:tiktokclone/widgets/answer_selection.dart';
+import 'package:tiktokclone/utils/common.dart';
 
 class MCQFeed extends StatefulWidget {
   final Map<String, dynamic> content;

@@ -3,9 +3,9 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tittokclone/screens/home_page.dart';
-import 'package:tittokclone/utils/tiktok_colors.dart';
-import 'package:tittokclone/utils/tiktok_strings.dart';
+import 'package:tiktokclone/screens/home_page.dart';
+import 'package:tiktokclone/utils/tiktok_colors.dart';
+import 'package:tiktokclone/utils/tiktok_strings.dart';
 
 void main() {
   runApp(TikTokApp());

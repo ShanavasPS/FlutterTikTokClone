@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tittokclone/utils/tiktok_colors.dart';
-import 'package:tittokclone/utils/tiktok_strings.dart';
-import 'package:tittokclone/utils/tiktok_images.dart';
+import 'package:tiktokclone/utils/tiktok_colors.dart';
+import 'package:tiktokclone/utils/tiktok_strings.dart';
+import 'package:tiktokclone/utils/tiktok_images.dart';
 
 Widget buildCustomFloatingActionButton(String imageName, double height, double weight, String text) {
   bool showLabel = true;

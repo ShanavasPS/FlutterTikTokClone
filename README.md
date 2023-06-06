@@ -1,4 +1,4 @@
-# tittokclone
+# tiktokclone
 
 A new Flutter project.
 

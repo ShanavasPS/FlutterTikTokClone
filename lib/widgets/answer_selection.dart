@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tittokclone/utils/tiktok_colors.dart';
-import 'package:tittokclone/utils/tiktok_images.dart';
-import 'package:tittokclone/utils/tiktok_strings.dart';
+import 'package:tiktokclone/utils/tiktok_colors.dart';
+import 'package:tiktokclone/utils/tiktok_images.dart';
+import 'package:tiktokclone/utils/tiktok_strings.dart';
 
 class AnswerSelectionView extends StatefulWidget {
   final Map<String, dynamic> content;

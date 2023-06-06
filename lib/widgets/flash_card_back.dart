@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'rating_view.dart';
-import 'package:tittokclone/utils/tiktok_colors.dart';
-import 'package:tittokclone/utils/tiktok_strings.dart';
+import 'package:tiktokclone/utils/tiktok_colors.dart';
+import 'package:tiktokclone/utils/tiktok_strings.dart';
 
 class FlashCardBack extends StatefulWidget {
   final String flashcardBackText;
