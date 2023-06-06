@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/widgets/flash_card_back.dart';
-import 'package:tiktokclone/utils/common.dart';
+import 'package:tiktokclone/views/flash_card_back.dart';
 import 'package:tiktokclone/utils/tiktok_colors.dart';
+import 'package:tiktokclone/widgets/user_info.dart';
 
 class FlashCardFeed extends StatefulWidget {
   final Map<String, dynamic> content;

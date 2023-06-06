@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'rating_view.dart';
+import 'package:tiktokclone/views/rating_view.dart';
 import 'package:tiktokclone/utils/tiktok_colors.dart';
 import 'package:tiktokclone/utils/tiktok_strings.dart';
 

@@ -8,10 +8,12 @@ import 'package:tiktokclone/utils/tiktok_colors.dart';
 import 'package:tiktokclone/utils/tiktok_strings.dart';
 
 void main() {
-  runApp(TikTokApp());
+  runApp(const TikTokApp());
 }
 
 class TikTokApp extends StatelessWidget {
+  const TikTokApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Set the status bar color to black

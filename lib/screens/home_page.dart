@@ -1,13 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/networkcalls.dart';
-import 'mcq_card.dart';
-import 'flash_card.dart';
-import 'package:tiktokclone/utils/common.dart';
+import 'package:tiktokclone/network/network_calls.dart';
+import 'package:tiktokclone/screens/mcq_card.dart';
+import 'package:tiktokclone/screens/flash_card.dart';
+import 'package:tiktokclone/widgets/floating_action_buttons.dart';
 import 'package:tiktokclone/utils/tiktok_colors.dart';
 import 'package:tiktokclone/utils/tiktok_strings.dart';
 import 'package:tiktokclone/utils/tiktok_images.dart';
+import 'package:tiktokclone/widgets/gradient_background.dart';
+import 'package:tiktokclone/widgets/bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -190,7 +192,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             buildForeground(),
           ]
       ),
-      floatingActionButton: buildFloatingActionButton(avatar),
+      floatingActionButton: buildFloatingActionButtons(avatar),
       bottomNavigationBar: buildBottomNavigationBar(context),
     );
   }
