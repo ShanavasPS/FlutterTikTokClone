@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tiktokclone/utils/common.dart';
 
 import '../model/data_model.dart';
+import '../views/data_controller.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../views/floating_action_buttons.dart';
 import '../widgets/gradient_background.dart';
@@ -23,9 +24,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
-  final PageController followingPageController = PageController(initialPage: 0);
-  final PageController forYouPageController = PageController(initialPage: 0);
-
   AppLifecycleState _lastLifecycleState = AppLifecycleState.resumed;
 
   DateTime _sessionStartTime = DateTime.now();
@@ -37,15 +35,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   late Timer _timer;
 
   DataRepository dataRepository = DataRepository();
+  late DataController dataController;
 
   @override
   void initState() {
     super.initState();
     print('inside state:');
 
-    initPageControllers();
-
-    initializeData();
+    dataController = DataController(dataRepository);
 
     WidgetsBinding.instance.addObserver(this);
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
@@ -56,24 +53,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         });
       }
     });
-  }
-
-  void initPageControllers() {
-    followingPageController.addListener(() {
-      pageListener(followingPageController, fetchNextFollowingItem);
-    });
-
-    forYouPageController.addListener(() {
-      pageListener(forYouPageController, fetchNextForYouItem);
-    });
-  }
-
-  void initializeData() {
-    if (dataRepository.tabIndex == 0) {
-      fetchNextFollowingItem();
-    } else {
-      fetchNextForYouItem();
-    }
   }
 
   @override
@@ -92,43 +71,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       _totalSessionDuration += DateTime.now().difference(_sessionStartTime);
     }
     _lastLifecycleState = state;
-  }
-
-  void pageListener(PageController controller, Future<void> Function() fetchData) {
-    print("Inside pageListener");
-    print(controller.page);
-    if((dataRepository.tabIndex == 0 && controller.page == dataRepository.followingItems.length) ||
-        (dataRepository.tabIndex == 1 && controller.page == dataRepository.forYouItems.length)) {
-      print("condition met");
-      fetchData();
-    }
-  }
-
-  void setLoadingState(bool loading) {
-    setState(() {
-      dataRepository.isLoading = loading;
-    });
-  }
-
-  Future<void> fetchData(Future<void> Function() fetchDataMethod) async {
-    setLoadingState(true);
-
-    try {
-      await fetchDataMethod();
-    } catch (e) {
-      // Handle error
-      print('Error: $e');
-    } finally {
-      setLoadingState(false);
-    }
-  }
-
-  Future<void> fetchNextFollowingItem() async {
-    fetchData(dataRepository.fetchNextFollowingItem);
-  }
-
-  Future<void> fetchNextForYouItem() async {
-    fetchData(dataRepository.fetchNextForYouItem);
   }
 
   @override
@@ -167,11 +109,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     setState(() {
       dataRepository.tabIndex = 0;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        followingPageController.jumpToPage(dataRepository.followingPageIndex);
+        dataController.followingPageController.jumpToPage(dataRepository.followingPageIndex);
         // Manually set the page to 0
       });
       if(!dataRepository.isFollowingPageInitialized) {
-        fetchNextFollowingItem();
+        dataController.fetchNextFollowingItem();
       }
     });
   }
@@ -182,11 +124,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       dataRepository.tabIndex = 1;
       print("for you page index is ${dataRepository.forYouPageIndex}");
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        forYouPageController.jumpToPage(dataRepository.forYouPageIndex);
+        dataController.forYouPageController.jumpToPage(dataRepository.forYouPageIndex);
         // Manually set the page to 0
       });
       if(!dataRepository.isForYouPageInitialized) {
-        fetchNextForYouItem();
+        dataController.fetchNextForYouItem();
       }
     });
   }
@@ -194,8 +136,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Widget buildPageView() {
     print("inside buildPageView");
     final PageController controller = dataRepository.tabIndex == 0
-        ? followingPageController
-        : forYouPageController;
+        ? dataController.followingPageController
+        : dataController.forYouPageController;
     final int itemCount = dataRepository.tabIndex == 0
         ? dataRepository.followingItems.length
         : dataRepository.forYouItems.length;
