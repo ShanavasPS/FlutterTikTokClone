@@ -6,7 +6,7 @@ import 'package:tiktokclone/utils/common.dart';
 import '../model/data_model.dart';
 import '../views/data_controller.dart';
 import '../widgets/bottom_navigation_bar.dart';
-import '../views/floating_action_buttons.dart';
+import '../widgets/floating_action_buttons.dart';
 import '../widgets/gradient_background.dart';
 import '../widgets/page_view.dart';
 import '../widgets/song_bar.dart';

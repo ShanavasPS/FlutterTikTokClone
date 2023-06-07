@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../utils/tiktok_strings.dart';
-import '../widgets/custom_floating_action_button.dart';
-import '../widgets/custom_floating_network_action_button.dart';
+import 'custom_floating_action_button.dart';
+import 'custom_floating_network_action_button.dart';
 
 Widget buildFloatingActionButtons(String avatar, int tabIndex) {
   return Padding(

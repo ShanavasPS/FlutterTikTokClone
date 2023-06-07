@@ -31,11 +31,13 @@ class DataController {
   }
 
   void pageListener(PageController controller, Future<void> Function() fetchData) {
-    print("Inside pageLister $controller");
-    if((dataRepository.tabIndex == 0 && controller.page == dataRepository.followingItems.length) ||
-        (dataRepository.tabIndex == 1 && controller.page == dataRepository.forYouItems.length)) {
+    print("Inside pageLister ${controller.page} ${dataRepository.followingItems.length}");
+    if((dataRepository.tabIndex == 0 && controller.page == dataRepository.followingItems.length - 1) ||
+        (dataRepository.tabIndex == 1 && controller.page == dataRepository.forYouItems.length - 1)) {
       print("condition met");
-      fetchData();
+      if (!dataRepository.isLoading) {
+        fetchData();
+      }
     }
   }
 
