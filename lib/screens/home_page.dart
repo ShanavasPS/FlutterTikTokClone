@@ -8,12 +8,9 @@ import '../views/data_controller.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../views/floating_action_buttons.dart';
 import '../widgets/gradient_background.dart';
-import '../widgets/loader_indicator.dart';
+import '../widgets/page_view.dart';
 import '../widgets/song_bar.dart';
 import '../widgets/top_bar.dart';
-import 'flash_card.dart';
-import 'mcq_card.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -97,7 +94,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       children: [
         buildTopBar(dataRepository.tabIndex, actualTimeSpent, followingTapped, forYouTapped),
         Expanded(
-            child: buildPageView()
+            child: buildPageView(dataController, dataRepository)
         ),
         buildSongBarWidget(playlist),
       ],
@@ -131,46 +128,5 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         dataController.fetchNextForYouItem();
       }
     });
-  }
-
-  Widget buildPageView() {
-    print("inside buildPageView");
-    final PageController controller = dataRepository.tabIndex == 0
-        ? dataController.followingPageController
-        : dataController.forYouPageController;
-    final int itemCount = dataRepository.tabIndex == 0
-        ? dataRepository.followingItems.length
-        : dataRepository.forYouItems.length;
-
-    return PageView.builder(
-      controller: controller,
-      itemCount: itemCount + 1,
-      onPageChanged: (pageIndex) {
-        print("Inside onPageChanged");
-        if (dataRepository.tabIndex == 0) {
-          dataRepository.followingPageIndex = pageIndex;
-        } else {
-          dataRepository.forYouPageIndex = pageIndex;
-        }
-      },
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) {
-        print("Index inside itemBuilder is $index");
-        if (index < itemCount) {
-          if (dataRepository.tabIndex == 0) {
-            return FlashCardFeed(content: dataRepository.followingItems[index]);
-          } else {
-            print("setting a forYou page");
-            print(controller.page);
-            return MCQFeed(
-              content: dataRepository.forYouItems[index],
-              answer: dataRepository.answers[index],
-            );
-          }
-        } else {
-          return buildLoaderIndicator(dataRepository.isLoading);
-        }
-      },
-    );
   }
 }
