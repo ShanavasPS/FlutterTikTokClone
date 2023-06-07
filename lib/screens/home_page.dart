@@ -5,7 +5,7 @@ import 'package:tiktokclone/utils/common.dart';
 
 import '../model/data_model.dart';
 import '../widgets/bottom_navigation_bar.dart';
-import '../widgets/floating_action_buttons.dart';
+import '../views/floating_action_buttons.dart';
 import '../widgets/gradient_background.dart';
 import '../widgets/loader_indicator.dart';
 import '../widgets/song_bar.dart';
@@ -25,8 +25,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   final PageController followingPageController = PageController(initialPage: 0);
   final PageController forYouPageController = PageController(initialPage: 0);
-
-  bool isLoading = false; // Flag to track loading state
 
   AppLifecycleState _lastLifecycleState = AppLifecycleState.resumed;
 
@@ -108,7 +106,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   void setLoadingState(bool loading) {
     setState(() {
-      isLoading = loading;
+      dataRepository.isLoading = loading;
     });
   }
 
@@ -228,7 +226,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             );
           }
         } else {
-          return buildLoaderIndicator(isLoading);
+          return buildLoaderIndicator(dataRepository.isLoading);
         }
       },
     );

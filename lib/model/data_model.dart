@@ -15,6 +15,7 @@ class DataRepository {
   int tabIndex = 0; //To track selected screen
   int followingPageIndex = 0;
   int forYouPageIndex = 0;
+  bool isLoading = false; // Flag to track loading state
 
   Future<void> fetchNextFollowingItem() async {
     try {
