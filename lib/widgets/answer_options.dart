@@ -25,7 +25,6 @@ Widget answerOptions({
     }
   }
 
-  print("Inside answerOptions $optionId $answer $didTapThisOption $didTapAnOption");
   return GestureDetector(
     onTap: onTap,
     child: Container(

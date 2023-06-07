@@ -7,7 +7,6 @@ import '../views/data_controller.dart';
 import 'loader_indicator.dart';
 
 Widget buildPageView(DataController dataController, DataRepository dataRepository) {
-  print("inside buildPageView");
   final PageController controller = dataRepository.tabIndex == 0
       ? dataController.followingPageController
       : dataController.forYouPageController;
@@ -22,7 +21,6 @@ Widget buildPageView(DataController dataController, DataRepository dataRepositor
     controller: controller,
     itemCount: itemCount + 1,
     onPageChanged: (pageIndex) {
-      print("Inside onPageChanged");
       if (dataRepository.tabIndex == 0) {
         dataRepository.followingPageIndex = pageIndex;
       } else {
@@ -31,13 +29,10 @@ Widget buildPageView(DataController dataController, DataRepository dataRepositor
     },
     scrollDirection: Axis.vertical,
     itemBuilder: (context, index) {
-      print("Index inside itemBuilder is $index");
       if (index < itemCount) {
         if (dataRepository.tabIndex == 0) {
           return FlashCardFeed(content: dataRepository.followingItems[index]);
         } else {
-          print("setting a forYou page");
-          print(controller.page);
           return MCQFeed(
             content: dataRepository.forYouItems[index],
             answer: dataRepository.answers[index],

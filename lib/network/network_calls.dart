@@ -3,10 +3,7 @@ import 'dart:convert';
 
 Future<Map<String, dynamic>> fetchData(String url) async {
   final response = await http.get(Uri.parse(url));
-  print('Inside fetchData:');
   if (response.statusCode == 200) {
-    print("Received positive response");
-    print(response.body);
     var data = jsonDecode(response.body);
     return data;
   } else {

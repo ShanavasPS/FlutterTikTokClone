@@ -37,7 +37,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    print('inside state:');
 
     dataController = DataController(dataRepository);
 
@@ -72,7 +71,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    print("Inside build of main");
     final List<dynamic> avatarAndPlaylist = dataRepository.updateAvatarAndPlaylist();
     String avatar = avatarAndPlaylist[0];
     String playlist = avatarAndPlaylist[1];
@@ -102,7 +100,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   void followingTapped() {
-    print("Following tapped.");
     setState(() {
       dataRepository.tabIndex = 0;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -116,10 +113,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   void forYouTapped() {
-    print("For You tapped.");
     setState(() {
       dataRepository.tabIndex = 1;
-      print("for you page index is ${dataRepository.forYouPageIndex}");
       WidgetsBinding.instance.addPostFrameCallback((_) {
         dataController.forYouPageController.jumpToPage(0);
         // Manually set the page to 0

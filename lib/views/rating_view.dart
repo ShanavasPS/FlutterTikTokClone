@@ -32,7 +32,6 @@ class RatingViewState extends State<RatingView> {
   @override
   void initState() {
     super.initState();
-    print('inside state:');
   }
 
   List<bool> didTapOnButtons = [false, false, false, false, false];

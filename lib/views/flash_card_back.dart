@@ -22,8 +22,6 @@ class FlashCardBackState extends State<FlashCardBack> {
   @override
   void initState() {
     super.initState();
-    print("Inside initState");
-    print('inside FlashCardBackState: $showBack');
   }
 
   @override
@@ -39,7 +37,6 @@ class FlashCardBackState extends State<FlashCardBack> {
   void updateFlashCardBackState(bool showBackOfFlashCard) {
     // Update the state value in the parent widget
     setState(() {
-      print("Inside FlashCardBackState $showBackOfFlashCard");
       // Update the state value with the new value received from the child
       showBack = showBackOfFlashCard;
       widget.updateFlashCardFeedState(showBackOfFlashCard);

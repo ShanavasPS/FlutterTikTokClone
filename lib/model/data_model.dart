@@ -24,12 +24,8 @@ class DataRepository {
       final jsonData = await getNextFollowingItem();
       FlashcardData flashcardData = FlashcardData.fromJson(jsonData);
       followingItems.add(flashcardData);
-      print("received the below item");
-      print(followingItems[0]);
-      print(followingItems.length);
     } catch (e) {
       // Handle error
-      print('Error: $e');
     }
     isFollowingPageLoading = false;
     isFollowingPageInitialized = true;
@@ -44,12 +40,8 @@ class DataRepository {
       AnswerData quizData = AnswerData.fromJson(answerData);
       forYouItems.add(mcqData);
       answers.add(quizData);
-      print("received the below item");
-      print(forYouItems[0]);
-      print(forYouItems.length);
     } catch (e) {
       // Handle error
-      print('Error: $e');
     }
     isForYouPageInitialized = true;
     isForYouPageLoading = false;

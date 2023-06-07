@@ -23,7 +23,6 @@ class MCQFeedState extends State<MCQFeed> {
   @override
   void initState() {
     super.initState();
-    print('inside state:');
   }
 
   @override

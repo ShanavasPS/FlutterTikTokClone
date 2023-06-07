@@ -22,13 +22,11 @@ class FlashCardFeedState extends State<FlashCardFeed> {
   @override
   void initState() {
     super.initState();
-    print('inside state:');
   }
 
   void updateFlashCardFeedState(bool showBackOfFlashCard) {
     // Update the state value in the parent widget
     setState(() {
-      print("Inside Flash Card Feed State $showBackOfFlashCard");
       // Update the state value with the new value received from the child
       this.showBackOfFlashCard = showBackOfFlashCard;
     });
@@ -55,10 +53,7 @@ class FlashCardFeedState extends State<FlashCardFeed> {
           .height,
       child: GestureDetector(
         onTap: () {
-          print("container tapped");
-          print(showBackOfFlashCard);
           setState(() {
-            print("inside set state");
             showBackOfFlashCard = !showBackOfFlashCard;
           });
         },
