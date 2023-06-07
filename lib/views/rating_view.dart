@@ -19,6 +19,16 @@ class RatingView extends StatefulWidget {
 class RatingViewState extends State<RatingView> {
   RatingViewState() : super();
 
+  void handleRatingButtonTap(int index) {
+    setState(() {
+      if (!didTapOnButtons.any((tapped) => tapped)) {
+        didTapOnButtons[index] = true;
+      } else {
+        widget.updateFlashCardBackState(false);
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -72,15 +82,7 @@ class RatingViewState extends State<RatingView> {
                   context,
                   ratingStrings[i],
                   ratingColors[i],
-                      () {
-                    setState(() {
-                      if (!didTapOnAnyButton) {
-                        didTapOnButtons[i] = true;
-                      } else {
-                        widget.updateFlashCardBackState(false);
-                      }
-                    });
-                  },
+                      () => handleRatingButtonTap(i),
                 ),
                 if (i < didTapOnButtons.length - 1) const SizedBox(width: 8),
               ],

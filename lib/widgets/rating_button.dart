@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../utils/tiktok_colors.dart';
 
-Widget ratingButton(BuildContext context, String label, Color color, VoidCallback onTap) {
+Widget ratingButton(BuildContext context, String label, Color color, final Function() onTap) {
   print("inside ratingButton $label");
   return Expanded(
     child: GestureDetector(
