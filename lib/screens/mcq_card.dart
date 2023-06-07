@@ -34,7 +34,7 @@ class MCQFeedState extends State<MCQFeed> {
     final String username = content.user.name;
     final String description = content.description;
 
-    return Container(
+    return SizedBox(
       width: MediaQuery
           .of(context)
           .size

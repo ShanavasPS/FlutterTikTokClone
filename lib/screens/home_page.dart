@@ -13,13 +13,14 @@ import '../widgets/song_bar.dart';
 import '../widgets/top_bar.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+
+class HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   AppLifecycleState _lastLifecycleState = AppLifecycleState.resumed;
 

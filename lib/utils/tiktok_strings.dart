@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 class TikTokStrings {
   TikTokStrings._();
 
