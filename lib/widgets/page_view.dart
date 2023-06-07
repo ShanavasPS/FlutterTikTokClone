@@ -14,6 +14,9 @@ Widget buildPageView(DataController dataController, DataRepository dataRepositor
   final int itemCount = dataRepository.tabIndex == 0
       ? dataRepository.followingItems.length
       : dataRepository.forYouItems.length;
+  final bool isLoading = dataRepository.tabIndex == 0
+      ? dataRepository.isFollowingPageLoading
+      : dataRepository.isForYouPageLoading;
 
   return PageView.builder(
     controller: controller,
@@ -41,7 +44,7 @@ Widget buildPageView(DataController dataController, DataRepository dataRepositor
           );
         }
       } else {
-        return buildLoaderIndicator(dataRepository.isLoading);
+        return buildLoaderIndicator(isLoading);
       }
     },
   );

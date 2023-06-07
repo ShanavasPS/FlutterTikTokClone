@@ -15,10 +15,12 @@ class DataRepository {
   int tabIndex = 0; //To track selected screen
   int followingPageIndex = 0;
   int forYouPageIndex = 0;
-  bool isLoading = false; // Flag to track loading state
+  bool isFollowingPageLoading = false;
+  bool isForYouPageLoading = false;
 
   Future<void> fetchNextFollowingItem() async {
     try {
+      isFollowingPageLoading = true;
       final jsonData = await getNextFollowingItem();
       FlashcardData flashcardData = FlashcardData.fromJson(jsonData);
       followingItems.add(flashcardData);
@@ -29,11 +31,13 @@ class DataRepository {
       // Handle error
       print('Error: $e');
     }
+    isFollowingPageLoading = false;
     isFollowingPageInitialized = true;
   }
 
   Future<void> fetchNextForYouItem() async {
     try {
+      isForYouPageLoading = true;
       final jsonData = await getNextForYouItem();
       McqData mcqData = McqData.fromJson(jsonData);
       final answerData = await revealAnswer(mcqData.id);
@@ -48,6 +52,7 @@ class DataRepository {
       print('Error: $e');
     }
     isForYouPageInitialized = true;
+    isForYouPageLoading = false;
   }
 
   List<String> updateAvatarAndPlaylist() {

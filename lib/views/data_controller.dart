@@ -14,6 +14,7 @@ class DataController {
   void initializeData() {
     if (dataRepository.tabIndex == 0) {
       fetchNextFollowingItem();
+      print("fetched first following item");
     } else {
       fetchNextForYouItem();
     }
@@ -31,13 +32,11 @@ class DataController {
   }
 
   void pageListener(PageController controller, Future<void> Function() fetchData) {
-    print("Inside pageLister ${controller.page} ${dataRepository.followingItems.length}");
-    if((dataRepository.tabIndex == 0 && controller.page == dataRepository.followingItems.length - 1) ||
-        (dataRepository.tabIndex == 1 && controller.page == dataRepository.forYouItems.length - 1)) {
+    print("Inside pageLister ${controller.page} ${dataRepository.followingItems.length} ${dataRepository.isFollowingPageLoading} ${controller.page?.toInt() == (dataRepository.followingItems.length - 1)}");
+    if((dataRepository.tabIndex == 0 && controller.page?.toInt() == dataRepository.followingItems.length - 1 && !dataRepository.isFollowingPageLoading) ||
+        (dataRepository.tabIndex == 1 && controller.page?.toInt() == dataRepository.forYouItems.length - 1 && !dataRepository.isForYouPageLoading)) {
       print("condition met");
-      if (!dataRepository.isLoading) {
-        fetchData();
-      }
+      fetchData();
     }
   }
 
@@ -50,15 +49,12 @@ class DataController {
   }
 
   Future<void> fetchData(Future<void> Function() fetchDataMethod) async {
-    dataRepository.isLoading = true;
-
     try {
       await fetchDataMethod();
     } catch (e) {
       // Handle error
       print('Error: $e');
     } finally {
-      dataRepository.isLoading = false;
     }
   }
 
