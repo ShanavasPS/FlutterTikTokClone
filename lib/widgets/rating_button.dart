@@ -4,22 +4,27 @@ import 'package:flutter/cupertino.dart';
 
 import '../utils/tiktok_colors.dart';
 
-Widget ratingButton(BuildContext context, String label, Color color) {
+Widget ratingButton(BuildContext context, String label, Color color, VoidCallback onTap) {
   print("inside ratingButton $label");
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8),
-      color: color,
-    ),
-    width: (MediaQuery.of(context).size.width - 8 * 6) / 5,
-    height: 52,
-    child: Center(
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: TikTokColors.selectedText,
-          fontSize: 17,
-          fontWeight: FontWeight.w600,
+  return Expanded(
+    child: GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.translucent,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: color,
+        ),
+        height: 52,
+        child: Center(
+          child: Text(
+            label,
+            style: const TextStyle(
+              color: TikTokColors.selectedText,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     ),

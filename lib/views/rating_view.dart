@@ -68,20 +68,19 @@ class RatingViewState extends State<RatingView> {
           children: [
             for (int i = 0; i < didTapOnButtons.length; i++) ...[
               if (!didTapOnAnyButton || didTapOnButtons[i]) ...[
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (!didTapOnAnyButton) {
-                          didTapOnButtons[i] = true;
-                        } else {
-                          widget.updateFlashCardBackState(false);
-                        }
-                      });
-                    },
-                    behavior: HitTestBehavior.translucent,
-                    child: ratingButton(context, ratingStrings[i], ratingColors[i]),
-                  ),
+                ratingButton(
+                  context,
+                  ratingStrings[i],
+                  ratingColors[i],
+                      () {
+                    setState(() {
+                      if (!didTapOnAnyButton) {
+                        didTapOnButtons[i] = true;
+                      } else {
+                        widget.updateFlashCardBackState(false);
+                      }
+                    });
+                  },
                 ),
                 if (i < didTapOnButtons.length - 1) const SizedBox(width: 8),
               ],
