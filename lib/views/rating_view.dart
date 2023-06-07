@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/tiktok_colors.dart';
 import '../utils/tiktok_strings.dart';
+import '../widgets/rating_button.dart';
 
 class RatingView extends StatefulWidget {
   final bool showBackOfFlashCard;
@@ -22,15 +23,25 @@ class RatingViewState extends State<RatingView> {
     print('inside state:');
   }
 
-  bool showButtonOne = true;
-  bool showButtonTwo = true;
-  bool showButtonThree = true;
-  bool showButtonFour = true;
-  bool showButtonFive = true;
   bool isColoredBoxSelected = false;
+
+  bool didTapOnButtonOne = false;
+  bool didTapOnButtonTwo = false;
+  bool didTapOnButtonThree = false;
+  bool didTapOnButtonFour = false;
+  bool didTapOnButtonFive = false;
 
   @override
   Widget build(BuildContext context) {
+
+    bool didTapOnAnyButton = didTapOnButtonOne || didTapOnButtonTwo || didTapOnButtonThree || didTapOnButtonFour || didTapOnButtonFive;
+
+    bool showButtonOne = !didTapOnAnyButton || didTapOnButtonOne;
+    bool showButtonTwo = !didTapOnAnyButton || didTapOnButtonTwo;
+    bool showButtonThree = !didTapOnAnyButton || didTapOnButtonThree;
+    bool showButtonFour = !didTapOnAnyButton || didTapOnButtonFour;
+    bool showButtonFive = !didTapOnAnyButton || didTapOnButtonFive;
+
     return Column(
       children: [
         Padding(
@@ -56,36 +67,15 @@ class RatingViewState extends State<RatingView> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      if(!isColoredBoxSelected) {
-                        showButtonTwo = false;
-                        showButtonThree = false;
-                        showButtonFour = false;
-                        showButtonFive = false;
-                        isColoredBoxSelected = true;
+                      if(!didTapOnAnyButton) {
+                        didTapOnButtonOne = true;
                       } else {
                         widget.updateFlashCardBackState(false);
                       }
                     });
                   },
                   behavior: HitTestBehavior.translucent,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: TikTokColors.princetonOrange,
-                    ),
-                    width: (MediaQuery.of(context).size.width - 8 * 6) / 5,
-                    height: 52,
-                    child: const Center(
-                      child: Text(
-                        TikTokStrings.ratingOne,
-                        style: TextStyle(
-                          color: TikTokColors.selectedText,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: ratingButton(context, TikTokStrings.ratingOne, TikTokColors.princetonOrange),
                 ),
               ),
             ),
@@ -94,40 +84,20 @@ class RatingViewState extends State<RatingView> {
                 child: const SizedBox(width: 8)
             ),
             Visibility(
-              visible: showButtonTwo,
+              visible:showButtonTwo,
               child: Expanded(
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      if(!isColoredBoxSelected) {
-                        showButtonOne = false;
-                        showButtonThree = false;
-                        showButtonFour = false;
-                        showButtonFive = false;
-                        isColoredBoxSelected = true;
+                      if(!didTapOnAnyButton) {
+                        didTapOnButtonTwo = true;
                       } else {
                         widget.updateFlashCardBackState(false);
                       }
                     });
                   },
                   behavior: HitTestBehavior.translucent,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: TikTokColors.mellowApricot,
-                    ),
-                    height: 52,
-                    child: const Center(
-                      child: Text(
-                        TikTokStrings.ratingTwo,
-                        style: TextStyle(
-                          color: TikTokColors.selectedText,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: ratingButton(context, TikTokStrings.ratingTwo, TikTokColors.mellowApricot),
                 ),
               ),
             ),
@@ -141,35 +111,15 @@ class RatingViewState extends State<RatingView> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      if(!isColoredBoxSelected) {
-                        showButtonOne = false;
-                        showButtonTwo = false;
-                        showButtonFour = false;
-                        showButtonFive = false;
-                        isColoredBoxSelected = true;
+                      if(!didTapOnAnyButton) {
+                        didTapOnButtonThree = true;
                       } else {
                         widget.updateFlashCardBackState(false);
                       }
                     });
                   },
                   behavior: HitTestBehavior.translucent,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: TikTokColors.mustard,
-                    ),
-                    height: 52,
-                    child: const Center(
-                      child: Text(
-                        TikTokStrings.ratingThree,
-                        style: TextStyle(
-                          color: TikTokColors.selectedText,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: ratingButton(context, TikTokStrings.ratingThree, TikTokColors.mustard),
                 ),
               ),
             ),
@@ -183,40 +133,20 @@ class RatingViewState extends State<RatingView> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      if(!isColoredBoxSelected) {
-                        showButtonOne = false;
-                        showButtonTwo = false;
-                        showButtonThree = false;
-                        showButtonFive = false;
-                        isColoredBoxSelected = true;
+                      if(!didTapOnAnyButton) {
+                        didTapOnButtonFour = true;
                       } else {
                         widget.updateFlashCardBackState(false);
                       }
                     });
                   },
                   behavior: HitTestBehavior.translucent,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: TikTokColors.darkGreenColor,
-                    ),
-                    height: 52,
-                    child: const Center(
-                      child: Text(
-                        TikTokStrings.ratingFour,
-                        style: TextStyle(
-                          color: TikTokColors.selectedText,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: ratingButton(context, TikTokStrings.ratingFour, TikTokColors.darkGreenColor),
                 ),
               ),
             ),
             Visibility(
-                visible: showButtonOne,
+                visible: showButtonFour,
                 child: const SizedBox(width: 8)
             ),
             Visibility(
@@ -225,35 +155,15 @@ class RatingViewState extends State<RatingView> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      if(!isColoredBoxSelected) {
-                        showButtonOne = false;
-                        showButtonTwo = false;
-                        showButtonThree = false;
-                        showButtonFour = false;
-                        isColoredBoxSelected = true;
+                      if(!didTapOnAnyButton) {
+                        didTapOnButtonFive = true;
                       } else {
                         widget.updateFlashCardBackState(false);
                       }
                     });
                   },
                   behavior: HitTestBehavior.translucent,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: TikTokColors.illuminatingEmerald,
-                    ),
-                    height: 52,
-                    child: const Center(
-                      child: Text(
-                        TikTokStrings.ratingFive,
-                        style: TextStyle(
-                          color: TikTokColors.selectedText,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: ratingButton(context, TikTokStrings.ratingFive, TikTokColors.illuminatingEmerald),
                 ),
               ),
             ),
