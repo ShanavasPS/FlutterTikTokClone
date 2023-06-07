@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     setState(() {
       dataRepository.tabIndex = 0;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        followingPageController.jumpToPage(0);
+        followingPageController.jumpToPage(dataRepository.followingPageIndex);
         // Manually set the page to 0
       });
       if(!dataRepository.isFollowingPageInitialized) {
@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       dataRepository.tabIndex = 1;
       print("for you page index is ${dataRepository.forYouPageIndex}");
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        forYouPageController.jumpToPage(0);
+        forYouPageController.jumpToPage(dataRepository.forYouPageIndex);
         // Manually set the page to 0
       });
       if(!dataRepository.isForYouPageInitialized) {
