@@ -41,9 +41,9 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
         return answerOptions(
-          option: content.options[index].id,
+          optionId: content.options[index].id,
           optionText: content.options[index].answer,
-          answer: answer.correctOptions[0].id,
+          answer: answer,
           didTapThisOption: didTapOptions[index],
           didTapAnOption: didTapOptions.contains(true),
           onTap: () => handleOptionTap(index),

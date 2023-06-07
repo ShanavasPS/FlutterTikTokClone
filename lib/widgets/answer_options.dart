@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tiktokclone/model/answer_model.dart';
 
 import '../utils/tiktok_colors.dart';
 import '../utils/tiktok_images.dart';
 
 Widget answerOptions({
-  required String option,
+  required String optionId,
   required String optionText,
-  required String answer,
+  required AnswerData answer,
   required bool didTapThisOption,
   required bool didTapAnOption,
   required VoidCallback onTap,
@@ -15,7 +16,7 @@ Widget answerOptions({
   bool isCorrect = false;
   bool isIncorrect = false;
   if(didTapAnOption) {
-    if(option == answer) {
+    if(answer.correctOptions.any((option) => option.id == optionId)) {
       isCorrect = true;
       backgroundColor = TikTokColors.correctAnswerColor;
     } else if(didTapThisOption) {
@@ -24,7 +25,7 @@ Widget answerOptions({
     }
   }
 
-  print("Inside answerOptions $option $answer $didTapThisOption $didTapAnOption");
+  print("Inside answerOptions $optionId $answer $didTapThisOption $didTapAnOption");
   return GestureDetector(
     onTap: onTap,
     child: Container(
