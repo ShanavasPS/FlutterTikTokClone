@@ -12,11 +12,8 @@ class DataController {
   }
 
   void initializeData() {
-    if (dataRepository.tabIndex == 0) {
       fetchNextFollowingItem();
-    } else {
       fetchNextForYouItem();
-    }
   }
 
   void initPageListeners() {

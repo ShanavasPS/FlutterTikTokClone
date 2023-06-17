@@ -31,6 +31,11 @@ class DataRepository {
     }
     isFollowingPageLoading = false;
     isFollowingPageInitialized = true;
+    if(followingItems.length <= followingPageIndex + 5) {
+      if(tabIndex == 0) {
+        fetchNextFollowingItem();
+      }
+    }
   }
 
   Future<void> fetchNextForYouItem() async {
@@ -47,6 +52,11 @@ class DataRepository {
     }
     isForYouPageInitialized = true;
     isForYouPageLoading = false;
+    if(forYouItems.length <= forYouPageIndex + 5) {
+      if(tabIndex == 1) {
+        fetchNextForYouItem();
+      }
+    }
   }
 
   List<String> updateAvatarAndPlaylist() {
