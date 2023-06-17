@@ -1,8 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-Future<Map<String, dynamic>> fetchData(String url) async {
-  final response = await http.get(Uri.parse(url));
+Future<Map<String, dynamic>> fetchData(String url, http.Client client) async {
+  final response = await client.get(Uri.parse(url));
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
     return data;
@@ -11,14 +12,14 @@ Future<Map<String, dynamic>> fetchData(String url) async {
   }
 }
 
-Future<Map<String, dynamic>> getNextFollowingItem() async {
-  return fetchData('https://cross-platform.rp.devfactory.com/following');
+Future<Map<String, dynamic>> getNextFollowingItem(http.Client client) async {
+  return fetchData('https://cross-platform.rp.devfactory.com/following', client);
 }
 
-Future<Map<String, dynamic>> getNextForYouItem() async {
-  return fetchData('https://cross-platform.rp.devfactory.com/for_you');
+Future<Map<String, dynamic>> getNextForYouItem(http.Client client) async {
+  return fetchData('https://cross-platform.rp.devfactory.com/for_you', client);
 }
 
-Future<Map<String, dynamic>> revealAnswer(int mcqID) async {
-  return fetchData('https://cross-platform.rp.devfactory.com/reveal?id=$mcqID');
+Future<Map<String, dynamic>> revealAnswer(int mcqID, http.Client client) async {
+  return fetchData('https://cross-platform.rp.devfactory.com/reveal?id=$mcqID', client);
 }

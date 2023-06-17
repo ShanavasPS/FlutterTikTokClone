@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tiktokclone/screens/home_page.dart';
@@ -26,7 +23,7 @@ class TikTokApp extends StatelessWidget {
         primarySwatch: Colors.pink,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

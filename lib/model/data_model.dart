@@ -4,6 +4,7 @@ import '../utils/tiktok_strings.dart';
 import 'answer_model.dart';
 import 'flashcard_data.dart';
 import 'mcq_data.dart';
+import 'package:http/http.dart' as http;
 
 class DataRepository {
 
@@ -17,11 +18,12 @@ class DataRepository {
   int forYouPageIndex = 0;
   bool isFollowingPageLoading = false;
   bool isForYouPageLoading = false;
+  late http.Client client = http.Client();
 
   Future<void> fetchNextFollowingItem() async {
     try {
       isFollowingPageLoading = true;
-      final jsonData = await getNextFollowingItem();
+      final jsonData = await getNextFollowingItem(client);
       FlashcardData flashcardData = FlashcardData.fromJson(jsonData);
       followingItems.add(flashcardData);
     } catch (e) {
@@ -34,9 +36,9 @@ class DataRepository {
   Future<void> fetchNextForYouItem() async {
     try {
       isForYouPageLoading = true;
-      final jsonData = await getNextForYouItem();
+      final jsonData = await getNextForYouItem(client);
       McqData mcqData = McqData.fromJson(jsonData);
-      final answerData = await revealAnswer(mcqData.id);
+      final answerData = await revealAnswer(mcqData.id, client);
       AnswerData quizData = AnswerData.fromJson(answerData);
       forYouItems.add(mcqData);
       answers.add(quizData);
