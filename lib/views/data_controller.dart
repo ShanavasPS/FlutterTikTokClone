@@ -31,6 +31,8 @@ class DataController {
     final int itemCount = dataRepository.itemCount();
     if (currentPage >= itemCount - 1 && !dataRepository.isLoading()) {
       fetchData();
+    } else if (currentPage < itemCount - dataRepository.prefetchCount) {
+      fetchNextItem(); // Prefetch the next items if the current page is far from the end
     }
   }
 
@@ -40,6 +42,14 @@ class DataController {
 
   Future<void> fetchNextForYouItem() async {
     fetchData(dataRepository.fetchNextForYouItem);
+  }
+
+  Future<void> fetchNextItem() async {
+    if (dataRepository.tabIndex == 0) {
+      fetchNextFollowingItem();
+    } else {
+      fetchNextForYouItem();
+    }
   }
 
   Future<void> fetchData(Future<void> Function() fetchDataMethod) async {

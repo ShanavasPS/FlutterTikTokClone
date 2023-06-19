@@ -19,6 +19,7 @@ class DataRepository {
   bool isFollowingPageLoading = false;
   bool isForYouPageLoading = false;
   late http.Client client = http.Client();
+  final int prefetchCount = 5;
 
   bool isLoading() {
     return (tabIndex == 0)

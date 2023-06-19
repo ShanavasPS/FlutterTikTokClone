@@ -103,18 +103,12 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void followingTapped() {
     setState(() {
       dataRepository.tabIndex = 0;
-      if(!dataRepository.isFollowingPageInitialized) {
-        dataController.fetchNextFollowingItem();
-      }
     });
   }
 
   void forYouTapped() {
     setState(() {
       dataRepository.tabIndex = 1;
-      if(!dataRepository.isForYouPageInitialized) {
-        dataController.fetchNextForYouItem();
-      }
     });
   }
 }
