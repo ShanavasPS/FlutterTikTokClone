@@ -7,40 +7,49 @@ import '../views/data_controller.dart';
 import 'loader_indicator.dart';
 
 Widget buildPageView(DataController dataController, DataRepository dataRepository) {
-  final PageController controller = dataRepository.tabIndex == 0
-      ? dataController.followingPageController
-      : dataController.forYouPageController;
-  final int itemCount = dataRepository.tabIndex == 0
-      ? dataRepository.followingItems.length
-      : dataRepository.forYouItems.length;
-  final bool isLoading = dataRepository.tabIndex == 0
-      ? dataRepository.isFollowingPageLoading
-      : dataRepository.isForYouPageLoading;
+  final PageController followingController = dataController.followingPageController;
+  final PageController forYouController = dataController.forYouPageController;
+  final int followingItemCount = dataRepository.followingItems.length;
+  final int forYouItemCount = dataRepository.forYouItems.length;
+  final bool isFollowingLoading = dataRepository.isFollowingPageLoading;
+  final bool isForYouLoading = dataRepository.isForYouPageLoading;
 
-  return PageView.builder(
-    controller: controller,
-    itemCount: itemCount + 1,
-    onPageChanged: (pageIndex) {
-      if (dataRepository.tabIndex == 0) {
-        dataRepository.followingPageIndex = pageIndex;
-      } else {
-        dataRepository.forYouPageIndex = pageIndex;
-      }
-    },
-    scrollDirection: Axis.vertical,
-    itemBuilder: (context, index) {
-      if (index < itemCount) {
-        if (dataRepository.tabIndex == 0) {
-          return FlashCardFeed(content: dataRepository.followingItems[index]);
-        } else {
-          return MCQFeed(
-            content: dataRepository.forYouItems[index],
-            answer: dataRepository.answers[index],
-          );
-        }
-      } else {
-        return buildLoaderIndicator(isLoading);
-      }
-    },
+  return IndexedStack(
+    index: dataRepository.tabIndex,
+    children: [
+      PageView.builder(
+        controller: followingController,
+        itemCount: followingItemCount + 1,
+        onPageChanged: (pageIndex) {
+          dataRepository.followingPageIndex = pageIndex;
+        },
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          if (index < followingItemCount) {
+            return FlashCardFeed(content: dataRepository.followingItems[index]);
+          } else {
+            return buildLoaderIndicator(isFollowingLoading);
+          }
+        },
+      ),
+      PageView.builder(
+        controller: forYouController,
+        itemCount: forYouItemCount + 1,
+        onPageChanged: (pageIndex) {
+          dataRepository.forYouPageIndex = pageIndex;
+        },
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          if (index < forYouItemCount) {
+            return MCQFeed(
+              content: dataRepository.forYouItems[index],
+              answer: dataRepository.answers[index],
+            );
+          } else {
+            return buildLoaderIndicator(isForYouLoading);
+          }
+        },
+      ),
+    ],
   );
 }
