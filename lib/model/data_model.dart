@@ -20,6 +20,18 @@ class DataRepository {
   bool isForYouPageLoading = false;
   late http.Client client = http.Client();
 
+  bool isLoading() {
+    return (tabIndex == 0)
+        ? isFollowingPageLoading
+        : isForYouPageLoading;
+  }
+
+  int itemCount() {
+    return (tabIndex == 0)
+        ? followingItems.length
+        : forYouItems.length;
+  }
+
   Future<void> fetchNextFollowingItem() async {
     try {
       isFollowingPageLoading = true;
@@ -31,9 +43,6 @@ class DataRepository {
     }
     isFollowingPageLoading = false;
     isFollowingPageInitialized = true;
-    if(followingItems.length <= followingPageIndex + 5) {
-      await fetchNextFollowingItem();
-    }
   }
 
   Future<void> fetchNextForYouItem() async {
@@ -50,9 +59,6 @@ class DataRepository {
     }
     isForYouPageInitialized = true;
     isForYouPageLoading = false;
-    if(forYouItems.length <= forYouPageIndex + 5) {
-      await fetchNextForYouItem();
-    }
   }
 
   List<String> updateAvatarAndPlaylist() {

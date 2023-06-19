@@ -27,8 +27,9 @@ class DataController {
   }
 
   void pageListener(PageController controller, Future<void> Function() fetchData) {
-    if((dataRepository.tabIndex == 0 && controller.page?.toInt() == dataRepository.followingItems.length - 1 && !dataRepository.isFollowingPageLoading) ||
-        (dataRepository.tabIndex == 1 && controller.page?.toInt() == dataRepository.forYouItems.length - 1 && !dataRepository.isForYouPageLoading)) {
+    final double currentPage = controller.page ?? 0;
+    final int itemCount = dataRepository.itemCount();
+    if (currentPage >= itemCount - 1 && !dataRepository.isLoading()) {
       fetchData();
     }
   }
