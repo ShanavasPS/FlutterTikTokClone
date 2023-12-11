@@ -1,16 +1,25 @@
-# tiktokclone
+# Tik Tok Clone
 
-A new Flutter project.
+An application that implements infinite scroll like TikTok.
 
-## Getting Started
+It shows different kinds of cards instead of videos based on the tab selection.
 
-This project is a starting point for a Flutter application.
+## Following
 
-A few resources to get you started if this is your first Flutter project:
+This tab displays a flash card with a Question which displays the answer after pressing it.
+<p float="left">
+<img width="230" alt="Following Front View" src="images/screenshots/FollowingFront.png">
+<img width="230" alt="Following Back View" src="images/screenshots/FollowingBack.png">
+</p>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## For You
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This tab displays a Multiple-question card which can answered by selecting one of the answers.
+<p float="left">
+<img width="230" alt="For You Front View" src="images/screenshots/ForYouFront.png">
+<img width="230" alt="For You Answer View" src="images/screenshots/ForYouAnswer.png">
+</p>
+
+## Other Functionalities
+
+The other buttons including Like, Comment, Share, and Save are static for now.
