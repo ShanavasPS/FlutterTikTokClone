@@ -1,6 +1,7 @@
 class AnswerData {
   final int id;
   final List<OptionData> correctOptions;
+  final List<bool> didTapOptions = [false, false, false, false, false];
 
   AnswerData({
     required this.id,

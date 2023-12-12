@@ -6,6 +6,7 @@ class FlashcardData {
   final String flashcardBack;
   final String description;
   final UserData user;
+  late List<bool> ratingSelection = [false, false, false, false, false];
 
   FlashcardData({
     required this.type,

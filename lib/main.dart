@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:tiktokclone/providers/data_provider.dart';
+import 'package:tiktokclone/providers/duration_provider.dart';
 import 'package:tiktokclone/screens/home_page.dart';
 import 'package:tiktokclone/utils/tiktok_colors.dart';
 import 'package:tiktokclone/utils/tiktok_strings.dart';
 
 void main() {
-  runApp(const TikTokApp());
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => DataProvider()),
+          ChangeNotifierProvider(create: (_) => DurationProvider())
+        ],
+        child: const TikTokApp(),
+      ),
+  );
 }
 
 class TikTokApp extends StatelessWidget {

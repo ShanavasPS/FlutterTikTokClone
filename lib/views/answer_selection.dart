@@ -1,38 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktokclone/model/answer_model.dart';
 import 'package:tiktokclone/model/mcq_data.dart';
 
-import '../widgets/answer_options.dart';
+import '../providers/data_provider.dart';
+import 'answer_options.dart';
 
-class AnswerSelectionView extends StatefulWidget {
-  final McqData content;
-  final AnswerData answer;
-  const AnswerSelectionView({Key? key, required this.content, required this.answer}) : super(key: key);
+class AnswerSelectionView extends StatelessWidget {
+  const AnswerSelectionView({super.key});
 
-  @override
-  AnswerSelectionViewState createState() => AnswerSelectionViewState();
-}
-
-class AnswerSelectionViewState extends State<AnswerSelectionView> {
-  List<bool> didTapOptions = [];
-
-  @override
-  void initState() {
-    super.initState();
-    didTapOptions = List.filled(widget.content.options.length, false);
-  }
-
-  void handleOptionTap(int index) {
-    setState(() {
-      didTapOptions[index] = true;
-    });
+  void handleOptionTap(BuildContext context, int index) {
+    context.read<DataProvider>().updateMCQAnswerSelection(index, true);
   }
 
   @override
   Widget build(BuildContext context) {
-    final McqData content = widget.content;
-    final AnswerData answer = widget.answer;
+    final index = context.watch<DataProvider>().forYouPageItemIndex;
+    final McqData content =  context.watch<DataProvider>().forYouItems[index];
+    final AnswerData answer = context.watch<DataProvider>().answers[index];
+    final bool didTapAnOption = answer.didTapOptions.contains(true);
+    final didTapOptions = answer.didTapOptions;
 
     return ListView.separated(
       shrinkWrap: true,
@@ -45,8 +33,8 @@ class AnswerSelectionViewState extends State<AnswerSelectionView> {
           optionText: content.options[index].answer,
           answer: answer,
           didTapThisOption: didTapOptions[index],
-          didTapAnOption: didTapOptions.contains(true),
-          onTap: () => handleOptionTap(index),
+          didTapAnOption: didTapAnOption,
+          onTap: () => handleOptionTap(context, index),
         );
       },
     );

@@ -1,44 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktokclone/model/flashcard_data.dart';
 
+import '../providers/data_provider.dart';
 import '../utils/tiktok_colors.dart';
 import '../views/flash_card_back.dart';
-import '../widgets/user_info.dart';
+import '../views/user_info.dart';
 
-
-class FlashCardFeed extends StatefulWidget {
-  final FlashcardData content;
-  const FlashCardFeed({super.key, required this.content});
-
-  @override
-  FlashCardFeedState createState() => FlashCardFeedState();
-}
-
-class FlashCardFeedState extends State<FlashCardFeed> {
-  FlashCardFeedState() : super();
-
-  bool showBackOfFlashCard = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void updateFlashCardFeedState(bool showBackOfFlashCard) {
-    // Update the state value in the parent widget
-    setState(() {
-      // Update the state value with the new value received from the child
-      this.showBackOfFlashCard = showBackOfFlashCard;
-    });
-  }
+class FlashCardFeed extends StatelessWidget {
+  const FlashCardFeed({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final FlashcardData content = widget.content;
+    final index = context.watch<DataProvider>().followingPageItemIndex;
+    final FlashcardData content = context.read<DataProvider>().followingItems[index];
 
-    String flashcardFrontText = content.flashcardFront;
-    String flashcardBackText = content.flashcardBack;
-
+    final String flashcardFrontText = content.flashcardFront;
     final String username = content.user.name;
     final String description = content.description;
 
@@ -53,9 +30,7 @@ class FlashCardFeedState extends State<FlashCardFeed> {
           .height,
       child: GestureDetector(
         onTap: () {
-          setState(() {
-            showBackOfFlashCard = !showBackOfFlashCard;
-          });
+          context.read<DataProvider>().toggleFlashCardView();
         },
         child: Container(
           color: Colors.transparent,
@@ -79,7 +54,7 @@ class FlashCardFeedState extends State<FlashCardFeed> {
                     ),
                   ),
                 ),
-                FlashCardBack(flashcardBackText: flashcardBackText, showBackOfFlashCard: showBackOfFlashCard, updateFlashCardFeedState: updateFlashCardFeedState),
+                const FlashCardBack(),
                 buildUserInfo(username, description),
               ],
             ),

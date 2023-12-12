@@ -1,34 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/model/answer_model.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/data_provider.dart';
 import '../model/mcq_data.dart';
 import '../utils/tiktok_colors.dart';
 import '../views/answer_selection.dart';
-import '../widgets/user_info.dart';
+import '../views/user_info.dart';
 
-
-class MCQFeed extends StatefulWidget {
-  final McqData content;
-  final AnswerData answer;
-  const MCQFeed({super.key, required this.content, required this.answer});
-
-  @override
-  MCQFeedState createState() => MCQFeedState();
-}
-
-class MCQFeedState extends State<MCQFeed> {
-  MCQFeedState() : super();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class MCQFeed extends StatelessWidget {
+  const MCQFeed({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final McqData content = widget.content;
-    final AnswerData answer = widget.answer;
+    final index = context.watch<DataProvider>().forYouPageItemIndex;
+    final McqData content =  context.read<DataProvider>().forYouItems[index];
 
     final String mainTitle = content.question;
     final String username = content.user.name;
@@ -71,7 +57,7 @@ class MCQFeedState extends State<MCQFeed> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                AnswerSelectionView(content: content, answer: answer),
+                const AnswerSelectionView(),
                 buildUserInfo(username, description),
               ],
             ),

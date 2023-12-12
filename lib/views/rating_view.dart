@@ -1,44 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/data_provider.dart';
 import '../utils/tiktok_colors.dart';
 import '../utils/tiktok_strings.dart';
-import '../widgets/rating_button.dart';
+import 'rating_button.dart';
 
-class RatingView extends StatefulWidget {
-  final bool showBackOfFlashCard;
-  final Function(bool) updateFlashCardBackState;
+class RatingView extends StatelessWidget {
+  const RatingView({super.key});
 
-  const RatingView({Key? key, required this.showBackOfFlashCard, required this.updateFlashCardBackState})
-      : super(key: key);
-
-  @override
-  RatingViewState createState() => RatingViewState();
-}
-
-class RatingViewState extends State<RatingView> {
-  RatingViewState() : super();
-
-  void handleRatingButtonTap(int index) {
-    setState(() {
-      if (!didTapOnButtons.any((tapped) => tapped)) {
-        didTapOnButtons[index] = true;
-      } else {
-        widget.updateFlashCardBackState(false);
-      }
-    });
+  void handleRatingButtonTap(BuildContext context, int index) {
+    if (!context.read<DataProvider>().getRatings().any((tapped) => tapped)) {
+      context.read<DataProvider>().updateRatingSelection(index, true);
+    } else {
+      context.read<DataProvider>().toggleFlashCardView();
+    }
   }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  List<bool> didTapOnButtons = [false, false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
-    bool didTapOnAnyButton = didTapOnButtons.any((tapped) => tapped);
+    bool didTapOnAnyButton = context.watch<DataProvider>().getRatings().any((tapped) => tapped);
 
     List<Color> ratingColors = [
       TikTokColors.princetonOrange,
@@ -75,15 +57,15 @@ class RatingViewState extends State<RatingView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            for (int i = 0; i < didTapOnButtons.length; i++) ...[
-              if (!didTapOnAnyButton || didTapOnButtons[i]) ...[
+            for (int i = 0; i < context.watch<DataProvider>().getRatings().length; i++) ...[
+              if (!didTapOnAnyButton || context.watch<DataProvider>().getRatings()[i]) ...[
                 ratingButton(
                   context,
                   ratingStrings[i],
                   ratingColors[i],
-                      () => handleRatingButtonTap(i),
+                      () => handleRatingButtonTap(context, i),
                 ),
-                if (i < didTapOnButtons.length - 1) const SizedBox(width: 8),
+                if (i < context.watch<DataProvider>().getRatings().length - 1) const SizedBox(width: 8),
               ],
             ],
           ],

@@ -1,52 +1,23 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/data_provider.dart';
+import '../model/flashcard_data.dart';
 import '../views/rating_view.dart';
 import '../utils/tiktok_colors.dart';
 import '../utils/tiktok_strings.dart';
 
-class FlashCardBack extends StatefulWidget {
-  final String flashcardBackText;
-  final bool showBackOfFlashCard;
-  final Function(bool) updateFlashCardFeedState;
-  const FlashCardBack({super.key, required this.flashcardBackText, required this.showBackOfFlashCard, required this.updateFlashCardFeedState});
-
-  @override
-  FlashCardBackState createState() => FlashCardBackState();
-}
-
-class FlashCardBackState extends State<FlashCardBack> {
-  FlashCardBackState() : super();
-
-  bool showBack = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant FlashCardBack oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.showBackOfFlashCard != oldWidget.showBackOfFlashCard) {
-      setState(() {
-        showBack = widget.showBackOfFlashCard;
-      });
-    }
-  }
-
-  void updateFlashCardBackState(bool showBackOfFlashCard) {
-    // Update the state value in the parent widget
-    setState(() {
-      // Update the state value with the new value received from the child
-      showBack = showBackOfFlashCard;
-      widget.updateFlashCardFeedState(showBackOfFlashCard);
-    });
-  }
+class FlashCardBack extends StatelessWidget {
+  const FlashCardBack({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final index = context.watch<DataProvider>().followingPageItemIndex;
+    final FlashcardData content = context.watch<DataProvider>().followingItems[index];
+    String flashcardBackText = content.flashcardBack;
+
     return Visibility(
-      visible: showBack,
+      visible: context.watch<DataProvider>().showFlashCardBackView,
       child: Column(
         children: [
           Container(
@@ -77,7 +48,7 @@ class FlashCardBackState extends State<FlashCardBack> {
                   maxHeight: MediaQuery.of(context).size.height * 0.2,
                 ),
                 child: Text(
-                  widget.flashcardBackText,
+                  flashcardBackText,
                   style: TextStyle(
                     color: TikTokColors.descriptionTextColor,
                     fontSize: 21,
@@ -87,7 +58,7 @@ class FlashCardBackState extends State<FlashCardBack> {
               ),
             ),
           ),
-          RatingView(showBackOfFlashCard: showBack, updateFlashCardBackState: updateFlashCardBackState),
+          const RatingView(),
         ],
       ),
     );

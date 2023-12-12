@@ -1,114 +1,43 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/utils/common.dart';
 
-import '../model/data_model.dart';
-import '../views/data_controller.dart';
-import '../widgets/bottom_navigation_bar.dart';
-import '../widgets/floating_action_buttons.dart';
-import '../widgets/gradient_background.dart';
-import '../widgets/page_view.dart';
-import '../widgets/song_bar.dart';
-import '../widgets/top_bar.dart';
+import '../views/bottom_navigation_bar.dart';
+import '../views/floating_action_buttons.dart';
+import '../views/gradient_background.dart';
+import '../views/page_view.dart';
+import '../views/song_bar.dart';
+import '../views/top_bar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  HomePageState createState() => HomePageState();
-}
-
-
-class HomePageState extends State<HomePage> with WidgetsBindingObserver {
-
-  AppLifecycleState _lastLifecycleState = AppLifecycleState.resumed;
-
-  DateTime _sessionStartTime = DateTime.now();
-
-  Duration _totalSessionDuration = Duration.zero;
-
-  String actualTimeSpent =  "";
-
-  late Timer _timer;
-
-  DataRepository dataRepository = DataRepository();
-  late DataController dataController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    dataController = DataController(dataRepository);
-
-    WidgetsBinding.instance.addObserver(this);
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (_lastLifecycleState == AppLifecycleState.resumed) {
-        setState(() {
-          _totalSessionDuration = DateTime.now().difference(_sessionStartTime);
-          actualTimeSpent = getDuration(_totalSessionDuration);
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _timer.cancel();
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      _sessionStartTime = DateTime.now();
-    } else if (state == AppLifecycleState.paused) {
-      _totalSessionDuration += DateTime.now().difference(_sessionStartTime);
-    }
-    _lastLifecycleState = state;
-  }
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<dynamic> avatarAndPlaylist = dataRepository.updateAvatarAndPlaylist();
-    String avatar = avatarAndPlaylist[0];
-    String playlist = avatarAndPlaylist[1];
-
     return Scaffold(
       body: Stack(
           children: [
             gradientBackground(),
-            buildForeground(playlist),
+            const Foreground(),
           ]
       ),
-      floatingActionButton: buildFloatingActionButtons(avatar, dataRepository.tabIndex),
-      bottomNavigationBar: buildBottomNavigationBar(context),
+      floatingActionButton: const FloatingActionButtons(),
+      bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
+}
 
-  Widget buildForeground(String playlist) {
-    return Column(
+class Foreground extends StatelessWidget {
+  const Foreground({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
       children: [
-        buildTopBar(dataRepository.tabIndex, actualTimeSpent, followingTapped, forYouTapped),
+        TopBar(),
         Expanded(
-            child: buildPageView(dataController, dataRepository)
+          child: PageViews(),
         ),
-        buildSongBarWidget(playlist),
+        SongBar(),
       ],
     );
-  }
-
-  void followingTapped() {
-    setState(() {
-      dataRepository.tabIndex = 0;
-    });
-  }
-
-  void forYouTapped() {
-    setState(() {
-      dataRepository.tabIndex = 1;
-    });
   }
 }
