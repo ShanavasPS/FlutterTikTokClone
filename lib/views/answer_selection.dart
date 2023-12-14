@@ -16,11 +16,10 @@ class AnswerSelectionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final index = context.watch<DataProvider>().forYouPageItemIndex;
-    final McqData content =  context.watch<DataProvider>().forYouItems[index];
-    final AnswerData answer = context.watch<DataProvider>().answers[index];
-    final bool didTapAnOption = answer.didTapOptions.contains(true);
-    final didTapOptions = answer.didTapOptions;
+    final McqData content =  context.watch<DataProvider>().getMCQContent();
+    final AnswerData answers = context.watch<DataProvider>().getAnswers();
+    final didTapOptions = answers.didTapOptions;
+    final bool didTapAnOption = didTapOptions.contains(true);
 
     return ListView.separated(
       shrinkWrap: true,
@@ -31,7 +30,7 @@ class AnswerSelectionView extends StatelessWidget {
         return answerOptions(
           optionId: content.options[index].id,
           optionText: content.options[index].answer,
-          answer: answer,
+          answer: answers,
           didTapThisOption: didTapOptions[index],
           didTapAnOption: didTapAnOption,
           onTap: () => handleOptionTap(context, index),

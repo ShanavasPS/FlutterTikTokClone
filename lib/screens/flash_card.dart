@@ -12,12 +12,8 @@ class FlashCardFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final index = context.watch<DataProvider>().followingPageItemIndex;
-    final FlashcardData content = context.read<DataProvider>().followingItems[index];
-
+    final FlashcardData content = context.watch<DataProvider>().getFlashCardContent();
     final String flashcardFrontText = content.flashcardFront;
-    final String username = content.user.name;
-    final String description = content.description;
 
     return SizedBox(
       width: MediaQuery
@@ -55,7 +51,7 @@ class FlashCardFeed extends StatelessWidget {
                   ),
                 ),
                 const FlashCardBack(),
-                buildUserInfo(username, description),
+                const UserInfo(),
               ],
             ),
           ),

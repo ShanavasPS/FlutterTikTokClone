@@ -17,10 +17,11 @@ class DataProvider with ChangeNotifier {
   bool isFollowingPageInitialized = false;
   bool isForYouPageInitialized = false;
   int tabIndex = 0; //To track selected screen
-  int followingPageIndex = 0;
-  int forYouPageIndex = 0;
-  int followingPageItemIndex = 0;
-  int forYouPageItemIndex = 0;
+  int _followingPageIndex = 0;
+  int _forYouPageIndex = 0;
+  int _followingPageItemIndex = 0;
+  int _forYouPageItemIndex = 0;
+
   bool isFollowingPageLoading = false;
   bool isForYouPageLoading = false;
   late http.Client client = http.Client();
@@ -28,6 +29,11 @@ class DataProvider with ChangeNotifier {
   final PageController followingPageController = PageController(initialPage: 0);
   final PageController forYouPageController = PageController(initialPage: 0);
   bool showFlashCardBackView = false;
+
+  int get followingPageIndex => _followingPageIndex;
+  int get forYouPageIndex => _forYouPageIndex;
+  int get followingPageItemIndex => _followingPageItemIndex;
+  int get forYouPageItemIndex => _forYouPageItemIndex;
 
   DataProvider() {
     initPageListeners();
@@ -81,7 +87,7 @@ class DataProvider with ChangeNotifier {
   void toggleFlashCardView() {
     showFlashCardBackView = !showFlashCardBackView;
     if(!showFlashCardBackView) {
-      followingItems[followingPageItemIndex].ratingSelection = List.filled(5, false);
+      followingItems[_followingPageItemIndex].ratingSelection = List.filled(5, false);
     }
     notifyListeners();
   }
@@ -94,17 +100,46 @@ class DataProvider with ChangeNotifier {
   }
 
   void updateMCQAnswerSelection(int index, bool selected) {
-    answers[forYouPageItemIndex].didTapOptions[index] = true;
+    print("updateMCQAnwerSelection $index");
+    answers[_forYouPageItemIndex].didTapOptions[index] = true;
     notifyListeners();
   }
 
   void updateRatingSelection(int index, bool selected) {
-    followingItems[followingPageItemIndex].ratingSelection[index] = true;
+    followingItems[_followingPageItemIndex].ratingSelection[index] = true;
     notifyListeners();
   }
 
+  FlashcardData getFlashCardContent() {
+    return followingItems[followingPageItemIndex];
+  }
+
+  McqData getMCQContent() {
+    return forYouItems[forYouPageItemIndex];
+  }
+
+  AnswerData getAnswers() {
+    return answers[forYouPageItemIndex];
+  }
+
+  void updateFollowingPageIndex(int index) {
+    _followingPageIndex= index;
+  }
+
+  void updateFollowingPageItemIndex(int index) {
+    _followingPageItemIndex = index;
+  }
+
+  void updateForYouPageIndex(int index) {
+    _forYouPageIndex= index;
+  }
+
+  void updateForYouPageItemIndex(int index) {
+    _forYouPageItemIndex = index;
+  }
+
   List<bool> getRatings() {
-    return followingItems[followingPageItemIndex].ratingSelection;
+    return followingItems[_followingPageItemIndex].ratingSelection;
   }
 
   Future<void> fetchNextItem() async {
@@ -160,14 +195,14 @@ class DataProvider with ChangeNotifier {
     String playlist = TikTokStrings.playlist;
 
     if (tabIndex == 0) {
-      if (followingPageIndex < followingItems.length) {
-        avatar = followingItems[followingPageIndex].user.avatar;
-        playlist += followingItems[followingPageIndex].playlist;
+      if (_followingPageIndex < followingItems.length) {
+        avatar = followingItems[_followingPageIndex].user.avatar;
+        playlist += followingItems[_followingPageIndex].playlist;
       }
     } else {
-      if (forYouPageIndex < forYouItems.length) {
-        avatar = forYouItems[forYouPageIndex].user.avatar;
-        playlist += forYouItems[forYouPageIndex].playlist;
+      if (_forYouPageIndex < forYouItems.length) {
+        avatar = forYouItems[_forYouPageIndex].user.avatar;
+        playlist += forYouItems[_forYouPageIndex].playlist;
       }
     }
 

@@ -32,12 +32,12 @@ class FollowingPageView extends StatelessWidget {
       controller: controller,
       itemCount: itemCount + 1,
       onPageChanged: (pageIndex) {
-        context.read<DataProvider>().followingPageIndex = pageIndex;
+        context.read<DataProvider>().updateFollowingPageIndex(pageIndex);
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
         if (index < itemCount) {
-          context.read<DataProvider>().followingPageItemIndex = index;
+          context.read<DataProvider>().updateFollowingPageItemIndex(index);
           return const FlashCardFeed();
         } else {
           return const LoaderIndicator();
@@ -59,12 +59,12 @@ class ForYouPageView extends StatelessWidget {
       controller: controller,
       itemCount: itemCount + 1,
       onPageChanged: (pageIndex) {
-        context.read<DataProvider>().forYouPageIndex = pageIndex;
+        context.read<DataProvider>().updateForYouPageIndex(pageIndex);
       },
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
         if (index < itemCount) {
-          context.read<DataProvider>().forYouPageItemIndex = index;
+          context.read<DataProvider>().updateForYouPageItemIndex(index);
           return const MCQFeed();
         } else {
           return const LoaderIndicator();

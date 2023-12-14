@@ -12,8 +12,7 @@ class FlashCardBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final index = context.watch<DataProvider>().followingPageItemIndex;
-    final FlashcardData content = context.watch<DataProvider>().followingItems[index];
+    final FlashcardData content = context.watch<DataProvider>().getFlashCardContent();
     String flashcardBackText = content.flashcardBack;
 
     return Visibility(

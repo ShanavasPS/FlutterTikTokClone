@@ -13,12 +13,8 @@ class MCQFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final index = context.watch<DataProvider>().forYouPageItemIndex;
-    final McqData content =  context.read<DataProvider>().forYouItems[index];
-
+    final McqData content =  context.read<DataProvider>().getMCQContent();
     final String mainTitle = content.question;
-    final String username = content.user.name;
-    final String description = content.description;
 
     return SizedBox(
       width: MediaQuery
@@ -53,12 +49,12 @@ class MCQFeed extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const AnswerSelectionView(),
-                buildUserInfo(username, description),
+                AnswerSelectionView(),
+                UserInfo(),
               ],
             ),
           ],

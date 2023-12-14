@@ -20,7 +20,8 @@ class RatingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool didTapOnAnyButton = context.watch<DataProvider>().getRatings().any((tapped) => tapped);
+    final List<bool> ratings = context.watch<DataProvider>().getRatings();
+    bool didTapOnAnyButton = ratings.any((tapped) => tapped);
 
     List<Color> ratingColors = [
       TikTokColors.princetonOrange,
@@ -57,15 +58,15 @@ class RatingView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            for (int i = 0; i < context.watch<DataProvider>().getRatings().length; i++) ...[
-              if (!didTapOnAnyButton || context.watch<DataProvider>().getRatings()[i]) ...[
+            for (int i = 0; i < ratings.length; i++) ...[
+              if (!didTapOnAnyButton || ratings[i]) ...[
                 ratingButton(
                   context,
                   ratingStrings[i],
                   ratingColors[i],
                       () => handleRatingButtonTap(context, i),
                 ),
-                if (i < context.watch<DataProvider>().getRatings().length - 1) const SizedBox(width: 8),
+                if (i < ratings.length - 1) const SizedBox(width: 8),
               ],
             ],
           ],
